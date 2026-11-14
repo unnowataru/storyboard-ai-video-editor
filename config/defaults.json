@@ -1,0 +1,416 @@
+{
+  "paths": {
+    "resolve_install_dir": {
+      "env": "RESOLVE_INSTALL_DIR",
+      "search": [
+        "%PROGRAMFILES%/Blackmagic Design/DaVinci Resolve"
+      ],
+      "check": "Resolve.exe"
+    },
+    "resolve_script_api": {
+      "env": "RESOLVE_SCRIPT_API",
+      "search": [
+        "%PROGRAMDATA%/Blackmagic Design/DaVinci Resolve/Support/Developer/Scripting"
+      ],
+      "check": "Modules/DaVinciResolveScript.py"
+    },
+    "resolve_script_lib": {
+      "env": "RESOLVE_SCRIPT_LIB",
+      "search": [
+        "{resolve_install_dir}/fusionscript.dll"
+      ]
+    },
+    "python": {
+      "env": "RESOLVE_PYTHON",
+      "search": [
+        "PATH:python"
+      ]
+    },
+    "ffmpeg_dir": {
+      "env": "FFMPEG_DIR",
+      "search": [
+        "PATH:ffmpeg",
+        "%LOCALAPPDATA%/Microsoft/WinGet/Packages/Gyan.FFmpeg*/ffmpeg-*/bin"
+      ],
+      "check": "ffmpeg{exe}"
+    },
+    "fonts_dirs": {
+      "env": "RESOLVE_FONTS_DIR",
+      "search": [
+        "%WINDIR%/Fonts",
+        "%LOCALAPPDATA%/Microsoft/Windows/Fonts"
+      ],
+      "all": true
+    },
+    "work_dir": {
+      "env": "RESOLVE_WORK",
+      "search": [
+        "%USERPROFILE%/Videos/storyboard-work"
+      ],
+      "create": true
+    },
+    "out_dir": {
+      "env": "RESOLVE_OUT_DIR",
+      "search": [
+        "{work_dir}/out"
+      ],
+      "create": true
+    },
+    "preview_dir": {
+      "env": "RESOLVE_PREVIEW_DIR",
+      "search": [
+        "%USERPROFILE%/Videos/storyboard-preview"
+      ],
+      "create": true
+    },
+    "downloads_dir": {
+      "env": "RESOLVE_DOWNLOADS",
+      "search": [
+        "%USERPROFILE%/Downloads"
+      ]
+    },
+    "trial_source": {
+      "env": "RESOLVE_TRIAL_SOURCE",
+      "search": []
+    }
+  },
+  "fonts": {
+    "Meiryo": [
+      "meiryo.ttc"
+    ],
+    "Arial": [
+      "arial.ttf"
+    ],
+    "Meiryo Bold": [
+      "meiryob.ttc"
+    ]
+  },
+  "storyboard": {
+    "fps": 30,
+    "seconds_per_row": 6,
+    "timeline": {
+      "width": 1920,
+      "height": 1080
+    },
+    "safe_area": {
+      "aspect": null
+    },
+    "zoom": {
+      "filter_method": "Lanczos"
+    },
+    "fusion_text_scale": 0.5,
+    "caption": {
+      "size": 80,
+      "min_size": 56,
+      "max_lines": 2,
+      "margin_x": 50,
+      "line_gap": 18,
+      "pad_y": 15,
+      "text_rgb": [
+        255,
+        255,
+        255
+      ],
+      "bar_rgba": [
+        10,
+        20,
+        45,
+        220
+      ],
+      "bar_inset": 0,
+      "corner_radius": 0,
+      "border_width": 0,
+      "border_rgb": [
+        255,
+        255,
+        255
+      ],
+      "end_mark": null,
+      "end_mark_scale": 0.6,
+      "position": "bottom",
+      "band": null,
+      "lift": 0.05,
+      "font_name": "Meiryo",
+      "font_style": "Bold",
+      "fusion_size": 0.06
+    },
+    "closing": {
+      "size": 96,
+      "min_size": 72,
+      "max_lines": 2,
+      "line_gap": 24,
+      "pad_y": 28,
+      "bar": true
+    },
+    "badge": {
+      "rgba": [
+        230,
+        120,
+        20,
+        235
+      ],
+      "text_rgb": [
+        255,
+        255,
+        255
+      ],
+      "prefix": "▶▶ ",
+      "seconds": 2,
+      "font_name": "Meiryo",
+      "font_style": "Bold",
+      "fusion_size": 0.045,
+      "width": 0.22,
+      "height": 0.05,
+      "corner_radius": 0.3,
+      "margin": 0.03,
+      "pad_x": 24,
+      "pad_y": 10,
+      "text_allowance": 1.08
+    },
+    "focus": {
+      "dim": 0.5,
+      "feather": 40,
+      "seconds": 0.5,
+      "start": 0
+    },
+    "focus_border": {
+      "color": "#FFC800",
+      "width": 6,
+      "radius": 8,
+      "glow": false,
+      "glow_blur": 12,
+      "auto": {
+        "dark": "#FFC800",
+        "light": "#FF3B30",
+        "threshold": 128,
+        "near": 16,
+        "measure": "median",
+        "inside": 24,
+        "outside": 24
+      }
+    },
+    "point": {
+      "size": 96,
+      "from": "below",
+      "tilt": 60,
+      "style": "emoji",
+      "color": [
+        255,
+        200,
+        0
+      ],
+      "fonts": {
+        "emoji": "Segoe UI Emoji",
+        "line": "Segoe UI Symbol"
+      },
+      "glyphs": {
+        "emoji-up": {
+          "glyph": "👆",
+          "tip": [
+            -0.148,
+            -0.592
+          ]
+        },
+        "emoji-down": {
+          "glyph": "👇",
+          "tip": [
+            0.143,
+            0.644
+          ]
+        },
+        "emoji-right": {
+          "glyph": "👉",
+          "tip": [
+            0.617,
+            -0.079
+          ]
+        },
+        "emoji-left": {
+          "glyph": "👈",
+          "tip": [
+            -0.618,
+            -0.074
+          ]
+        },
+        "line-up": {
+          "glyph": "☝",
+          "tip": [
+            0.113,
+            -0.391
+          ]
+        },
+        "line-down": {
+          "glyph": "☟",
+          "tip": [
+            0.113,
+            0.437
+          ]
+        },
+        "line-right": {
+          "glyph": "☞",
+          "tip": [
+            0.428,
+            -0.045
+          ]
+        },
+        "line-left": {
+          "glyph": "☜",
+          "tip": [
+            -0.436,
+            -0.045
+          ]
+        }
+      }
+    },
+    "side": {
+      "size": 44,
+      "min_size": 26,
+      "width_scale": 1.08,
+      "title_size": 34,
+      "title_band": 1.6,
+      "line_height": 1.25,
+      "pad": 14,
+      "indent": 12,
+      "gap": 16,
+      "border_width": 4,
+      "corner_radius": 0.06,
+      "panel_rgba": [
+        0,
+        0,
+        0,
+        255
+      ],
+      "border_rgb": [
+        255,
+        255,
+        255
+      ],
+      "text_rgb": [
+        255,
+        255,
+        255
+      ],
+      "font_name": null,
+      "font_style": null,
+      "area": null
+    },
+    "callout": {
+      "border": {
+        "color": "#FFFFFF",
+        "width": 3
+      },
+      "fill": {
+        "color": "#000000",
+        "opacity": 0.7
+      },
+      "shadow": true,
+      "shadow_rgba": [
+        0,
+        0,
+        0,
+        140
+      ],
+      "shadow_offset": 10,
+      "shadow_blur": 12,
+      "in": 0.4,
+      "start": 0,
+      "gap": 4,
+      "auto_dst": {
+        "max_scale": 4,
+        "max_width": 1540,
+        "margin": 24,
+        "valign": "bottom"
+      }
+    },
+    "mask": {
+      "pixel_frequency": 20.0,
+      "blur_size": 40.0,
+      "black_rgba": [
+        0,
+        0,
+        0,
+        255
+      ]
+    },
+    "layout_place": {
+      "height": 0.78,
+      "anchor": "top-left",
+      "margin": 12
+    },
+    "layout_background": {
+      "blur": 6.0,
+      "dim": 0.75
+    },
+    "marker": {
+      "row_color": "Blue",
+      "head_color": "Red"
+    },
+    "render": {
+      "format": "mp4",
+      "codec": "H264"
+    }
+  },
+  "sb2ffmpeg": {
+    "jobs": 2,
+    "threads": "auto"
+  },
+  "apps": {
+    "resolve_process": "Resolve",
+    "windows_powershell": "powershell.exe"
+  },
+  "resolve": {
+    "verified_version": "21.1.1.10",
+    "require_lock": false
+  },
+  "track": {
+    "stride_sec": 0.5,
+    "change_level": 32,
+    "change_pixels": 20,
+    "template_score": 0.7,
+    "lookahead": 3,
+    "still_level": 8,
+    "ocr_scale": 2,
+    "pad": 6,
+    "key_step": 2,
+    "mask_type": "mosaic",
+    "mask_shape": "rect"
+  },
+  "contact_sheet": {
+    "step": 10,
+    "cols": 5,
+    "rows": 4,
+    "width": 480,
+    "font_name": "Arial",
+    "fallback_font_name": "Meiryo",
+    "text_color": "yellow",
+    "box_color": "black"
+  },
+  "area_sheet": {
+    "change_level": 32,
+    "change_pixels": 30,
+    "rows": 40,
+    "cols": 1,
+    "max_width": 1600,
+    "max_height": 4000,
+    "hwaccel": ""
+  },
+  "frame_read": {
+    "group_gap_seconds": 2,
+    "cache_mb": 256
+  },
+  "report": {
+    "max_lines": 10
+  },
+  "scene_events": {
+    "step_sec": 1,
+    "width": 480,
+    "level": 24,
+    "change_ratio": 0.2,
+    "settle_ratio": 0.01,
+    "still_ratio": 0.002,
+    "still_sec": 60,
+    "ocr_ratio": 0.003,
+    "ocr_scale": 2,
+    "error_words": ["Error", "ERROR", "error", "Exception", "Failed", "failed", "エラー", "失敗"]
+  }
+}

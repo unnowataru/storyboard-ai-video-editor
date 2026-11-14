@@ -1,0 +1,858 @@
+{
+ "about": "機能の一覧のデータ。docs/features.md は python scripts/features.py --write-doc でここから作る。項目の意味は scripts/features.py の docstring",
+ "groups": ["見た目", "カットと速さ", "隠す", "組む・書き出し", "照合", "録画と取り込み", "ツール"],
+ "features": [
+  {
+   "id": "caption",
+   "group": "見た目",
+   "name": "テロップ",
+   "what": "行の `caption` の文を、画面の下に背景の板と一緒に出す。`|` か改行で行を区切る。セーフエリアの幅に収まらなければ `caption.min_size` まで縮め、それでも収まらなければ句読点や字の種類の変わり目で折り返す。行数が `caption.max_lines` を超えると警告",
+   "storyboard": ["rows.caption", "caption.{size,min_size,max_lines,lift,bar_rgba,font_name,font_style,fusion_size}"],
+   "scripts": ["sb2resolve.py", "sb2nle.py", "check_final.py", "common.py"],
+   "check_final": ["caption", "caption_bar", "caption_time"],
+   "docs": ["docs/storyboard.md#テロップ (caption)", "docs/storyboard.md#設定の節の一覧"]
+  },
+  {
+   "id": "caption-layout",
+   "group": "見た目",
+   "name": "テロップの位置・余白・字の色",
+   "what": "`caption.position` で置く所を下 (`bottom`、既定)・上 (`top`)・中央 (`center`) から選ぶ。上と下は画面の端から `lift` (画面の高さを 1 とした値) だけ離す。左右の余白 `margin_x`・行の間 `line_gap`・背景の上下の余白 `pad_y` (どれも px) と字の色 `text_rgb` も変えられる",
+   "storyboard": ["caption.{position,margin_x,line_gap,pad_y,text_rgb}"],
+   "scripts": ["sb2resolve.py", "sb2nle.py", "common.py"],
+   "check_final": [],
+   "docs": ["docs/storyboard.md#テロップ (caption)", "docs/storyboard.md#設定の節の一覧"]
+  },
+  {
+   "id": "closing",
+   "group": "見た目",
+   "name": "結びのテロップ",
+   "what": "行の `caption_style` を `closing` にすると、テロップを画面の中央に大きく出す (既定 96 px、2 行まで)。`closing.size` は書き出しの px で、`fusion_text_scale` で Text+ の Size に直す。`closing.bar` が false なら背景を出さない",
+   "storyboard": ["rows.caption_style", "closing.{size,min_size,max_lines,line_gap,pad_y,bar}", "fusion_text_scale"],
+   "scripts": ["sb2resolve.py", "check_final.py", "common.py"],
+   "check_final": ["closing"],
+   "docs": ["docs/storyboard.md#結びのテロップ (caption_style)"]
+  },
+  {
+   "id": "closing-look",
+   "group": "見た目",
+   "name": "結びのテロップだけの色・書体・余白",
+   "what": "`closing` に `caption` と同じ名前の字の色・背景の色・書体・左右の余白を書くと、結びのテロップだけその値になる。書かない項目は `caption` の値",
+   "storyboard": ["closing.{text_rgb,bar_rgba,font_name,font_style,margin_x}"],
+   "scripts": ["sb2resolve.py", "common.py"],
+   "check_final": ["closing"],
+   "docs": ["docs/storyboard.md#結びのテロップ (caption_style)", "docs/storyboard.md#設定の節の一覧"]
+  },
+  {
+   "id": "badge",
+   "group": "見た目",
+   "name": "肩テロップ",
+   "what": "行の `badge` の文に `badge.prefix` を付け、画面の右上に板と一緒に出す。出るのは行の頭から `badge.seconds` 秒で、止めた区間には出さない。板は `badge.width`・`height` を下限に、文の長さに合わせて左と下へ広がる",
+   "storyboard": ["rows.badge", "badge.{rgba,text_rgb,prefix,seconds,font_name,font_style,fusion_size,width,height,corner_radius,margin,pad_x,pad_y,text_allowance}", "fusion_text_scale"],
+   "scripts": ["sb2resolve.py", "check_final.py", "common.py"],
+   "check_final": ["badge", "badge_box", "badge_pixels_<フレーム>"],
+   "docs": ["docs/storyboard.md#肩テロップ (badge)", "docs/storyboard.md#設定の節の一覧"]
+  },
+  {
+   "id": "badge-prefix-only",
+   "group": "見た目",
+   "name": "接頭辞だけの肩テロップ",
+   "what": "`badge` を空の文 (`\"\"`) にすると、`badge.prefix` (既定 `▶▶ `) だけの肩テロップを出す",
+   "storyboard": ["rows.badge"],
+   "examples": ["rows.badge="],
+   "scripts": ["sb2resolve.py", "check_final.py", "common.py"],
+   "check_final": ["badge"],
+   "docs": ["docs/storyboard.md#肩テロップ (badge)"]
+  },
+  {
+   "id": "caption-window",
+   "group": "見た目",
+   "name": "テロップの板の形 (左右の余白・角の丸さ・縁・行の終わりのマーク)",
+   "what": "`bar_inset` で板の左右を内側に寄せ、`corner_radius` で角を丸め、`border_width`・`border_rgb` で外側に縁を付け、`end_mark` の字 (▼ など) を板の右下に置く。`caption` と `closing` のどちらにも書ける",
+   "storyboard": ["caption.{bar_inset,corner_radius,border_width,border_rgb,end_mark,end_mark_scale}", "closing.{bar_inset,corner_radius,border_width,border_rgb,end_mark,end_mark_scale}"],
+   "scripts": ["sb2resolve.py", "check_final.py", "common.py"],
+   "check_final": ["caption_bar"],
+   "docs": ["docs/storyboard.md#テロップの板の形"]
+  },
+  {
+   "id": "zoom",
+   "group": "見た目",
+   "name": "ズーム",
+   "what": "行の `zoom` の範囲 (素材の画素) が画面いっぱいになるまで、行の頭から `seconds` 秒かけて寄せる。`seconds` が 0 なら行の頭から寄った状態。寄せた後の範囲がセーフエリアを超えると警告",
+   "storyboard": ["rows.zoom.{x,y,w,h,seconds}"],
+   "scripts": ["sb2resolve.py", "sb2nle.py", "check_final.py", "common.py"],
+   "check_final": ["zoom", "zoom_size", "zoom_center"],
+   "docs": ["docs/storyboard.md#ズーム (zoom)", "docs/storyboard.md#座標と時刻"]
+  },
+  {
+   "id": "layout",
+   "group": "見た目",
+   "name": "画面を縮めて寄せ、余白にテロップを出す (L 字・逆 L 字・額縁)",
+   "what": "構成表の全体の `layout` (配置) で、`screen` の範囲 (素材の画素) を出力の高さの `height` に縮め、`anchor` の側の上に寄せる。余白は画面を広げてぼかし暗くしたもので埋め、テロップは下の余白の上下の中央に置く。行の `zoom` とは一緒に使えない",
+   "storyboard": ["layout.screen.{x,y,w,h}", "layout.{height,anchor,margin}", "layout_place.{height,anchor,margin}", "layout.background.{blur,dim}", "layout_background.{blur,dim}", "caption.band"],
+   "scripts": ["sb2resolve.py", "check_final.py", "common.py"],
+   "check_final": ["layout", "layout_back", "layout_dim", "layout_links", "hold_layout", "hold_layout_back", "hold_layout_dim", "hold_layout_links", "caption_bar"],
+   "docs": ["docs/storyboard.md#配置 (layout)"]
+  },
+  {
+   "id": "side",
+   "group": "見た目",
+   "name": "解説の欄 (余白に見出しと中身の欄を並べる)",
+   "what": "`layout.side` に書いた見出しと中身の欄を、配置の余白に上から並べる。行の `side` で、その行の欄を全部か、見出しごとに中身だけを差し替える。幅に収まらない欄は `side.min_size` まで縮め、それでも収まらなければ警告",
+   "storyboard": ["layout.side", "rows.side", "side.{area,size,min_size,width_scale,title_size,title_band,line_height,pad,indent,gap,border_width,corner_radius,panel_rgba,border_rgb,text_rgb,font_name,font_style}"],
+   "scripts": ["sb2resolve.py", "check_final.py", "common.py"],
+   "check_final": ["side", "side_size", "hold_side", "hold_side_size"],
+   "docs": ["docs/storyboard.md#解説の欄 (side)"]
+  },
+  {
+   "id": "point",
+   "group": "見た目",
+   "name": "指すマーク (👆 などで画面の 1 点を指す)",
+   "what": "行の `point` の点 (素材の画素) を、`from` の側に置いた字の指の先で指す。`tilt` 度だけ傾け、寄せた後に `size` px に見える大きさで描く。向きごとの字と指の先の位置は `point.glyphs`",
+   "storyboard": ["rows.point.{x,y,from,tilt,style,size,color}", "point.{size,from,tilt,style,color}", "point.fonts.{emoji,line}", "point.glyphs.{emoji-up,emoji-down,emoji-left,emoji-right,line-up,line-down,line-left,line-right}.{glyph,tip}"],
+   "scripts": ["sb2resolve.py", "check_final.py", "common.py"],
+   "check_final": ["point", "hold_point"],
+   "docs": ["docs/storyboard.md#指すマーク (point)"]
+  },
+  {
+   "id": "zoom-out",
+   "group": "見た目",
+   "name": "ズームで引く",
+   "what": "`zoom.direction` を `out` にすると、ズーム範囲から全体へ引く",
+   "storyboard": ["rows.zoom.direction"],
+   "scripts": ["sb2resolve.py", "sb2nle.py", "check_final.py", "common.py"],
+   "check_final": ["zoom_size", "zoom_center"],
+   "docs": ["docs/storyboard.md#ズーム (zoom)"]
+  },
+  {
+   "id": "zoom-filter",
+   "group": "見た目",
+   "name": "ズームの拡大の補間",
+   "what": "ズームの拡大の補間を `zoom.filter_method` (Fusion の Transform の FilterMethod の名前か番号。既定 `Lanczos`) で決める",
+   "storyboard": ["zoom.filter_method"],
+   "scripts": ["sb2resolve.py", "common.py"],
+   "check_final": [],
+   "docs": ["docs/storyboard.md#ズーム (zoom)", "docs/scripting-api.md#拡大の補間 (Transform の FilterMethod)"]
+  },
+  {
+   "id": "safe-area",
+   "group": "見た目",
+   "name": "セーフエリアと警告",
+   "what": "書き出しの中央の `safe_area.aspect` (`\"3:2\"` など) の比の範囲をセーフエリアにする。既定はタイムラインの比で、書き出しの全体。テロップはこの幅に収め、肩テロップはこの右上の角に付ける。ズーム範囲が寄せた後にはみ出すと警告",
+   "storyboard": ["safe_area.aspect"],
+   "scripts": ["common.py", "sb2resolve.py", "sb2nle.py", "api_trial.py"],
+   "check_final": [],
+   "docs": ["docs/storyboard.md#セーフエリア"]
+  },
+  {
+   "id": "focus",
+   "group": "見た目",
+   "name": "周りを暗くする",
+   "what": "行の `focus` の範囲 (素材の画素) の外の明るさを `dim` 倍にする。行の頭から `start` 秒で暗くなり始め、`seconds` 秒で暗くなりきる。境目は `feather` (素材の画素) でぼかし、`keys` で範囲を動かせる",
+   "storyboard": ["rows.focus.{x,y,w,h,dim,feather,start,seconds}", "rows.focus.keys.{t,x,y,w,h}", "focus.{dim,feather,seconds,start}"],
+   "scripts": ["sb2resolve.py", "check_final.py", "sb2nle.py", "common.py"],
+   "check_final": ["focus", "focus_dim", "focus_time"],
+   "docs": ["docs/storyboard.md#周りを暗くする (focus)"]
+  },
+  {
+   "id": "focus-border",
+   "group": "見た目",
+   "name": "枠線と光らせる",
+   "what": "`focus.border` を書くと、範囲の縁に枠線を付ける。`true` なら設定の `focus_border` の値、dict なら色・太さ・角の丸みを上書きする。`glow` で、ぼかした同じ色を重ねて光らせる",
+   "storyboard": ["rows.focus.border", "rows.focus.border.{color,width,radius,glow,glow_blur}", "focus_border.{color,width,radius,glow,glow_blur}"],
+   "scripts": ["sb2resolve.py", "check_final.py", "common.py"],
+   "check_final": ["focus_border", "focus_border_pixels_0"],
+   "docs": ["docs/storyboard.md#枠線 (border)"]
+  },
+  {
+   "id": "focus-border-auto",
+   "group": "見た目",
+   "name": "枠線の色の自動 (暗い背景は黄・明るい背景は赤)",
+   "what": "枠線の色を `auto` にすると、枠線が現れ始めるときの素材のフレームで範囲の縁の明るさを測り、`threshold` 未満 (暗い背景) なら `dark`、以上 (明るい背景) なら `light` の色にする。しきい値に近ければ警告。決めた色は記録の `auto` に残り、`--dry-run` でも同じ値を出す",
+   "storyboard": ["rows.focus.border.color", "focus_border.color", "focus_border.auto.{dark,light,threshold,near,measure,inside,outside}"],
+   "examples": ["rows.focus.border.color=auto", "focus_border.color=auto"],
+   "commands": ["sb2resolve.py --dry-run"],
+   "scripts": ["common.py", "sb2resolve.py", "check_final.py"],
+   "check_final": ["focus_border"],
+   "docs": ["docs/storyboard.md#枠線の色を背景の明るさで決める (auto)"]
+  },
+  {
+   "id": "callout",
+   "group": "見た目",
+   "name": "拡大の重ね表示",
+   "what": "行の `callout` の `src` (素材の画素) を切り抜き、`dst` (書き出しの画素) の幅に拡大して画面の上に重ねる。行の頭から `start` 秒で現れ始め、`in` 秒で現れきる。重ねた四角に半透明の色 (`fill`)・縁 (`border`)・影 (`shadow`) を付けられる",
+   "storyboard": ["rows.callout.src.{x,y,w,h}", "rows.callout.dst.{x,y,w}", "rows.callout.{fill,border,shadow,in,start,shadow_rgba,shadow_offset,shadow_blur}", "rows.callout.fill.{color,opacity}", "rows.callout.border.{color,width}", "callout.{shadow,shadow_rgba,shadow_offset,shadow_blur,in,start}", "callout.fill.{color,opacity}", "callout.border.{color,width}"],
+   "examples": ["rows.callout"],
+   "scripts": ["sb2resolve.py", "check_final.py", "common.py"],
+   "check_final": ["callout", "callout_time"],
+   "docs": ["docs/storyboard.md#拡大の重ね表示 (callout)"]
+  },
+  {
+   "id": "callout-list",
+   "group": "見た目",
+   "name": "拡大の重ね表示の切り抜きを並べる",
+   "what": "`src` を list にすると、切り抜きを左をそろえて上から縦に並べ、間を `gap` (書き出しの画素) 空ける。どれも同じ倍率で、いちばん幅の広い切り抜きが `dst.w` の幅になる",
+   "storyboard": ["rows.callout.src", "rows.callout.gap", "callout.gap"],
+   "examples": ["@切り抜きが複数"],
+   "scripts": ["sb2resolve.py", "check_final.py", "common.py"],
+   "check_final": ["callout_<N>", "callout_time_<N>"],
+   "docs": ["docs/storyboard.md#拡大の重ね表示 (callout)"]
+  },
+  {
+   "id": "callout-order",
+   "group": "見た目",
+   "name": "拡大の重ね表示の重ねる順",
+   "what": "`order` に `src` の番号を 1 回ずつ並べると、その順に上から並べる。番号の抜けや重なりは誤り",
+   "storyboard": ["rows.callout.order"],
+   "scripts": ["sb2resolve.py", "check_final.py", "common.py"],
+   "check_final": ["callout", "callout_<N>"],
+   "docs": ["docs/storyboard.md#重ねる順 (order)"]
+  },
+  {
+   "id": "callout-auto-dst",
+   "group": "見た目",
+   "name": "拡大の重ね表示の自動の置き場所",
+   "what": "`dst` を省くと、セーフエリアのうちテロップの帯に掛からない空きに置き場所を決める (横は画面の中央)。倍率の上限は `callout.auto_dst` の `max_scale` と `max_width`。空きが無ければ組む前の点検で誤り",
+   "storyboard": ["callout.auto_dst.{max_scale,max_width,margin,valign}"],
+   "examples": ["@置き場所の省略"],
+   "commands": ["sb2resolve.py --dry-run"],
+   "scripts": ["sb2resolve.py", "check_final.py", "common.py"],
+   "check_final": ["callout", "callout_<N>"],
+   "docs": ["docs/storyboard.md#置き場所の省略 (自動の置き場所)"]
+  },
+  {
+   "id": "cut",
+   "group": "カットと速さ",
+   "name": "カット",
+   "what": "行の `start`〜`end` (素材の時刻) を使う範囲にして、行の順にタイムラインに並べる。`end` が `start` より前か同じ行と、素材の長さを越える行は組む前の点検で誤り",
+   "storyboard": ["rows.{start,end}"],
+   "scripts": ["sb2resolve.py", "sb2nle.py", "check_final.py"],
+   "check_final": ["position", "source_range", "items"],
+   "docs": ["docs/storyboard.md#行の項目", "docs/storyboard.md#秒数と速さ"]
+  },
+  {
+   "id": "speed",
+   "group": "カットと速さ",
+   "name": "秒数と倍速・遅くする",
+   "what": "行の `seconds` (無ければ全体の `seconds_per_row`) を書き出しの長さにし、使う範囲との比で倍速にするか遅くする。`seconds_per_row` が `\"source\"` なら、`seconds` の無い行は等倍",
+   "storyboard": ["rows.seconds", "seconds_per_row"],
+   "examples": ["@倍速", "@遅く"],
+   "scripts": ["sb2resolve.py", "sb2nle.py", "check_final.py", "common.py"],
+   "check_final": ["speed"],
+   "docs": ["docs/storyboard.md#秒数と速さ"]
+  },
+  {
+   "id": "hold",
+   "group": "カットと速さ",
+   "name": "止める",
+   "what": "行の `hold.seconds` 秒だけ、行の後ろで 1 枚の画を映し続ける。止めるフレームは `hold.at` (既定 `end` はその行で最後に映ったフレーム。素材の時刻も書ける)。テロップは出たまま、マスクと focus の範囲は止めた瞬間の位置で止まる",
+   "storyboard": ["rows.hold.{seconds,at}"],
+   "scripts": ["sb2resolve.py", "check_final.py", "sb2nle.py", "common.py"],
+   "check_final": ["hold", "hold_caption", "hold_caption_bar", "hold_caption_time", "hold_mask<N>", "hold_mask<N>_type", "hold_focus", "hold_focus_dim", "hold_focus_time", "hold_focus_border", "hold_callout", "hold_callout_time", "hold_callout_<N>", "hold_callout_time_<N>"],
+   "docs": ["docs/storyboard.md#映像を止める (hold)"]
+  },
+  {
+   "id": "row-source",
+   "group": "カットと速さ",
+   "name": "行ごとの素材と素材の差し替え",
+   "what": "行の `source` で、その行だけ別の録画を使う。引数 `--source` は構成表の全体の `source` より優先する",
+   "storyboard": ["rows.source", "source"],
+   "examples": ["rows.source"],
+   "commands": ["sb2resolve.py --source", "check_final.py --source", "sb2nle.py --source", "api_trial.py --source"],
+   "scripts": ["sb2resolve.py", "sb2nle.py", "check_final.py", "api_trial.py"],
+   "check_final": ["source_file"],
+   "docs": ["docs/storyboard.md#行の項目", "docs/storyboard.md#全体の項目"]
+  },
+  {
+   "id": "storyboard-paths",
+   "group": "カットと速さ",
+   "name": "構成表のパスの置き換え",
+   "what": "`source`・`output`・行の `source` に `{work_dir}` などの場所の名前を書くと、場所の設定 (環境変数・`config/local.json`・既定の探し方) で置き換える。相対パスは構成表のフォルダーから数える",
+   "storyboard": ["source", "output"],
+   "scripts": ["common.py"],
+   "check_final": [],
+   "docs": ["docs/storyboard.md#パスの書き方", "docs/setup.md#場所"]
+  },
+  {
+   "id": "timeline-settings",
+   "group": "カットと速さ",
+   "name": "解像度とフレームレート",
+   "what": "`timeline` の幅と高さと `fps` で、新しいプロジェクトとタイムラインの解像度とフレームレートを決める。再生フレームレートが入らなかったときは、GUI での直し方を警告に出す",
+   "storyboard": ["fps", "timeline.{width,height}"],
+   "scripts": ["sb2resolve.py", "sb2nle.py", "check_final.py"],
+   "check_final": ["timeline_settings", "video_<項目>"],
+   "docs": ["docs/storyboard.md#全体の項目", "docs/scripting-api.md#プロジェクトとタイムライン"]
+  },
+  {
+   "id": "masks",
+   "group": "隠す",
+   "name": "マスク",
+   "what": "範囲 (素材の画素) をモザイク・ぼかし・黒塗りで隠す。全体の `masks` はどの行にも、行の `masks` はその行に掛ける。形は四角か楕円。強さの既定は設定の `mask`",
+   "storyboard": ["masks.{x,y,w,h,type,shape,pixel_frequency,blur_size,black_rgba}", "rows.masks.{x,y,w,h,type,shape,pixel_frequency,blur_size,black_rgba}", "mask.{pixel_frequency,blur_size,black_rgba}"],
+   "scripts": ["sb2resolve.py", "check_final.py", "sb2nle.py", "common.py"],
+   "check_final": ["mask<N>", "mask<N>_type"],
+   "docs": ["docs/storyboard.md#マスク (masks)"]
+  },
+  {
+   "id": "masks-keys",
+   "group": "隠す",
+   "name": "動くマスク",
+   "what": "マスクの `keys` に時刻 (行の頭からの書き出しの秒) と範囲を並べると、その間を直線で動かす",
+   "storyboard": ["masks.keys.{t,x,y,w,h}", "rows.masks.keys.{t,x,y,w,h}"],
+   "scripts": ["sb2resolve.py", "check_final.py", "track2masks.py", "common.py"],
+   "check_final": ["mask<N>"],
+   "docs": ["docs/storyboard.md#マスク (masks)", "docs/track.md#構成表のマスクにする (track2masks.py)"]
+  },
+  {
+   "id": "track",
+   "group": "隠す",
+   "name": "動く IP・ホスト名・文字列を見つける",
+   "what": "録画を Windows 標準の文字認識で読み、IP アドレス・ホスト名の形・指定の文字列の位置を、フレームの範囲ごとに位置の JSON に書く。見つけた文字そのものは書かず、種類と番号だけを書く",
+   "note": "文字認識が読めない文字は見逃すので、書き出した完成版は人が目で確認する",
+   "config": ["track.{stride_sec,change_level,change_pixels,lookahead,still_level,ocr_scale}", "apps.windows_powershell"],
+   "commands": ["track.py --ip --host --text --out --keep-frames", "ocr_windows.ps1 -List -Out"],
+   "scripts": ["track.py", "ocr_windows.ps1"],
+   "check_final": [],
+   "docs": ["docs/track.md#使い方", "docs/track.md#しくみ", "docs/track.md#位置の JSON の形"]
+  },
+  {
+   "id": "track-template",
+   "group": "隠す",
+   "name": "部品を見本で追う",
+   "what": "`--template marks.json:番号` で、`marker.html` で囲んだ領域を見本にし、同じ画の部品を OpenCV の照合で追う。一致度の下限は `track.template_score`",
+   "config": ["track.template_score"],
+   "commands": ["track.py --template"],
+   "scripts": ["track.py"],
+   "check_final": [],
+   "docs": ["docs/track.md#使い方", "docs/track.md#しくみ"]
+  },
+  {
+   "id": "track2masks",
+   "group": "隠す",
+   "name": "位置の JSON を構成表のマスクにする",
+   "what": "位置の JSON を構成表の行ごとのマスクに直し、マスクを足した新しい構成表 (`<構成表の名前>-masks.json`) を書く。動いた所だけ `keys` にする",
+   "config": ["track.{pad,key_step,mask_type,mask_shape}"],
+   "commands": ["track2masks.py --type --shape"],
+   "scripts": ["track2masks.py"],
+   "check_final": [],
+   "docs": ["docs/track.md#構成表のマスクにする (track2masks.py)"]
+  },
+  {
+   "id": "build-target",
+   "group": "組む・書き出し",
+   "name": "組む先 (新しいプロジェクト・既存のプロジェクト)",
+   "what": "既定は新しいプロジェクトを作って組む (名前は `--name`、構成表の `project`、`output` の名前の順。同じ名前があれば時刻を付ける)。`--project` なら既存のプロジェクトに新しいタイムラインとして組み、プロジェクトの設定は変えない。タイムラインの名前は `--timeline`",
+   "storyboard": ["project"],
+   "commands": ["sb2resolve.py --name --project --timeline"],
+   "scripts": ["sb2resolve.py"],
+   "check_final": [],
+   "docs": ["docs/storyboard.md#書き出しと名前 (sb2resolve.py)"]
+  },
+  {
+   "id": "render",
+   "group": "組む・書き出し",
+   "name": "書き出し",
+   "what": "`--render` で、組んだ後に完成版を `output` (`--output` が優先) に書き出す。形式は `render.format` と `render.codec`。NG の行があれば書き出さない。書き出し先が既にあれば、`--overwrite` が無い限り Resolve に接続する前に止める",
+   "storyboard": ["output", "render.{format,codec}"],
+   "commands": ["sb2resolve.py --render --output --overwrite"],
+   "scripts": ["sb2resolve.py", "common.py"],
+   "check_final": [],
+   "docs": ["docs/storyboard.md#書き出しと名前 (sb2resolve.py)"]
+  },
+  {
+   "id": "render-anyway",
+   "group": "組む・書き出し",
+   "name": "仮組みの書き出し",
+   "what": "`--render-anyway` で、NG の行があっても仮組みとして書き出す。書き出し先は `--output`、無ければ仮組みの書き出し先 (`paths.preview_dir`) の `<完成版の名前>-preview`",
+   "config": ["paths.preview_dir"],
+   "commands": ["sb2resolve.py --render-anyway"],
+   "scripts": ["sb2resolve.py"],
+   "check_final": [],
+   "docs": ["docs/storyboard.md#書き出しと名前 (sb2resolve.py)", "docs/setup.md#作業フォルダーと出力先"]
+  },
+  {
+   "id": "render-rows",
+   "group": "組む・書き出し",
+   "name": "行を指定した部分の書き出し",
+   "what": "`--rows 3-5` (1 行なら `4`) で、組んだ後にその行 (止めた区間を含む) だけを仮組みの書き出し先に書き出す。`--render` とは一緒に使えない",
+   "config": ["paths.preview_dir"],
+   "commands": ["sb2resolve.py --rows"],
+   "scripts": ["sb2resolve.py"],
+   "check_final": [],
+   "docs": ["docs/storyboard.md#書き出しと名前 (sb2resolve.py)"]
+  },
+  {
+   "id": "read-markers",
+   "group": "組む・書き出し",
+   "name": "マーカーを構成表の行に当てる",
+   "what": "今開いているタイムラインに人が打ったマーカーを読み、構成表のどの行に当たるかを出す。行の位置は `sb2resolve.py` の記録か、行の頭のクリップのマーカーで決める。Resolve は書き換えない",
+   "commands": ["read_markers.py --storyboard --log"],
+   "scripts": ["read_markers.py"],
+   "check_final": [],
+   "docs": ["skills/resolve-direct/SKILL.md#流れ", "docs/scripting-api.md#マーカー"]
+  },
+  {
+   "id": "dry-run",
+   "group": "組む・書き出し",
+   "name": "組む前の点検と --dry-run",
+   "what": "組む前に、素材の有無と長さ・時刻・マスクと focus と callout の書式・現れ始める時刻・自動の置き場所の空き・肩テロップの速さを点検し、誤りがあれば Resolve に触らずに止める。`--dry-run` は点検と組む値の計算 (警告) だけをする",
+   "commands": ["sb2resolve.py --dry-run"],
+   "scripts": ["sb2resolve.py"],
+   "check_final": [],
+   "docs": ["docs/storyboard.md#全体の形"]
+  },
+  {
+   "id": "unknown-keys",
+   "group": "組む・書き出し",
+   "name": "知らない項目の警告",
+   "what": "構成表と `config/local.json` の `storyboard` にある、書ける項目に無い名前を警告する (読まない)。`_` で始まる項目は見ない。`sb2resolve.py`・`check_final.py`・`sb2nle.py` が同じ文で出す",
+   "commands": ["sb2resolve.py --dry-run"],
+   "scripts": ["sb2resolve.py", "check_final.py", "sb2nle.py", "common.py"],
+   "check_final": [],
+   "docs": ["docs/storyboard.md#全体の形"]
+  },
+  {
+   "id": "build-log",
+   "group": "組む・書き出し",
+   "name": "組んだ記録の JSON",
+   "what": "組んだ結果を、出力先の `sb2resolve` フォルダーの `<構成表の名前>.json` に書く。行ごとの位置と結果、自動で決めた値 (`auto`)、書き出しの結果 (`render`)、画面に出しきれない行の全部が入る",
+   "scripts": ["sb2resolve.py"],
+   "check_final": [],
+   "docs": ["docs/storyboard.md#書き出しと名前 (sb2resolve.py)"]
+  },
+  {
+   "id": "fusion-names",
+   "group": "組む・書き出し",
+   "name": "Fusion の部品の名前",
+   "what": "行ごとの Fusion の部品に、役目の名前 (`CaptionText`・`FocusArea`・`BadgeOver` など) を付ける。人が Fusion ページで探して直すときと、`check_final.py` が部品を探すときに使う",
+   "scripts": ["common.py", "sb2resolve.py", "check_final.py"],
+   "check_final": [],
+   "docs": ["docs/scripting-api.md#Fusion"]
+  },
+  {
+   "id": "row-markers",
+   "group": "組む・書き出し",
+   "name": "行のマーカー",
+   "what": "行の頭のクリップに `marker.row_color` の色のマーカーを付ける (名前はテロップの頭、メモは肩テロップ)。`sb2nle.py` の書き出しにも同じ色で入れる",
+   "storyboard": ["marker.row_color"],
+   "scripts": ["sb2resolve.py", "sb2nle.py"],
+   "check_final": [],
+   "docs": ["docs/storyboard.md#書き出しと名前 (sb2resolve.py)", "docs/scripting-api.md#マーカー"]
+  },
+  {
+   "id": "storyboard-overrides",
+   "group": "組む・書き出し",
+   "name": "構成表で設定の値を上書きする",
+   "what": "構成表の全体に `caption` などの設定の節を書くと、`config/local.json` と `config/defaults.json` の値を項目ごとに上書きする。どの値がどこから来たかは `common.py --show-config 構成表.json` で出る",
+   "commands": ["common.py --show-config"],
+   "scripts": ["common.py"],
+   "check_final": [],
+   "docs": ["docs/storyboard.md#値の決まり方", "docs/setup.md#見た目と出力"]
+  },
+  {
+   "id": "sb2nle",
+   "group": "組む・書き出し",
+   "name": "共通形式への変換",
+   "what": "構成表を FCPXML 1.10・OTIO・EDL に変換する (試作)。テロップは FCPXML ではタイトル、OTIO と EDL ではマーカーの名前になる。マスクと周りを暗くする範囲は、マーカーのメモに座標 (素材の画素) を書いて残す",
+   "commands": ["sb2nle.py --source"],
+   "scripts": ["sb2nle.py"],
+   "check_final": [],
+   "docs": ["README.md#スクリプトの一覧"]
+  },
+  {
+   "id": "sb2ffmpeg",
+   "group": "組む・書き出し",
+   "name": "簡易版 (試作)",
+   "what": "Resolve を使わずに簡易版を作る。組む処理を Resolve の代わりの部品 (`resolve_stand_in.py`) に流して組み立て内容の JSON を書き、それを FFmpeg で描く (`sb2ffmpeg_render.py`)。同時に書く数とスレッドの数は設定の `sb2ffmpeg.jobs`・`threads`",
+   "note": "簡易版は完成版と同じではない。マスクは種類によらず少し広げた黒塗り、音は入れない。描けない部品は警告する",
+   "config": ["sb2ffmpeg.{jobs,threads}"],
+   "commands": ["sb2ffmpeg.py --source", "sb2ffmpeg.py --out", "sb2ffmpeg.py --jobs --threads"],
+   "scripts": ["sb2ffmpeg.py", "sb2ffmpeg_render.py", "resolve_stand_in.py"],
+   "check_final": [],
+   "docs": ["README.md#簡易版 (FFmpeg)"]
+  },
+  {
+   "id": "sb2ffmpeg-bench",
+   "group": "組む・書き出し",
+   "name": "簡易版のパラメーターを環境ごとに測る",
+   "what": "簡易版を同時に書く数とスレッドの数の候補を、その PC で流して時間の中央値で比べる。`--apply` で一番速い候補を `config/local.json` の `sb2ffmpeg` に書く。`--make-source` は測りに使う合成の 4K の素材を作る",
+   "config": ["sb2ffmpeg.{jobs,threads}"],
+   "commands": ["sb2ffmpeg_bench.py --storyboard --source --make-source --runs --apply"],
+   "scripts": ["sb2ffmpeg_bench.py"],
+   "check_final": [],
+   "docs": ["README.md#簡易版 (FFmpeg)"]
+  },
+  {
+   "id": "api-trial",
+   "group": "組む・書き出し",
+   "name": "テスト用の構成表を組むテスト",
+   "what": "`tests/trial-storyboard.json` を `sb2resolve.py` と同じ部品で組み、段階ごとの成否を出力先の `api-trial.json` に残す。タイムラインの頭のマーカー (`marker.head_color`) と Dynamic Zoom の段階はここにだけある",
+   "storyboard": ["marker.head_color"],
+   "commands": ["api_trial.py --storyboard --source"],
+   "scripts": ["api_trial.py"],
+   "check_final": [],
+   "docs": ["tests/README.md#Resolve が要るテスト (tests/resolve)"]
+  },
+  {
+   "id": "check-final",
+   "group": "照合",
+   "name": "書き出しの照らし合わせ",
+   "what": "構成表と、Resolve のタイムラインの値と、書き出した動画を照らし合わせ、項目ごとに pass / fail / unknown を付けて出力先の `check-final` フォルダーに書く。`--no-resolve` は Resolve に接続せず、タイムラインの項目は unknown。fail か unknown があれば終了コード 1",
+   "note": "実際の録画で隠し漏れが無いことまでは確認しない",
+   "commands": ["check_final.py --video --timeline --no-resolve"],
+   "scripts": ["check_final.py"],
+   "check_final": ["position", "source_range", "speed", "source_file", "timeline", "video_<項目>"],
+   "docs": ["README.md#書き出しを構成表と照らし合わせる"]
+  },
+  {
+   "id": "check-final-pixel",
+   "group": "照合",
+   "name": "画素の照らし合わせ (--pixel)",
+   "what": "`--pixel` で、肩テロップが消える前後のフレームの色と、focus の枠線が現れる前の画素 (素材の同じ時刻と比べる) も見る",
+   "commands": ["check_final.py --pixel"],
+   "scripts": ["check_final.py"],
+   "check_final": ["badge_pixels", "badge_pixels_<フレーム>", "focus_border_pixels_0"],
+   "docs": ["README.md#書き出しを構成表と照らし合わせる"]
+  },
+  {
+   "id": "check-final-sheet",
+   "group": "照合",
+   "name": "区切りのフレームの画像",
+   "what": "fail か unknown の行があれば、その行の区切りのフレーム (行の始まりと終わり、肩テロップが消える所、ズームの始まりと終わりの前後 1 フレーム) を並べた画像を、報告の JSON と同じ名前の PNG に書く",
+   "scripts": ["check_final.py", "contact_sheet.py"],
+   "check_final": [],
+   "docs": ["README.md#書き出しを構成表と照らし合わせる"]
+  },
+  {
+   "id": "check-final-timeline",
+   "group": "照合",
+   "name": "タイムラインの設定とクリップの数の照らし合わせ",
+   "what": "タイムラインの解像度とフレームレートが構成表と同じか、クリップの数が期待の数と同じかを見る",
+   "scripts": ["check_final.py"],
+   "check_final": ["timeline_settings", "items"],
+   "docs": []
+  },
+  {
+   "id": "check-final-badge-box",
+   "group": "照合",
+   "name": "肩テロップの板の照らし合わせ",
+   "what": "肩テロップの板の位置と大きさを、組む側と同じ計算 (文の幅に合わせて広げる) と比べる。書体のファイルが無ければ unknown",
+   "scripts": ["check_final.py"],
+   "check_final": ["badge_box"],
+   "docs": ["tests/README.md#Resolve が要らないテスト (tests/offline)"]
+  },
+  {
+   "id": "badge-speed",
+   "group": "照合",
+   "name": "肩テロップの速さの文と実際の速さの照らし合わせ",
+   "what": "肩テロップの文の「N 倍速」「等倍」を、行の実際の速さと比べる。組む前の点検 (`sb2resolve.py`) と照らし合わせ (`check_final.py`) の両方で見る",
+   "storyboard": ["rows.badge", "seconds_per_row", "rows.seconds"],
+   "examples": ["@肩テロップの速さ"],
+   "scripts": ["sb2resolve.py", "check_final.py", "common.py"],
+   "check_final": ["badge_speed"],
+   "docs": ["docs/storyboard.md#肩テロップ (badge)"]
+  },
+  {
+   "id": "check-final-name-source",
+   "group": "照合",
+   "name": "照らし合わせの報告の名前と素材",
+   "what": "`--name` で報告のファイルの名前 (既定は動画の名前)、`--source` で素材 (構成表の `source` より優先) を決める",
+   "commands": ["check_final.py --name --source"],
+   "scripts": ["check_final.py"],
+   "check_final": [],
+   "docs": []
+  },
+  {
+   "id": "area-sheet",
+   "group": "照合",
+   "name": "マスクの漏れを目で確認する画像",
+   "what": "書き出した動画の見る範囲 (書き出しの画素) が変わったフレームだけを、番号と時刻を付けて縦に並べた画像にする。全部のフレームを見るので、1 フレームだけの漏れも残る。変わったとみなす差と画素の数は `area_sheet.change_level`・`change_pixels`",
+   "config": ["area_sheet.{change_level,change_pixels}"],
+   "commands": ["area_sheet.py --area --areas --out --change-level --change-pixels"],
+   "scripts": ["area_sheet.py"],
+   "check_final": [],
+   "docs": ["docs/track.md#見逃し", "README.md#スクリプトの一覧"]
+  },
+  {
+   "id": "area-sheet-limits",
+   "group": "照合",
+   "name": "マスクの漏れの画像の上限",
+   "what": "`--max-sheets`・`--max-frames`・`--max-output-mb` で、画像の枚数・残すフレームの数・PNG の合計の大きさに上限を付ける。上限に達したら検査は終わっていない扱い (終了コード 1)",
+   "commands": ["area_sheet.py --max-sheets --max-frames --max-output-mb"],
+   "scripts": ["area_sheet.py"],
+   "check_final": [],
+   "docs": []
+  },
+  {
+   "id": "area-sheet-layout",
+   "group": "照合",
+   "name": "マスクの漏れの画像の並べ方とデコード",
+   "what": "1 列に並べる数 (`rows`)・列の数 (`cols`)・範囲を縮める幅 (`max_width`)・1 枚の高さの上限 (`max_height`)・FFmpeg の `-hwaccel` の値 (`hwaccel`) を、設定か引数で変える",
+   "config": ["area_sheet.{rows,cols,max_width,max_height,hwaccel}"],
+   "commands": ["area_sheet.py --rows --cols --max-width --max-height --hwaccel"],
+   "scripts": ["area_sheet.py"],
+   "check_final": [],
+   "docs": ["docs/setup.md#そのほかの値"]
+  },
+  {
+   "id": "scene-events",
+   "group": "録画と取り込み",
+   "name": "録画の後に出来事の候補を出す",
+   "what": "録画から、画面の大きな切り替わり・長い静止の始まりと終わり・(`--ocr` で) 新しく映ったエラーの語を、時刻付きの候補として JSON に書く。元の録画は書き換えず、読んだ文字そのものは書かない",
+   "config": ["scene_events.{step_sec,width,level,change_ratio,settle_ratio,still_ratio,still_sec,ocr_ratio,ocr_scale,error_words}"],
+   "commands": ["scene_events.py --ocr --json --out"],
+   "scripts": ["scene_events.py"],
+   "check_final": [],
+   "docs": ["docs/recording.md#録画の後に出来事の候補を出す"]
+  },
+  {
+   "id": "wallclock",
+   "group": "録画と取り込み",
+   "name": "壁の時計の時刻を録画の時刻に直す",
+   "what": "録画ツールの時刻の記録 (`rec-timeline.log`) を使い、作業のメモなどに残った壁の時計の時刻を、一時停止を挟んだ録画の中の時刻に直す。一時停止中の時刻は「録画に入っていない」と出す",
+   "scripts": ["wallclock_to_tc.py"],
+   "check_final": [],
+   "docs": ["docs/recording.md#時刻の記録と直し方"]
+  },
+  {
+   "id": "marker-html",
+   "group": "録画と取り込み",
+   "name": "再生しながらピンと領域を付ける",
+   "what": "ブラウザーで録画を再生しながら、ピン (P キー) と領域 (動画の上をドラッグ。四角か丸) を付け、`<録画の名前>.marks.json` に保存する",
+   "scripts": ["marker.html"],
+   "check_final": [],
+   "docs": ["docs/recording.md#marker.html (再生しながらピンと領域を付ける)"]
+  },
+  {
+   "id": "marker-html-extra",
+   "group": "録画と取り込み",
+   "name": "marker.html の一覧の操作と自動操作",
+   "what": "ピンと領域の一覧から、その時刻へ移動する・消すことができる。記録は `window.marks` にも置くので、ブラウザーの自動操作で読める。`?src=動画の URL` で動画を開ける。`?pinkey=ctrl+k` のように、P のほかにピンを打つキーを足せる",
+   "scripts": ["marker.html"],
+   "check_final": [],
+   "docs": []
+  },
+  {
+   "id": "pins",
+   "group": "録画と取り込み",
+   "name": "ピンと領域の一覧",
+   "what": "録画のチャプター (録画ツールで打ったピン) と `marks.json` のピンと領域をまとめて、時刻の順に出す。`marks.json` を省くと、録画と同じフォルダー・作業フォルダー・ダウンロードのフォルダー (`paths.downloads_dir`) の順に探す",
+   "config": ["paths.downloads_dir"],
+   "commands": ["pins.py --json"],
+   "scripts": ["pins.py"],
+   "check_final": [],
+   "docs": ["docs/recording.md#pins.py (一覧)"]
+  },
+  {
+   "id": "contact-sheet",
+   "group": "録画と取り込み",
+   "name": "フレームを時刻付きで並べる",
+   "what": "動画のフレームを `--step` 秒ごとに取り、時刻を入れて 1 枚に並べた画像にする (既定 5 x 4)。`--from`・`--to` で範囲を、`--frames` で決まったフレームの番号を指定できる",
+   "config": ["contact_sheet.{step,cols,rows,width,font_name,fallback_font_name,text_color,box_color}"],
+   "commands": ["contact_sheet.py --step --from --to --cols --rows --frames"],
+   "scripts": ["contact_sheet.py"],
+   "check_final": [],
+   "docs": ["docs/recording.md#場面探しと確認 (contact_sheet.py)"]
+  },
+  {
+   "id": "contact-sheet-args",
+   "group": "録画と取り込み",
+   "name": "フレームの画像の幅と名前",
+   "what": "`--width` で 1 フレームの幅 (px)、`--name` で画像のファイルの名前を決める",
+   "commands": ["contact_sheet.py --width --name"],
+   "scripts": ["contact_sheet.py"],
+   "check_final": [],
+   "docs": []
+  },
+  {
+   "id": "config",
+   "group": "ツール",
+   "name": "設定ファイルと場所の決め方",
+   "what": "Resolve・FFmpeg・Python・作業フォルダーなどの場所を、環境変数 → `config/local.json` の `paths` → `config/defaults.json` の探し方の順に決める。PowerShell のスクリプトは `config.ps1` で同じ順に読む",
+   "config": ["paths.{resolve_install_dir,resolve_script_api,resolve_script_lib,python,ffmpeg_dir,work_dir,out_dir,preview_dir,trial_source}"],
+   "scripts": ["common.py", "config.ps1"],
+   "check_final": [],
+   "docs": ["docs/setup.md#設定ファイルと環境変数", "docs/setup.md#場所", "docs/setup.md#作業フォルダーと出力先"]
+  },
+  {
+   "id": "show-config",
+   "group": "ツール",
+   "name": "設定の値と出どころの表示",
+   "what": "`python scripts/common.py --show-config [構成表]` で、場所と見た目の値と、それぞれの出どころ (環境変数・設定ファイル・既定・構成表) を表示する。`--json` で JSON",
+   "commands": ["common.py --show-config --json"],
+   "scripts": ["common.py"],
+   "check_final": [],
+   "docs": ["docs/storyboard.md#値の決まり方", "docs/setup.md#設定ファイルと環境変数"]
+  },
+  {
+   "id": "fonts",
+   "group": "ツール",
+   "name": "書体のファイルの探し方",
+   "what": "書体の名前から、`fonts` に書いたファイル名を書体のフォルダー (`paths.fonts_dirs`) で探す。太さ付きの名前 (`Meiryo Bold`) を先に探す。テロップなどの文の幅を Pillow で測るのに使う",
+   "config": ["fonts.{Meiryo,Arial,Meiryo Bold}", "paths.fonts_dirs"],
+   "scripts": ["common.py"],
+   "check_final": [],
+   "docs": ["docs/setup.md#書体"]
+  },
+  {
+   "id": "check-env",
+   "group": "ツール",
+   "name": "準備の確認",
+   "what": "Python とパッケージ・Resolve・FFmpeg・書体・文字認識・場所がそろっているかを確認し、出力先の `check-env.json` に書く。`--connect` で起動中の Resolve に接続し、版が `resolve.verified_version` と同じかも見る",
+   "config": ["resolve.verified_version", "apps.resolve_process"],
+   "commands": ["check_env.py --connect --json"],
+   "scripts": ["check_env.py"],
+   "check_final": [],
+   "docs": ["docs/setup.md#準備の確認"]
+  },
+  {
+   "id": "make-test-source",
+   "group": "ツール",
+   "name": "テスト用の素材を作る",
+   "what": "機密の無いテスト用の素材を、FFmpeg のテストパターンと音から作る (既定は作業フォルダーの `test-media` の `testsrc.mp4`)",
+   "scripts": ["make_test_source.py"],
+   "check_final": [],
+   "docs": ["docs/setup.md#テスト用の素材"]
+  },
+  {
+   "id": "make-test-source-args",
+   "group": "ツール",
+   "name": "テスト用の素材の長さと置き場所",
+   "what": "`--seconds` で長さ、`--out` で置き場所を決める",
+   "commands": ["make_test_source.py --seconds --out"],
+   "scripts": ["make_test_source.py"],
+   "check_final": [],
+   "docs": []
+  },
+  {
+   "id": "resolve-lock",
+   "group": "ツール",
+   "name": "Resolve の排他",
+   "what": "作業フォルダーの `resolve.lock` を取ってからコマンドを流し、終わったら外す。使用中ならコマンドを流さずに終了コード 1 で終わる (待たない)。`status` は空いているかを見る。Resolve に接続する処理は、包まれていなければ警告を出す (`resolve.require_lock` が true なら接続しない)",
+   "config": ["resolve.require_lock"],
+   "commands": ["resolve_lock.py run --owner", "resolve_lock.py status"],
+   "scripts": ["resolve_lock.py"],
+   "check_final": [],
+   "docs": ["CLAUDE.md#Resolve のロック", "docs/scripting-api.md#スクリプトの包み方"]
+  },
+  {
+   "id": "resolve-lock-extra",
+   "group": "ツール",
+   "name": "Resolve の排他の状態の JSON と持ち主の環境変数",
+   "what": "`status --json` で状態を JSON で出す。`run` はコマンドに環境変数 `RESOLVE_LOCK_OWNER` を渡し、Resolve に接続する処理はロックの持ち主と同じでなければ接続しない",
+   "commands": ["resolve_lock.py status --json"],
+   "scripts": ["resolve_lock.py"],
+   "check_final": [],
+   "docs": []
+  },
+  {
+   "id": "report",
+   "group": "ツール",
+   "name": "画面の 1 行の出力",
+   "what": "スクリプトは結果の要約の 1 行と記録のパスを出し、続く行は `report.max_lines` 行まで出す (残りは「ほか N 件」の 1 行)",
+   "config": ["report.max_lines"],
+   "scripts": ["common.py"],
+   "check_final": [],
+   "docs": []
+  },
+  {
+   "id": "frame-reader",
+   "group": "ツール",
+   "name": "番号を指定したフレームの取り出し",
+   "what": "番号を指定したフレームを取り出すとき、`frame_read.group_gap_seconds` 秒以内の近い番号をまとめてシークして読み、読んだフレームを `frame_read.cache_mb` MB まで覚えて使い回す",
+   "config": ["frame_read.{group_gap_seconds,cache_mb}"],
+   "scripts": ["common.py", "check_final.py", "contact_sheet.py"],
+   "check_final": [],
+   "docs": ["docs/setup.md#そのほかの値"]
+  },
+  {
+   "id": "low-priority",
+   "group": "ツール",
+   "name": "FFmpeg を低い優先度で動かす",
+   "what": "FFmpeg と ffprobe を、Windows では低い優先度のプロセスで動かす",
+   "scripts": ["common.py"],
+   "check_final": [],
+   "docs": []
+  },
+  {
+   "id": "probe",
+   "group": "ツール",
+   "name": "接続の確認",
+   "what": "外のプロセスから Resolve Studio に接続できるかを確認する (回数を渡すと 5 秒おきに試す)",
+   "scripts": ["probe.py"],
+   "check_final": [],
+   "docs": ["docs/scripting-api.md#接続"]
+  },
+  {
+   "id": "rconsole",
+   "group": "ツール",
+   "name": "接続済みで .py を実行",
+   "what": "Resolve に接続し、`resolve`・`pm`・`proj`・`mp`・`tl`・`cfg` を用意してから、渡した .py を実行する (調べ物用)",
+   "note": "開いているプロジェクトを書き換えうるので、読むだけにするか、テスト用の新しいプロジェクトで動かす",
+   "scripts": ["rconsole.py"],
+   "check_final": [],
+   "docs": ["docs/scripting-api.md#接続"]
+  },
+  {
+   "id": "run-ps1",
+   "group": "ツール",
+   "name": "設定の Python で動かす・PowerShell から設定を読む",
+   "what": "`run.ps1` は設定の Python (`paths.python`) でスクリプトを動かす。`config.ps1` は PowerShell から場所と設定の値を読む関数 (`Get-ResolvePath`・`Get-ResolveSetting`) を用意する",
+   "config": ["paths.python"],
+   "scripts": ["run.ps1", "config.ps1"],
+   "check_final": [],
+   "docs": ["docs/setup.md#場所"]
+  },
+  {
+   "id": "snap",
+   "group": "ツール",
+   "name": "Resolve の窓を撮る",
+   "what": "Resolve の窓を前面に出さずに撮り、PNG に保存する (既定は出力先の `snap.png`)。プロセス名の既定は `apps.resolve_process`",
+   "config": ["apps.resolve_process"],
+   "commands": ["snap.ps1 -Process -Out"],
+   "scripts": ["snap.ps1"],
+   "check_final": [],
+   "docs": []
+  },
+  {
+   "id": "projects",
+   "group": "ツール",
+   "name": "プロジェクトの一覧・.drp の控え・素材の確認",
+   "what": "Resolve のプロジェクトの一覧を出す (`list`)、.drp に書き出す (`export`。名前に日時を付け、上書きしない)、素材のファイルがあるかを確認する (`check`)。消す・名前を変える操作はしない",
+   "commands": ["projects.py list export check --out"],
+   "scripts": ["projects.py"],
+   "check_final": [],
+   "docs": ["CLAUDE.md#Resolve のプロジェクト"]
+  },
+  {
+   "id": "cleanup-projects",
+   "group": "ツール",
+   "name": "テストで作ったプロジェクトを消す",
+   "what": "`test-` で始まるプロジェクトを名前か型で消す。開いているものは `--reopen` のプロジェクトを開いてから消す。`--dry-run` は消す対象を出すだけ",
+   "commands": ["cleanup_projects.py --reopen --dry-run"],
+   "scripts": ["cleanup_projects.py"],
+   "check_final": [],
+   "docs": ["CLAUDE.md#Resolve のプロジェクト"]
+  },
+  {
+   "id": "ocr-check",
+   "group": "ツール",
+   "name": "文字認識が使えるかの確認",
+   "what": "`ocr_windows.ps1 -Check` で、Windows の文字認識が使えるかと言語を出す。`check_env.py` が呼ぶ",
+   "config": ["apps.windows_powershell"],
+   "commands": ["ocr_windows.ps1 -Check"],
+   "scripts": ["ocr_windows.ps1", "check_env.py"],
+   "check_final": [],
+   "docs": ["docs/setup.md#文字認識"]
+  },
+  {
+   "id": "features",
+   "group": "ツール",
+   "name": "機能の一覧",
+   "what": "機能の一覧 (`docs/features.json`) を表か JSON で出し、語で絞る (`docs/glossary.md` の別の言い方は読み替える)。`--write-doc` で `docs/features.md` を作り、`--check` で一覧と同じかを見る",
+   "commands": ["features.py --json --write-doc --check"],
+   "scripts": ["features.py"],
+   "check_final": [],
+   "docs": ["CLAUDE.md#機能の一覧の更新", "docs/glossary.md#指示で使われる別の言い方"]
+  }
+ ]
+}

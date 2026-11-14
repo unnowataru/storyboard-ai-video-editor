@@ -1,0 +1,8 @@
+# GitHub Actions のバージョンを週 1 回最新にする。Python のパッケージは requirements.txt で固定せず、
+# CI (.github/workflows/tests.yml) が毎回最新版を入れて試すので、ここでは扱わない。
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly

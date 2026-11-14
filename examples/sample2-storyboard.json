@@ -1,0 +1,632 @@
+{
+  "source": "{work_dir}/bench-4k.mp4",
+  "output": "{out_dir}/sample2-digest.mp4",
+  "seconds_per_row": 5,
+  "fps": 30,
+  "timeline": {
+    "width": 1920,
+    "height": 1080
+  },
+  "caption": {
+    "fusion_size": 0.08,
+    "size": 104.0,
+    "min_size": 72.0
+  },
+  "badge": {
+    "fusion_size": 0.055
+  },
+  "rows": [
+    {
+      "start": "0:03",
+      "end": "0:08",
+      "caption": "色の帯の|並びを確認する",
+      "zoom": {
+        "x": 400,
+        "y": 60,
+        "w": 3040,
+        "h": 2027,
+        "seconds": 0
+      }
+    },
+    {
+      "start": "0:08",
+      "end": "1:00",
+      "seconds": 4,
+      "caption": "時刻の表示を|読み込む",
+      "badge": "13倍速",
+      "zoom": {
+        "x": 400,
+        "y": 60,
+        "w": 3040,
+        "h": 2027,
+        "seconds": 0
+      }
+    },
+    {
+      "start": "1:00",
+      "end": "1:05.5",
+      "seconds": 5.5,
+      "caption": "色の帯を|明るい順に見る",
+      "zoom": {
+        "x": 600,
+        "y": 500,
+        "w": 2880,
+        "h": 1620,
+        "seconds": 0
+      },
+      "focus": {
+        "x": 700,
+        "y": 1300,
+        "w": 2600,
+        "h": 160,
+        "dim": 0.25,
+        "feather": 24,
+        "seconds": 0.5,
+        "border": {
+          "color": "#FFC800",
+          "width": 6,
+          "radius": 8
+        }
+      }
+    },
+    {
+      "start": "1:15.5",
+      "end": "1:22",
+      "seconds": 6.5,
+      "caption": "並びを|まとめて確認する",
+      "badge": "10秒後",
+      "zoom": {
+        "x": 400,
+        "y": 60,
+        "w": 3040,
+        "h": 2027,
+        "seconds": 0
+      },
+      "focus": {
+        "x": 700,
+        "y": 1000,
+        "w": 2300,
+        "h": 110,
+        "dim": 0.25,
+        "feather": 24,
+        "seconds": 0.5,
+        "border": {
+          "color": "#FFC800",
+          "width": 6,
+          "radius": 8
+        },
+        "start": 6.5
+      },
+      "hold": {
+        "seconds": 3
+      },
+      "callout": {
+        "src": [
+          {
+            "x": 710,
+            "y": 1004,
+            "w": 900,
+            "h": 50
+          },
+          {
+            "x": 1640,
+            "y": 1004,
+            "w": 660,
+            "h": 50
+          },
+          {
+            "x": 2330,
+            "y": 1004,
+            "w": 650,
+            "h": 50
+          },
+          {
+            "x": 710,
+            "y": 1056,
+            "w": 700,
+            "h": 50
+          },
+          {
+            "x": 1440,
+            "y": 1056,
+            "w": 380,
+            "h": 50
+          }
+        ],
+        "dst": {
+          "x": 200,
+          "y": 160,
+          "w": 1520
+        },
+        "border": {
+          "color": "#FFFFFF",
+          "width": 3
+        },
+        "shadow": true,
+        "in": 0.4,
+        "start": 6.5,
+        "fill": {
+          "color": "#000000",
+          "opacity": 0.7
+        }
+      }
+    },
+    {
+      "start": "1:40",
+      "end": "1:47",
+      "seconds": 7,
+      "caption": "続きの場面へ進む",
+      "badge": "20秒後",
+      "zoom": {
+        "x": 1000,
+        "y": 700,
+        "w": 2000,
+        "h": 1333,
+        "seconds": 0
+      }
+    },
+    {
+      "start": "1:47",
+      "end": "2:07",
+      "seconds": 5,
+      "caption": "左の帯を見る",
+      "badge": "4倍速",
+      "zoom": {
+        "x": 400,
+        "y": 60,
+        "w": 3040,
+        "h": 2027,
+        "seconds": 0
+      }
+    },
+    {
+      "start": "2:07",
+      "end": "2:17",
+      "seconds": 10,
+      "caption": "左の帯の|色が分かる",
+      "zoom": {
+        "x": 400,
+        "y": 60,
+        "w": 3040,
+        "h": 2027,
+        "seconds": 0
+      },
+      "focus": {
+        "x": 700,
+        "y": 600,
+        "w": 2000,
+        "h": 480,
+        "dim": 0.25,
+        "feather": 16,
+        "seconds": 0.5,
+        "border": {
+          "color": "#FFC800",
+          "width": 6,
+          "radius": 8
+        },
+        "start": 10.0
+      },
+      "hold": {
+        "seconds": 3
+      },
+      "callout": {
+        "src": [
+          {
+            "x": 710,
+            "y": 606,
+            "w": 940,
+            "h": 50
+          },
+          {
+            "x": 710,
+            "y": 1020,
+            "w": 540,
+            "h": 54
+          },
+          {
+            "x": 1280,
+            "y": 1020,
+            "w": 520,
+            "h": 54
+          },
+          {
+            "x": 1830,
+            "y": 1020,
+            "w": 860,
+            "h": 54
+          }
+        ],
+        "dst": {
+          "x": 200,
+          "y": 60,
+          "w": 1520
+        },
+        "border": {
+          "color": "#FFFFFF",
+          "width": 3
+        },
+        "shadow": true,
+        "in": 0.4,
+        "start": 10,
+        "fill": {
+          "color": "#000000",
+          "opacity": 0.7
+        }
+      }
+    },
+    {
+      "start": "2:25",
+      "end": "2:32",
+      "seconds": 7,
+      "caption": "左の 2 本の帯を|比べる",
+      "badge": "10秒後",
+      "zoom": {
+        "x": 0,
+        "y": 300,
+        "w": 2560,
+        "h": 1707,
+        "seconds": 1
+      },
+      "focus": {
+        "x": 0,
+        "y": 400,
+        "w": 1280,
+        "h": 200,
+        "dim": 0.5,
+        "feather": 24,
+        "seconds": 0.5,
+        "border": {
+          "color": "#FF3B30",
+          "width": 6,
+          "radius": 8
+        }
+      }
+    },
+    {
+      "start": "2:32",
+      "end": "3:00",
+      "seconds": 4,
+      "caption": "格子の模様が動く",
+      "badge": "7倍速",
+      "zoom": {
+        "x": 640,
+        "y": 453,
+        "w": 2560,
+        "h": 1707,
+        "seconds": 1
+      }
+    },
+    {
+      "start": "3:00",
+      "end": "3:06",
+      "seconds": 6,
+      "caption": "左の帯を見終える",
+      "zoom": {
+        "x": 640,
+        "y": 453,
+        "w": 2560,
+        "h": 1707,
+        "seconds": 0
+      }
+    },
+    {
+      "start": "3:12",
+      "end": "3:17.5",
+      "seconds": 5.5,
+      "caption": "時刻の表示が|進むのを待つ",
+      "badge": "10秒後",
+      "masks": [
+        {
+          "type": "mosaic",
+          "shape": "rect",
+          "x": 0,
+          "y": 0,
+          "w": 140,
+          "h": 50
+        }
+      ],
+      "zoom": {
+        "x": 640,
+        "y": 900,
+        "w": 2240,
+        "h": 1260,
+        "seconds": 1
+      }
+    },
+    {
+      "start": "3:17.5",
+      "end": "3:25",
+      "seconds": 7.5,
+      "caption": "時刻の数字が|そろう",
+      "masks": [
+        {
+          "type": "mosaic",
+          "shape": "rect",
+          "x": 0,
+          "y": 0,
+          "w": 140,
+          "h": 50
+        }
+      ],
+      "zoom": {
+        "x": 2000,
+        "y": 987,
+        "w": 1760,
+        "h": 1173,
+        "seconds": 1
+      },
+      "focus": {
+        "x": 2400,
+        "y": 1350,
+        "w": 960,
+        "h": 528,
+        "dim": 0.5,
+        "feather": 24,
+        "seconds": 0.5,
+        "border": {
+          "color": "#FF3B30",
+          "width": 6,
+          "radius": 8
+        },
+        "start": 7.5
+      },
+      "hold": {
+        "seconds": 2.5
+      }
+    },
+    {
+      "start": "3:25",
+      "end": "3:31",
+      "seconds": 6,
+      "caption": "右の帯へ|目を移す",
+      "zoom": {
+        "x": 1000,
+        "y": 700,
+        "w": 2000,
+        "h": 1333,
+        "seconds": 0
+      }
+    },
+    {
+      "start": "3:31",
+      "end": "3:38",
+      "seconds": 7,
+      "caption": "右の帯を|まとめて見る",
+      "zoom": {
+        "x": 400,
+        "y": 60,
+        "w": 3040,
+        "h": 2027,
+        "seconds": 0
+      },
+      "focus": {
+        "x": 700,
+        "y": 700,
+        "w": 2600,
+        "h": 52,
+        "dim": 0.25,
+        "feather": 16,
+        "seconds": 0.5,
+        "border": {
+          "color": "#FFC800",
+          "width": 6,
+          "radius": 8
+        },
+        "start": 7.0
+      },
+      "hold": {
+        "seconds": 4
+      },
+      "callout": {
+        "src": [
+          {
+            "x": 704,
+            "y": 702,
+            "w": 820,
+            "h": 48
+          },
+          {
+            "x": 1550,
+            "y": 702,
+            "w": 960,
+            "h": 48
+          },
+          {
+            "x": 2530,
+            "y": 702,
+            "w": 760,
+            "h": 48
+          }
+        ],
+        "dst": {
+          "x": 170,
+          "y": 120,
+          "w": 1580
+        },
+        "border": {
+          "color": "#FFFFFF",
+          "width": 3
+        },
+        "shadow": true,
+        "in": 0.4,
+        "start": 7.0,
+        "fill": {
+          "color": "#000000",
+          "opacity": 0.7
+        }
+      }
+    },
+    {
+      "start": "3:38",
+      "end": "3:44",
+      "seconds": 6,
+      "caption": "時刻の表示を等倍で見る",
+      "badge": "等倍",
+      "zoom": {
+        "x": 1000,
+        "y": 700,
+        "w": 2000,
+        "h": 1333,
+        "seconds": 0
+      }
+    },
+    {
+      "start": "3:44",
+      "end": "3:58",
+      "seconds": 3.5,
+      "caption": "時刻が進むのを待つ",
+      "badge": "4倍速",
+      "zoom": {
+        "x": 400,
+        "y": 60,
+        "w": 3040,
+        "h": 2027,
+        "seconds": 0
+      }
+    },
+    {
+      "start": "3:58",
+      "end": "4:01",
+      "seconds": 3,
+      "caption": "中央と右の帯を|見比べる",
+      "zoom": {
+        "x": 400,
+        "y": 60,
+        "w": 3040,
+        "h": 2027,
+        "seconds": 0
+      },
+      "focus": {
+        "x": 700,
+        "y": 480,
+        "w": 2600,
+        "h": 150,
+        "dim": 0.25,
+        "feather": 16,
+        "seconds": 0.5,
+        "border": {
+          "color": "#FFC800",
+          "width": 6,
+          "radius": 8
+        },
+        "start": 3.0
+      },
+      "hold": {
+        "seconds": 2.5
+      },
+      "callout": {
+        "src": [
+          {
+            "x": 708,
+            "y": 484,
+            "w": 740,
+            "h": 46
+          },
+          {
+            "x": 1470,
+            "y": 484,
+            "w": 760,
+            "h": 46
+          },
+          {
+            "x": 708,
+            "y": 532,
+            "w": 640,
+            "h": 46
+          },
+          {
+            "x": 1380,
+            "y": 532,
+            "w": 470,
+            "h": 46
+          },
+          {
+            "x": 708,
+            "y": 580,
+            "w": 760,
+            "h": 46
+          }
+        ],
+        "dst": {
+          "x": 340,
+          "y": 340,
+          "w": 1240
+        },
+        "border": {
+          "color": "#FFFFFF",
+          "width": 3
+        },
+        "shadow": true,
+        "in": 0.4,
+        "start": 3,
+        "fill": {
+          "color": "#000000",
+          "opacity": 0.7
+        }
+      }
+    },
+    {
+      "start": "4:01",
+      "end": "4:03",
+      "seconds": 4,
+      "caption": "格子の領域に|模様が入る",
+      "masks": [
+        {
+          "type": "mosaic",
+          "shape": "rect",
+          "x": 0,
+          "y": 0,
+          "w": 140,
+          "h": 50
+        },
+        {
+          "type": "mosaic",
+          "shape": "rect",
+          "x": 2420,
+          "y": 1380,
+          "w": 420,
+          "h": 90
+        },
+        {
+          "type": "mosaic",
+          "shape": "rect",
+          "x": 2420,
+          "y": 1490,
+          "w": 420,
+          "h": 90
+        }
+      ],
+      "zoom": {
+        "x": 2000,
+        "y": 987,
+        "w": 1760,
+        "h": 1173,
+        "seconds": 0
+      }
+    },
+    {
+      "start": "4:02.967",
+      "end": "4:03",
+      "seconds": 4,
+      "caption": "場面を分けて、|順に見せられる",
+      "masks": [
+        {
+          "type": "mosaic",
+          "shape": "rect",
+          "x": 0,
+          "y": 0,
+          "w": 140,
+          "h": 50
+        }
+      ],
+      "zoom": {
+        "x": 2000,
+        "y": 987,
+        "w": 1760,
+        "h": 1173,
+        "seconds": 0
+      },
+      "caption_style": "closing"
+    }
+  ]
+}

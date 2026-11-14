@@ -1,0 +1,70 @@
+# Resolve が要らないテスト (tests/offline) を、その時点の最新の Python・パッケージ・FFmpeg で流す。
+# このリポジトリは「最新版で動く」ことを前提にするので、バージョンは固定しない。定期実行で落ちたら Issue を立てる。
+name: tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    - cron: "0 0 * * 1"   # 毎週月曜 9:00 (日本時間)
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  offline:
+    runs-on: windows-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.x"
+          check-latest: true
+
+      - name: FFmpeg の最新の full build を入れる
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release download -R GyanD/codexffmpeg --pattern "*-full_build.zip" -D "$env:RUNNER_TEMP"
+          $zip = Get-ChildItem "$env:RUNNER_TEMP\*-full_build.zip" | Select-Object -First 1
+          Expand-Archive $zip.FullName -DestinationPath "$env:RUNNER_TEMP\ffmpeg"
+          $bin = (Get-ChildItem "$env:RUNNER_TEMP\ffmpeg" -Directory | Select-Object -First 1).FullName + "\bin"
+          Add-Content $env:GITHUB_PATH $bin
+          Add-Content $env:GITHUB_ENV "RESOLVE_WORK=$env:RUNNER_TEMP\work"
+
+      - name: Python のパッケージを最新にする
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install --upgrade -r requirements.txt pip-audit
+
+      - name: 使ったバージョン
+        shell: pwsh
+        run: |
+          python --version
+          (ffmpeg -hide_banner -version | Select-Object -First 1)
+          python -m pip list
+
+      - name: 既知の脆弱性の検出
+        run: python -m pip_audit
+
+      - name: テスト (Resolve が要らないもの)
+        # この実行環境には Meiryo が無いので、テロップの幅を Meiryo の寸法で比べるテスト (印 meiryo) は飛ぶ。
+        # 日本語の追加書体を後から入れる Add-WindowsCapability は 15 分たっても終わらなかった
+        run: python -m pytest tests -q -rs
+
+      - name: 定期実行で落ちたら Issue を立てる
+        if: failure() && github.event_name == 'schedule'
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $url = "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          gh issue create -R "${{ github.repository }}" --label bug `
+            --title "定期のテストが最新版で落ちた ($(Get-Date -Format yyyy-MM-dd))" `
+            --body "最新の Python・パッケージ・FFmpeg で、定期のテストが落ちた。コードを最新版に合わせて修正する。実行の記録: $url"

@@ -1,0 +1,10 @@
+{
+  "paths": {
+    "trial_source": "{work_dir}/test-media/testsrc.mp4"
+  },
+  "storyboard": {
+    "caption": {
+      "lift": 0.08
+    }
+  }
+}

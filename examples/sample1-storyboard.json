@@ -1,0 +1,446 @@
+{
+  "source": "{work_dir}/bench-4k.mp4",
+  "output": "{out_dir}/sample1-digest.mp4",
+  "fps": 30,
+  "timeline": {
+    "width": 1920,
+    "height": 1080
+  },
+  "caption": {
+    "fusion_size": 0.08,
+    "size": 104.0,
+    "min_size": 72.0
+  },
+  "badge": {
+    "fusion_size": 0.055
+  },
+  "rows": [
+    {
+      "start": 2.0,
+      "end": 6.0,
+      "seconds": 4.0,
+      "caption": "テスト用の画面|右下に格子の四角がある",
+      "masks": [
+        {
+          "type": "mosaic",
+          "shape": "rect",
+          "x": 0,
+          "y": 0,
+          "w": 120,
+          "h": 44
+        }
+      ],
+      "zoom": {
+        "x": 2200,
+        "y": 1200,
+        "w": 1360,
+        "h": 765,
+        "seconds": 1.5
+      },
+      "focus": {
+        "x": 2400,
+        "y": 1350,
+        "w": 960,
+        "h": 528,
+        "dim": 0.5,
+        "feather": 24,
+        "seconds": 4.5,
+        "border": {
+          "color": "#FF3B30",
+          "width": 6,
+          "radius": 8
+        }
+      },
+      "hold": {
+        "seconds": 3.5
+      }
+    },
+    {
+      "start": 36.0,
+      "end": 41.0,
+      "seconds": 5.0,
+      "caption": "左の色の帯を|順に見ていく",
+      "badge": "30秒後",
+      "zoom": {
+        "x": 1100,
+        "y": 700,
+        "w": 1600,
+        "h": 1067,
+        "seconds": 1
+      },
+      "focus": {
+        "x": 1300,
+        "y": 1000,
+        "w": 520,
+        "h": 120,
+        "dim": 0.25,
+        "feather": 12,
+        "seconds": 5.5,
+        "border": {
+          "color": "#FFC800",
+          "width": 6,
+          "radius": 8
+        }
+      },
+      "hold": {
+        "seconds": 3.0
+      },
+      "callout": {
+        "src": {
+          "x": 1310,
+          "y": 1005,
+          "w": 500,
+          "h": 110
+        },
+        "dst": {
+          "x": 700,
+          "y": 260,
+          "w": 520
+        },
+        "border": {
+          "color": "#FFFFFF",
+          "width": 3
+        },
+        "shadow": true,
+        "in": 0.4,
+        "start": 5.0,
+        "fill": {
+          "color": "#000000",
+          "opacity": 0.7
+        }
+      }
+    },
+    {
+      "start": 41.0,
+      "end": 101.0,
+      "seconds": 3,
+      "caption": "時刻の表示が進む",
+      "badge": "20倍速"
+    },
+    {
+      "start": 101.0,
+      "end": 109.0,
+      "seconds": 8.0,
+      "caption": "色の帯を|3 本ずつ見比べる",
+      "zoom": {
+        "x": 400,
+        "y": 100,
+        "w": 3040,
+        "h": 2027,
+        "seconds": 1.5
+      },
+      "focus": {
+        "x": 640,
+        "y": 400,
+        "w": 2560,
+        "h": 220,
+        "dim": 0.25,
+        "feather": 24,
+        "seconds": 8.5,
+        "border": {
+          "color": "#FFC800",
+          "width": 6,
+          "radius": 8
+        }
+      },
+      "hold": {
+        "seconds": 4
+      },
+      "callout": {
+        "src": [
+          {
+            "x": 650,
+            "y": 410,
+            "w": 600,
+            "h": 60
+          },
+          {
+            "x": 1300,
+            "y": 410,
+            "w": 560,
+            "h": 60
+          },
+          {
+            "x": 2500,
+            "y": 540,
+            "w": 640,
+            "h": 60
+          }
+        ],
+        "dst": {
+          "x": 360,
+          "y": 400,
+          "w": 1200
+        },
+        "border": {
+          "color": "#FFFFFF",
+          "width": 3
+        },
+        "shadow": true,
+        "in": 0.4,
+        "start": 8.0,
+        "fill": {
+          "color": "#000000",
+          "opacity": 0.7
+        }
+      }
+    },
+    {
+      "start": 125.0,
+      "end": 131.0,
+      "seconds": 6.0,
+      "caption": "格子の四角に寄る",
+      "badge": "20秒後",
+      "zoom": {
+        "x": 1280,
+        "y": 720,
+        "w": 1920,
+        "h": 1280,
+        "seconds": 0
+      }
+    },
+    {
+      "start": 131.0,
+      "end": 161.0,
+      "seconds": 3,
+      "caption": "時刻が進むのを待つ",
+      "badge": "10倍速"
+    },
+    {
+      "start": 161.0,
+      "end": 168.0,
+      "seconds": 7.0,
+      "caption": "表示の数字を|読み取る",
+      "zoom": {
+        "x": 600,
+        "y": 200,
+        "w": 2560,
+        "h": 1707,
+        "seconds": 1
+      },
+      "focus": {
+        "x": 1920,
+        "y": 800,
+        "w": 640,
+        "h": 200,
+        "dim": 0.25,
+        "feather": 24,
+        "seconds": 7.5,
+        "border": {
+          "color": "#FFC800",
+          "width": 6,
+          "radius": 8
+        }
+      },
+      "hold": {
+        "seconds": 2.5
+      }
+    },
+    {
+      "start": 168.0,
+      "end": 178.0,
+      "seconds": 5,
+      "caption": "画面の下を見る",
+      "badge": "2倍速",
+      "zoom": {
+        "x": 1280,
+        "y": 720,
+        "w": 1920,
+        "h": 1280,
+        "seconds": 0
+      }
+    },
+    {
+      "start": 178.0,
+      "end": 182.0,
+      "seconds": 4.0,
+      "caption": "格子の模様が動く",
+      "zoom": {
+        "x": 900,
+        "y": 500,
+        "w": 2000,
+        "h": 1333,
+        "seconds": 1
+      }
+    },
+    {
+      "start": 190.0,
+      "end": 192.0,
+      "seconds": 2.0,
+      "caption": "色の帯が並ぶ",
+      "badge": "10秒後"
+    },
+    {
+      "start": 192.0,
+      "end": 194.5,
+      "seconds": 2.5,
+      "caption": "色の帯が並ぶ",
+      "zoom": {
+        "x": 500,
+        "y": 300,
+        "w": 2400,
+        "h": 1600,
+        "seconds": 1.5
+      }
+    },
+    {
+      "start": 205.0,
+      "end": 211.0,
+      "seconds": 6.0,
+      "caption": "格子の四角の|模様が変わる",
+      "badge": "10秒後",
+      "masks": [
+        {
+          "type": "mosaic",
+          "shape": "rect",
+          "x": 0,
+          "y": 0,
+          "w": 120,
+          "h": 44
+        }
+      ],
+      "zoom": {
+        "x": 2100,
+        "y": 1150,
+        "w": 1560,
+        "h": 878,
+        "seconds": 2
+      },
+      "focus": {
+        "x": 2400,
+        "y": 1350,
+        "w": 960,
+        "h": 528,
+        "dim": 0.5,
+        "feather": 24,
+        "seconds": 0.5,
+        "border": {
+          "color": "#FF3B30",
+          "width": 6,
+          "radius": 8
+        }
+      }
+    },
+    {
+      "start": 211.0,
+      "end": 216.0,
+      "seconds": 5.0,
+      "caption": "変わった所を|拡大する",
+      "masks": [
+        {
+          "type": "mosaic",
+          "shape": "rect",
+          "x": 0,
+          "y": 0,
+          "w": 120,
+          "h": 44
+        }
+      ],
+      "zoom": {
+        "x": 2100,
+        "y": 1150,
+        "w": 1560,
+        "h": 878,
+        "seconds": 0
+      },
+      "focus": {
+        "x": 2400,
+        "y": 1350,
+        "w": 960,
+        "h": 528,
+        "dim": 0.5,
+        "feather": 24,
+        "seconds": 5.5,
+        "border": {
+          "color": "#FF3B30",
+          "width": 6,
+          "radius": 8
+        }
+      },
+      "hold": {
+        "seconds": 2.5
+      }
+    },
+    {
+      "start": 226.0,
+      "end": 231.0,
+      "seconds": 5.0,
+      "caption": "時刻の表示を|拡大する",
+      "badge": "10秒後",
+      "masks": [
+        {
+          "type": "mosaic",
+          "shape": "rect",
+          "x": 1700,
+          "y": 60,
+          "w": 300,
+          "h": 70
+        }
+      ]
+    },
+    {
+      "start": 231.0,
+      "end": 238.0,
+      "seconds": 2.5,
+      "caption": "表示の桁を見る",
+      "badge": "3倍速",
+      "masks": [
+        {
+          "type": "mosaic",
+          "shape": "rect",
+          "x": 1700,
+          "y": 60,
+          "w": 300,
+          "h": 70
+        }
+      ]
+    },
+    {
+      "start": 238.0,
+      "end": 241.0,
+      "seconds": 3.0,
+      "caption": "時刻の値を読む",
+      "masks": [
+        {
+          "type": "mosaic",
+          "shape": "rect",
+          "x": 1700,
+          "y": 60,
+          "w": 300,
+          "h": 70
+        }
+      ],
+      "zoom": {
+        "x": 1000,
+        "y": 600,
+        "w": 1800,
+        "h": 1200,
+        "seconds": 1.5
+      }
+    },
+    {
+      "start": 241.0,
+      "end": 244.5,
+      "seconds": 3.5,
+      "caption": "動く画面も、|構成表だけで見せ方を決められる",
+      "masks": [
+        {
+          "type": "mosaic",
+          "shape": "rect",
+          "x": 1700,
+          "y": 60,
+          "w": 300,
+          "h": 70
+        }
+      ],
+      "zoom": {
+        "x": 1000,
+        "y": 600,
+        "w": 1800,
+        "h": 1200,
+        "seconds": 0
+      },
+      "caption_style": "closing"
+    }
+  ]
+}

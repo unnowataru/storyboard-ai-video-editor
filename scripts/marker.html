@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>ピンと領域の指定</title>
+<style>
+  body { margin: 0; background: #111; color: #eee; font: 14px "BIZ UDPGothic", "Yu Gothic UI", sans-serif; }
+  header { display: flex; gap: 8px; align-items: center; padding: 8px; flex-wrap: wrap; }
+  button.on { background: #28c8ff; color: #000; }
+  #stage { position: relative; display: inline-block; margin: 0 8px; }
+  video { display: block; max-width: calc(100vw - 16px); max-height: 70vh; }
+  canvas { position: absolute; left: 0; top: 0; cursor: crosshair; }
+  #list { padding: 8px; display: flex; gap: 24px; }
+  #list ul { margin: 4px 0; padding-left: 18px; }
+  #list li button { margin-left: 6px; font-size: 11px; }
+  .t { font-variant-numeric: tabular-nums; }
+</style>
+</head>
+<body>
+<header>
+  <input type="file" id="file" accept="video/*">
+  <button id="play">再生 / 一時停止 (Space)</button>
+  <input type="range" id="seek" min="0" max="0" step="0.01" value="0" style="width: 30vw">
+  <span class="t" id="now">0:00.0</span>
+  <button id="pin">ピン (P)</button>
+  <button id="rect" class="on">四角 (R)</button>
+  <button id="ellipse">丸 (E)</button>
+  <button id="save">保存</button>
+  <span id="help">再生・一時停止は Space。ピンは P。領域は動画の上をドラッグ。</span>
+</header>
+<div id="stage"><video id="v"></video><canvas id="c"></canvas></div>
+<div id="list"><div>ピン<ul id="pins"></ul></div><div>領域<ul id="regions"></ul></div></div>
+<script>
+// 結果は window.marks に置く (保存のほか、ブラウザーの自動操作で読めるように)
+const marks = window.marks = { video: "", width: 0, height: 0, pins: [], regions: [] };
+const v = document.getElementById("v"), c = document.getElementById("c"), g = c.getContext("2d");
+let shape = "rect", drag = null;
+
+const fmt = t => `${Math.floor(t / 60)}:${(t % 60).toFixed(1).padStart(4, "0")}`;
+const load = (url, name) => {   // 動画を替えたら、前の動画の marks.json の記録は捨てる
+  v.src = url; marks.video = name; marks.pins = []; marks.regions = []; drag = null; render();
+};
+document.getElementById("file").onchange = e => {
+  const f = e.target.files[0];
+  if (f) load(URL.createObjectURL(f), f.name);
+  e.target.blur();   // 選択欄にフォーカスが残ると Space で選択画面が開く
+};
+const params = new URLSearchParams(location.search);
+const q = params.get("src");   // テスト用: ?src=動画の URL
+if (q) load(q, decodeURIComponent(q.split("/").pop()));
+
+// ピンを打つキーを P のほかに足す: ?pinkey=ctrl+k
+// 修飾キーは ctrl・alt・shift・meta、最後はキーの名前 (KeyboardEvent.key)。大文字小文字は区別しない。
+// URL の + は空白として読まれるので、区切りは + でも空白でもよい。
+// 書いた修飾キーが全部押されていて、ほかの修飾キーが押されていないときだけ合う
+function parsePinKey(s) {
+  const m = /^((?:(?:ctrl|alt|shift|meta)[+ ])*)(\S+)$/i.exec((s || "").trim());
+  if (!m) return null;
+  const mods = m[1].toLowerCase().split(/[+ ]/).filter(Boolean);
+  return { key: m[2].toLowerCase(), ctrl: mods.includes("ctrl"), alt: mods.includes("alt"),
+           shift: mods.includes("shift"), meta: mods.includes("meta"), label: [...mods, m[2]].join("+") };
+}
+const matchesPinKey = (pk, e) => !!pk && e.key.toLowerCase() === pk.key && e.ctrlKey === pk.ctrl
+  && e.altKey === pk.alt && e.shiftKey === pk.shift && e.metaKey === pk.meta;
+const extraPinKey = parsePinKey(params.get("pinkey"));
+if (extraPinKey) {
+  document.getElementById("help").textContent =
+    `再生・一時停止は Space。ピンは P か ${extraPinKey.label}。領域は動画の上をドラッグ。`;
+}
+
+const seek = document.getElementById("seek");
+v.onloadedmetadata = () => { marks.width = v.videoWidth; marks.height = v.videoHeight; seek.max = v.duration; fit(); };
+seek.oninput = () => { v.currentTime = +seek.value; };
+const toggle = () => { v.paused ? v.play() : v.pause(); };
+document.getElementById("play").onclick = toggle;
+window.onresize = fit;
+function fit() {   // 再生の操作は上の列にあるので、動画の全体で領域を描ける
+  c.width = v.clientWidth; c.height = v.clientHeight;
+  c.style.width = c.width + "px"; c.style.height = c.height + "px"; draw();
+}
+v.ontimeupdate = () => { document.getElementById("now").textContent = fmt(v.currentTime); seek.value = v.currentTime; };
+
+function addPin() {
+  marks.pins.push({ t: +v.currentTime.toFixed(3), name: `ピン${marks.pins.length + 1}` });
+  marks.pins.sort((a, b) => a.t - b.t);
+  render();
+}
+function setShape(s) {
+  shape = s;
+  document.getElementById("rect").classList.toggle("on", s === "rect");
+  document.getElementById("ellipse").classList.toggle("on", s === "ellipse");
+}
+document.getElementById("pin").onclick = addPin;
+document.getElementById("rect").onclick = () => setShape("rect");
+document.getElementById("ellipse").onclick = () => setShape("ellipse");
+document.addEventListener("keydown", e => {
+  const k = e.key.toLowerCase();
+  if (k === "p" || matchesPinKey(extraPinKey, e)) { addPin(); e.preventDefault(); }
+  else if (k === "r") setShape("rect");
+  else if (k === "e") setShape("ellipse");
+  else if (k === " ") { toggle(); e.preventDefault(); }
+});
+
+// 画面上の座標 → 元の動画の画素
+const sx = () => marks.width / v.clientWidth, sy = () => marks.height / v.clientHeight;
+// 動画の外でボタンを離しても終わるよう、押している間はポインターを捕まえておく
+const at = e => { const r = c.getBoundingClientRect();
+  return [Math.min(Math.max(e.clientX - r.left, 0), c.width), Math.min(Math.max(e.clientY - r.top, 0), c.height)]; };
+c.onpointerdown = e => { c.setPointerCapture(e.pointerId); const [x, y] = at(e); drag = { x0: x, y0: y, x1: x, y1: y }; };
+c.onpointermove = e => { if (drag) { [drag.x1, drag.y1] = at(e); draw(); } };
+c.onpointercancel = () => { drag = null; draw(); };
+c.onpointerup = () => {
+  if (!drag) return;
+  const x = Math.min(drag.x0, drag.x1), y = Math.min(drag.y0, drag.y1);
+  const w = Math.abs(drag.x1 - drag.x0), h = Math.abs(drag.y1 - drag.y0);
+  drag = null;
+  if (w > 4 && h > 4) {
+    marks.regions.push({ shape, t: +v.currentTime.toFixed(3),
+      x: Math.round(x * sx()), y: Math.round(y * sy()), w: Math.round(w * sx()), h: Math.round(h * sy()) });
+  }
+  render();
+};
+
+function outline(r, color) {
+  g.strokeStyle = color; g.lineWidth = 2; g.beginPath();
+  if (r.shape === "ellipse") g.ellipse(r.x + r.w / 2, r.y + r.h / 2, r.w / 2, r.h / 2, 0, 0, 2 * Math.PI);
+  else g.rect(r.x, r.y, r.w, r.h);
+  g.stroke();
+}
+function draw() {
+  g.clearRect(0, 0, c.width, c.height);
+  marks.regions.forEach(r => outline({ shape: r.shape, x: r.x / sx(), y: r.y / sy(), w: r.w / sx(), h: r.h / sy() }, "#28c8ff"));
+  if (drag) outline({ shape, x: Math.min(drag.x0, drag.x1), y: Math.min(drag.y0, drag.y1),
+                      w: Math.abs(drag.x1 - drag.x0), h: Math.abs(drag.y1 - drag.y0) }, "#ff4040");
+}
+function item(text, onDelete, onJump) {
+  const li = document.createElement("li");
+  li.innerHTML = `<span class="t"></span>`; li.firstChild.textContent = text;
+  const jump = document.createElement("button"); jump.textContent = "移動"; jump.onclick = onJump;
+  const del = document.createElement("button"); del.textContent = "消す"; del.onclick = onDelete;
+  li.append(jump, del);
+  return li;
+}
+function render() {
+  const pins = document.getElementById("pins"), regions = document.getElementById("regions");
+  pins.replaceChildren(...marks.pins.map((p, i) => item(`${p.name}  ${fmt(p.t)}`,
+    () => { marks.pins.splice(i, 1); render(); }, () => { v.currentTime = p.t; })));
+  regions.replaceChildren(...marks.regions.map((r, i) => item(
+    `${r.shape === "ellipse" ? "丸" : "四角"}  ${fmt(r.t)}  x=${r.x} y=${r.y} w=${r.w} h=${r.h}`,
+    () => { marks.regions.splice(i, 1); render(); }, () => { v.currentTime = r.t; })));
+  draw();
+}
+
+document.getElementById("save").onclick = () => {
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([JSON.stringify(marks, null, 1)], { type: "application/json" }));
+  a.download = (marks.video || "video").replace(/\.[^.]+$/, "") + ".marks.json";
+  a.click();
+};
+</script>
+</body>
+</html>

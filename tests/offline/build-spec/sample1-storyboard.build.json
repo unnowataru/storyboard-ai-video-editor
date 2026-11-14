@@ -1,0 +1,8077 @@
+{
+ "timeline": {
+  "name": "sample1-digest",
+  "width": 1920,
+  "height": 1080,
+  "fps": 30.0,
+  "frames": 2700
+ },
+ "media": [
+  {
+   "path": "bench-4k.mp4",
+   "width": 3840,
+   "height": 2160,
+   "fps": 30.0,
+   "frames": 108000
+  }
+ ],
+ "clips": [
+  {
+   "start": 0,
+   "end": 120,
+   "media": 0,
+   "source_start": 60,
+   "source_end": 180,
+   "speed": 100.0,
+   "markers": [
+    {
+     "frame": 0,
+     "color": "Blue",
+     "name": "テスト用の画面 右下に格子の四角がある",
+     "note": "",
+     "duration": 1,
+     "custom": "row1"
+    }
+   ],
+   "fusion": {
+    "size": [
+     3840,
+     2160
+    ],
+    "tools": [
+     {
+      "name": "MediaIn1",
+      "id": "MediaIn",
+      "inputs": {},
+      "links": {}
+     },
+     {
+      "name": "MediaOut1",
+      "id": "MediaOut",
+      "inputs": {},
+      "links": {
+       "Input": {
+        "tool": "CaptionOver",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "Mask1",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.015625,
+        0.989815
+       ],
+       "Height": 0.02037,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "UseFrameFormatSettings": 1,
+       "Width": 0.03125
+      },
+      "links": {}
+     },
+     {
+      "name": "Mask1Mosaic",
+      "id": "ofx.com.blackmagicdesign.resolvefx.MosaicBlur",
+      "inputs": {
+       "PixelFrequency": 20.0
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "Mask1",
+        "output": "Mask"
+       },
+       "Source": {
+        "tool": "MediaIn1",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "FocusArea",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.75,
+        0.252778
+       ],
+       "Height": 0.244444,
+       "Invert": 1,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "SoftEdge": 0.00625,
+       "UseFrameFormatSettings": 1,
+       "Width": 0.25
+      },
+      "links": {}
+     },
+     {
+      "name": "FocusShade",
+      "id": "Background",
+      "inputs": {
+       "Height": 2160,
+       "TopLeftBlue": 0.0,
+       "TopLeftGreen": 0.0,
+       "TopLeftRed": 0.0,
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "FocusArea",
+        "output": "Mask"
+       },
+       "TopLeftAlpha": {
+        "keys": [
+         [
+          0,
+          0.0
+         ],
+         [
+          135,
+          0.5
+         ]
+        ]
+       }
+      }
+     },
+     {
+      "name": "FocusDim",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "Mask1Mosaic",
+        "output": "Output"
+       },
+       "Foreground": {
+        "tool": "FocusShade",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "FocusBorderOuter",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.75,
+        0.252778
+       ],
+       "CornerRadius": 0.081481,
+       "Height": 0.25,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "PaintMode": "Multiply",
+       "UseFrameFormatSettings": 1,
+       "Width": 0.253125
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "FocusBorderInner",
+        "output": "Mask"
+       }
+      }
+     },
+     {
+      "name": "FocusBorderInner",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.75,
+        0.252778
+       ],
+       "CornerRadius": 0.03876,
+       "Height": 0.238889,
+       "Invert": 1,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "UseFrameFormatSettings": 1,
+       "Width": 0.246875
+      },
+      "links": {}
+     },
+     {
+      "name": "FocusBorder",
+      "id": "Background",
+      "inputs": {
+       "Height": 2160,
+       "TopLeftAlpha": 1.0,
+       "TopLeftBlue": 0.188235,
+       "TopLeftGreen": 0.231373,
+       "TopLeftRed": 1.0,
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "FocusBorderOuter",
+        "output": "Mask"
+       }
+      }
+     },
+     {
+      "name": "FocusBorderOver",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "FocusDim",
+        "output": "Output"
+       },
+       "Blend": {
+        "keys": [
+         [
+          0,
+          0.0
+         ],
+         [
+          135,
+          1.0
+         ]
+        ]
+       },
+       "Foreground": {
+        "tool": "FocusBorder",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "Zoom",
+      "id": "Transform",
+      "inputs": {
+       "FilterMethod": 8
+      },
+      "links": {
+       "Center": {
+        "path": {
+         "X": [
+          [
+           0,
+           0.5
+          ],
+          [
+           45,
+           -0.205882
+          ]
+         ],
+         "Y": [
+          [
+           0,
+           0.5
+          ],
+          [
+           45,
+           1.156863
+          ]
+         ]
+        }
+       },
+       "Input": {
+        "tool": "FocusBorderOver",
+        "output": "Output"
+       },
+       "Size": {
+        "keys": [
+         [
+          0,
+          1.0
+         ],
+         [
+          45,
+          2.823529
+         ]
+        ]
+       }
+      }
+     },
+     {
+      "name": "CaptionBar",
+      "id": "Background",
+      "inputs": {
+       "Height": 2160,
+       "TopLeftAlpha": 0.862745,
+       "TopLeftBlue": 0.176471,
+       "TopLeftGreen": 0.078431,
+       "TopLeftRed": 0.039216,
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "CaptionBarMask",
+        "output": "Mask"
+       }
+      }
+     },
+     {
+      "name": "CaptionBarMask",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.5,
+        0.168519
+       ],
+       "Height": 0.237037,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "UseFrameFormatSettings": 1,
+       "Width": 1.0
+      },
+      "links": {}
+     },
+     {
+      "name": "CaptionBarOver",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "Zoom",
+        "output": "Output"
+       },
+       "Foreground": {
+        "tool": "CaptionBar",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "CaptionText",
+      "id": "TextPlus",
+      "inputs": {
+       "Blue1": 1.0,
+       "Center": [
+        0.5,
+        0.168519
+       ],
+       "Font": "Meiryo",
+       "Green1": 1.0,
+       "Height": 2160,
+       "Red1": 1.0,
+       "Size": 0.08,
+       "Style": "Bold",
+       "StyledText": "テスト用の画面\n右下に格子の四角がある",
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {}
+     },
+     {
+      "name": "CaptionOver",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "CaptionBarOver",
+        "output": "Output"
+       },
+       "Foreground": {
+        "tool": "CaptionText",
+        "output": "Output"
+       }
+      }
+     }
+    ]
+   }
+  },
+  {
+   "start": 120,
+   "end": 225,
+   "media": 0,
+   "source_start": 179,
+   "source_end": 179,
+   "speed": 0.0,
+   "markers": [],
+   "fusion": {
+    "size": [
+     3840,
+     2160
+    ],
+    "tools": [
+     {
+      "name": "MediaIn1",
+      "id": "MediaIn",
+      "inputs": {},
+      "links": {}
+     },
+     {
+      "name": "MediaOut1",
+      "id": "MediaOut",
+      "inputs": {},
+      "links": {
+       "Input": {
+        "tool": "CaptionOver",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "Mask1",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.015625,
+        0.989815
+       ],
+       "Height": 0.02037,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "UseFrameFormatSettings": 1,
+       "Width": 0.03125
+      },
+      "links": {}
+     },
+     {
+      "name": "Mask1Mosaic",
+      "id": "ofx.com.blackmagicdesign.resolvefx.MosaicBlur",
+      "inputs": {
+       "PixelFrequency": 20.0
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "Mask1",
+        "output": "Mask"
+       },
+       "Source": {
+        "tool": "MediaIn1",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "FocusArea",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.75,
+        0.252778
+       ],
+       "Height": 0.244444,
+       "Invert": 1,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "SoftEdge": 0.00625,
+       "UseFrameFormatSettings": 1,
+       "Width": 0.25
+      },
+      "links": {}
+     },
+     {
+      "name": "FocusShade",
+      "id": "Background",
+      "inputs": {
+       "Height": 2160,
+       "TopLeftBlue": 0.0,
+       "TopLeftGreen": 0.0,
+       "TopLeftRed": 0.0,
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "FocusArea",
+        "output": "Mask"
+       },
+       "TopLeftAlpha": {
+        "keys": [
+         [
+          0,
+          0.444444
+         ],
+         [
+          15,
+          0.5
+         ]
+        ]
+       }
+      }
+     },
+     {
+      "name": "FocusDim",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "Mask1Mosaic",
+        "output": "Output"
+       },
+       "Foreground": {
+        "tool": "FocusShade",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "FocusBorderOuter",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.75,
+        0.252778
+       ],
+       "CornerRadius": 0.081481,
+       "Height": 0.25,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "PaintMode": "Multiply",
+       "UseFrameFormatSettings": 1,
+       "Width": 0.253125
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "FocusBorderInner",
+        "output": "Mask"
+       }
+      }
+     },
+     {
+      "name": "FocusBorderInner",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.75,
+        0.252778
+       ],
+       "CornerRadius": 0.03876,
+       "Height": 0.238889,
+       "Invert": 1,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "UseFrameFormatSettings": 1,
+       "Width": 0.246875
+      },
+      "links": {}
+     },
+     {
+      "name": "FocusBorder",
+      "id": "Background",
+      "inputs": {
+       "Height": 2160,
+       "TopLeftAlpha": 1.0,
+       "TopLeftBlue": 0.188235,
+       "TopLeftGreen": 0.231373,
+       "TopLeftRed": 1.0,
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "FocusBorderOuter",
+        "output": "Mask"
+       }
+      }
+     },
+     {
+      "name": "FocusBorderOver",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "FocusDim",
+        "output": "Output"
+       },
+       "Blend": {
+        "keys": [
+         [
+          0,
+          0.888889
+         ],
+         [
+          15,
+          1.0
+         ]
+        ]
+       },
+       "Foreground": {
+        "tool": "FocusBorder",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "Zoom",
+      "id": "Transform",
+      "inputs": {
+       "FilterMethod": 8
+      },
+      "links": {
+       "Center": {
+        "path": {
+         "X": [
+          [
+           0,
+           -0.205882
+          ],
+          [
+           1,
+           -0.205882
+          ]
+         ],
+         "Y": [
+          [
+           0,
+           1.156863
+          ],
+          [
+           1,
+           1.156863
+          ]
+         ]
+        }
+       },
+       "Input": {
+        "tool": "FocusBorderOver",
+        "output": "Output"
+       },
+       "Size": {
+        "keys": [
+         [
+          0,
+          2.823529
+         ],
+         [
+          1,
+          2.823529
+         ]
+        ]
+       }
+      }
+     },
+     {
+      "name": "CaptionBar",
+      "id": "Background",
+      "inputs": {
+       "Height": 2160,
+       "TopLeftAlpha": 0.862745,
+       "TopLeftBlue": 0.176471,
+       "TopLeftGreen": 0.078431,
+       "TopLeftRed": 0.039216,
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "CaptionBarMask",
+        "output": "Mask"
+       }
+      }
+     },
+     {
+      "name": "CaptionBarMask",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.5,
+        0.168519
+       ],
+       "Height": 0.237037,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "UseFrameFormatSettings": 1,
+       "Width": 1.0
+      },
+      "links": {}
+     },
+     {
+      "name": "CaptionBarOver",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "Zoom",
+        "output": "Output"
+       },
+       "Foreground": {
+        "tool": "CaptionBar",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "CaptionText",
+      "id": "TextPlus",
+      "inputs": {
+       "Blue1": 1.0,
+       "Center": [
+        0.5,
+        0.168519
+       ],
+       "Font": "Meiryo",
+       "Green1": 1.0,
+       "Height": 2160,
+       "Red1": 1.0,
+       "Size": 0.08,
+       "Style": "Bold",
+       "StyledText": "テスト用の画面\n右下に格子の四角がある",
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {}
+     },
+     {
+      "name": "CaptionOver",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "CaptionBarOver",
+        "output": "Output"
+       },
+       "Foreground": {
+        "tool": "CaptionText",
+        "output": "Output"
+       }
+      }
+     }
+    ]
+   }
+  },
+  {
+   "start": 225,
+   "end": 375,
+   "media": 0,
+   "source_start": 1080,
+   "source_end": 1230,
+   "speed": 100.0,
+   "markers": [
+    {
+     "frame": 0,
+     "color": "Blue",
+     "name": "左の色の帯を 順に見ていく",
+     "note": "30秒後",
+     "duration": 1,
+     "custom": "row2"
+    }
+   ],
+   "fusion": {
+    "size": [
+     3840,
+     2160
+    ],
+    "tools": [
+     {
+      "name": "MediaIn1",
+      "id": "MediaIn",
+      "inputs": {},
+      "links": {}
+     },
+     {
+      "name": "MediaOut1",
+      "id": "MediaOut",
+      "inputs": {},
+      "links": {
+       "Input": {
+        "tool": "BadgeOver",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "FocusArea",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.40625,
+        0.509259
+       ],
+       "Height": 0.055556,
+       "Invert": 1,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "SoftEdge": 0.003125,
+       "UseFrameFormatSettings": 1,
+       "Width": 0.135417
+      },
+      "links": {}
+     },
+     {
+      "name": "FocusShade",
+      "id": "Background",
+      "inputs": {
+       "Height": 2160,
+       "TopLeftBlue": 0.0,
+       "TopLeftGreen": 0.0,
+       "TopLeftRed": 0.0,
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "FocusArea",
+        "output": "Mask"
+       },
+       "TopLeftAlpha": {
+        "keys": [
+         [
+          0,
+          0.0
+         ],
+         [
+          165,
+          0.75
+         ]
+        ]
+       }
+      }
+     },
+     {
+      "name": "FocusDim",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "MediaIn1",
+        "output": "Output"
+       },
+       "Foreground": {
+        "tool": "FocusShade",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "FocusBorderOuter",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.40625,
+        0.509259
+       ],
+       "CornerRadius": 0.333333,
+       "Height": 0.061111,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "PaintMode": "Multiply",
+       "UseFrameFormatSettings": 1,
+       "Width": 0.138542
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "FocusBorderInner",
+        "output": "Mask"
+       }
+      }
+     },
+     {
+      "name": "FocusBorderInner",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.40625,
+        0.509259
+       ],
+       "CornerRadius": 0.185185,
+       "Height": 0.05,
+       "Invert": 1,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "UseFrameFormatSettings": 1,
+       "Width": 0.132292
+      },
+      "links": {}
+     },
+     {
+      "name": "FocusBorder",
+      "id": "Background",
+      "inputs": {
+       "Height": 2160,
+       "TopLeftAlpha": 1.0,
+       "TopLeftBlue": 0.0,
+       "TopLeftGreen": 0.784314,
+       "TopLeftRed": 1.0,
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "FocusBorderOuter",
+        "output": "Mask"
+       }
+      }
+     },
+     {
+      "name": "FocusBorderOver",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "FocusDim",
+        "output": "Output"
+       },
+       "Blend": {
+        "keys": [
+         [
+          0,
+          0.0
+         ],
+         [
+          165,
+          1.0
+         ]
+        ]
+       },
+       "Foreground": {
+        "tool": "FocusBorder",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "Zoom",
+      "id": "Transform",
+      "inputs": {
+       "FilterMethod": 8
+      },
+      "links": {
+       "Center": {
+        "path": {
+         "X": [
+          [
+           0,
+           0.5
+          ],
+          [
+           30,
+           0.510544
+          ]
+         ],
+         "Y": [
+          [
+           0,
+           0.5
+          ],
+          [
+           30,
+           0.643861
+          ]
+         ]
+        }
+       },
+       "Input": {
+        "tool": "FocusBorderOver",
+        "output": "Output"
+       },
+       "Size": {
+        "keys": [
+         [
+          0,
+          1.0
+         ],
+         [
+          30,
+          2.024367
+         ]
+        ]
+       }
+      }
+     },
+     {
+      "name": "CalloutShadowMask",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.505208,
+        0.697037
+       ],
+       "Height": 0.105926,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "UseFrameFormatSettings": 1,
+       "Width": 0.270833
+      },
+      "links": {}
+     },
+     {
+      "name": "CalloutShadow",
+      "id": "Background",
+      "inputs": {
+       "Height": 2160,
+       "TopLeftAlpha": 0.54902,
+       "TopLeftBlue": 0.0,
+       "TopLeftGreen": 0.0,
+       "TopLeftRed": 0.0,
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "CalloutShadowMask",
+        "output": "Mask"
+       }
+      }
+     },
+     {
+      "name": "CalloutShadowBlur",
+      "id": "Blur",
+      "inputs": {
+       "XBlurSize": 12.0
+      },
+      "links": {
+       "Input": {
+        "tool": "CalloutShadow",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "CalloutShadowOver",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "Zoom",
+        "output": "Output"
+       },
+       "Blend": {
+        "keys": [
+         [
+          0,
+          0.0
+         ],
+         [
+          150,
+          0.0
+         ],
+         [
+          162,
+          1.0
+         ]
+        ]
+       },
+       "EffectMask": {
+        "tool": "CalloutShadowInner",
+        "output": "Mask"
+       },
+       "Foreground": {
+        "tool": "CalloutShadowBlur",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "CalloutShadowInner",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.5,
+        0.706296
+       ],
+       "Height": 0.105926,
+       "Invert": 1,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "UseFrameFormatSettings": 1,
+       "Width": 0.270833
+      },
+      "links": {}
+     },
+     {
+      "name": "CalloutFillMask",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.5,
+        0.706296
+       ],
+       "Height": 0.105926,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "UseFrameFormatSettings": 1,
+       "Width": 0.270833
+      },
+      "links": {}
+     },
+     {
+      "name": "CalloutFill",
+      "id": "Background",
+      "inputs": {
+       "Height": 2160,
+       "TopLeftAlpha": 1.0,
+       "TopLeftBlue": 0.0,
+       "TopLeftGreen": 0.0,
+       "TopLeftRed": 0.0,
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "CalloutFillMask",
+        "output": "Mask"
+       }
+      }
+     },
+     {
+      "name": "CalloutFillOver",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "CalloutShadowOver",
+        "output": "Output"
+       },
+       "Blend": {
+        "keys": [
+         [
+          0,
+          0.0
+         ],
+         [
+          150,
+          0.0
+         ],
+         [
+          162,
+          0.7
+         ]
+        ]
+       },
+       "Foreground": {
+        "tool": "CalloutFill",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "CalloutBorderOuter",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.5,
+        0.706296
+       ],
+       "Height": 0.111481,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "PaintMode": "Multiply",
+       "UseFrameFormatSettings": 1,
+       "Width": 0.273958
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "CalloutBorderInner",
+        "output": "Mask"
+       }
+      }
+     },
+     {
+      "name": "CalloutBorderInner",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.5,
+        0.706296
+       ],
+       "Height": 0.105926,
+       "Invert": 1,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "UseFrameFormatSettings": 1,
+       "Width": 0.270833
+      },
+      "links": {}
+     },
+     {
+      "name": "CalloutBorder",
+      "id": "Background",
+      "inputs": {
+       "Height": 2160,
+       "TopLeftAlpha": 1.0,
+       "TopLeftBlue": 1.0,
+       "TopLeftGreen": 1.0,
+       "TopLeftRed": 1.0,
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "CalloutBorderOuter",
+        "output": "Mask"
+       }
+      }
+     },
+     {
+      "name": "CalloutBorderOver",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "CalloutFillOver",
+        "output": "Output"
+       },
+       "Blend": {
+        "keys": [
+         [
+          0,
+          0.0
+         ],
+         [
+          150,
+          0.0
+         ],
+         [
+          162,
+          1.0
+         ]
+        ]
+       },
+       "Foreground": {
+        "tool": "CalloutBorder",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "CalloutCrop",
+      "id": "Crop",
+      "inputs": {
+       "XOffset": 1310.0,
+       "XSize": 500.0,
+       "YOffset": 1045.0,
+       "YSize": 110.0
+      },
+      "links": {
+       "Input": {
+        "tool": "MediaIn1",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "Callout",
+      "id": "Merge",
+      "inputs": {
+       "Center": [
+        0.5,
+        0.706296
+       ],
+       "Size": 2.08
+      },
+      "links": {
+       "Background": {
+        "tool": "CalloutBorderOver",
+        "output": "Output"
+       },
+       "Blend": {
+        "keys": [
+         [
+          0,
+          0.0
+         ],
+         [
+          150,
+          0.0
+         ],
+         [
+          162,
+          1.0
+         ]
+        ]
+       },
+       "Foreground": {
+        "tool": "CalloutCrop",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "CaptionBar",
+      "id": "Background",
+      "inputs": {
+       "Height": 2160,
+       "TopLeftAlpha": 0.862745,
+       "TopLeftBlue": 0.176471,
+       "TopLeftGreen": 0.078431,
+       "TopLeftRed": 0.039216,
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "CaptionBarMask",
+        "output": "Mask"
+       }
+      }
+     },
+     {
+      "name": "CaptionBarMask",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.5,
+        0.168519
+       ],
+       "Height": 0.237037,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "UseFrameFormatSettings": 1,
+       "Width": 1.0
+      },
+      "links": {}
+     },
+     {
+      "name": "CaptionBarOver",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "Callout",
+        "output": "Output"
+       },
+       "Foreground": {
+        "tool": "CaptionBar",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "CaptionText",
+      "id": "TextPlus",
+      "inputs": {
+       "Blue1": 1.0,
+       "Center": [
+        0.5,
+        0.168519
+       ],
+       "Font": "Meiryo",
+       "Green1": 1.0,
+       "Height": 2160,
+       "Red1": 1.0,
+       "Size": 0.08,
+       "Style": "Bold",
+       "StyledText": "左の色の帯を\n順に見ていく",
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {}
+     },
+     {
+      "name": "CaptionOver",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "CaptionBarOver",
+        "output": "Output"
+       },
+       "Foreground": {
+        "tool": "CaptionText",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "BadgeBox",
+      "id": "Background",
+      "inputs": {
+       "Height": 2160,
+       "TopLeftAlpha": 0.921569,
+       "TopLeftBlue": 0.078431,
+       "TopLeftGreen": 0.470588,
+       "TopLeftRed": 0.901961,
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "BadgeMask",
+        "output": "Mask"
+       }
+      }
+     },
+     {
+      "name": "BadgeMask",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.873125,
+        0.936204
+       ],
+       "CornerRadius": 0.3,
+       "Height": 0.067593,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "UseFrameFormatSettings": 1,
+       "Width": 0.22
+      },
+      "links": {}
+     },
+     {
+      "name": "BadgeText",
+      "id": "TextPlus",
+      "inputs": {
+       "Blue1": 1.0,
+       "Center": [
+        0.873125,
+        0.936204
+       ],
+       "Font": "Meiryo",
+       "Green1": 1.0,
+       "Height": 2160,
+       "Red1": 1.0,
+       "Size": 0.055,
+       "Style": "Bold",
+       "StyledText": "▶▶ 30秒後",
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {}
+     },
+     {
+      "name": "BadgeLabel",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "BadgeBox",
+        "output": "Output"
+       },
+       "Foreground": {
+        "tool": "BadgeText",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "BadgeOver",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "CaptionOver",
+        "output": "Output"
+       },
+       "Blend": {
+        "keys": [
+         [
+          0,
+          1.0
+         ],
+         [
+          59,
+          1.0
+         ],
+         [
+          60,
+          0.0
+         ]
+        ]
+       },
+       "Foreground": {
+        "tool": "BadgeLabel",
+        "output": "Output"
+       }
+      }
+     }
+    ]
+   }
+  },
+  {
+   "start": 375,
+   "end": 465,
+   "media": 0,
+   "source_start": 1229,
+   "source_end": 1229,
+   "speed": 0.0,
+   "markers": [],
+   "fusion": {
+    "size": [
+     3840,
+     2160
+    ],
+    "tools": [
+     {
+      "name": "MediaIn1",
+      "id": "MediaIn",
+      "inputs": {},
+      "links": {}
+     },
+     {
+      "name": "MediaOut1",
+      "id": "MediaOut",
+      "inputs": {},
+      "links": {
+       "Input": {
+        "tool": "CaptionOver",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "FocusArea",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.40625,
+        0.509259
+       ],
+       "Height": 0.055556,
+       "Invert": 1,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "SoftEdge": 0.003125,
+       "UseFrameFormatSettings": 1,
+       "Width": 0.135417
+      },
+      "links": {}
+     },
+     {
+      "name": "FocusShade",
+      "id": "Background",
+      "inputs": {
+       "Height": 2160,
+       "TopLeftBlue": 0.0,
+       "TopLeftGreen": 0.0,
+       "TopLeftRed": 0.0,
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "FocusArea",
+        "output": "Mask"
+       },
+       "TopLeftAlpha": {
+        "keys": [
+         [
+          0,
+          0.681818
+         ],
+         [
+          15,
+          0.75
+         ]
+        ]
+       }
+      }
+     },
+     {
+      "name": "FocusDim",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "MediaIn1",
+        "output": "Output"
+       },
+       "Foreground": {
+        "tool": "FocusShade",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "FocusBorderOuter",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.40625,
+        0.509259
+       ],
+       "CornerRadius": 0.333333,
+       "Height": 0.061111,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "PaintMode": "Multiply",
+       "UseFrameFormatSettings": 1,
+       "Width": 0.138542
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "FocusBorderInner",
+        "output": "Mask"
+       }
+      }
+     },
+     {
+      "name": "FocusBorderInner",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.40625,
+        0.509259
+       ],
+       "CornerRadius": 0.185185,
+       "Height": 0.05,
+       "Invert": 1,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "UseFrameFormatSettings": 1,
+       "Width": 0.132292
+      },
+      "links": {}
+     },
+     {
+      "name": "FocusBorder",
+      "id": "Background",
+      "inputs": {
+       "Height": 2160,
+       "TopLeftAlpha": 1.0,
+       "TopLeftBlue": 0.0,
+       "TopLeftGreen": 0.784314,
+       "TopLeftRed": 1.0,
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "FocusBorderOuter",
+        "output": "Mask"
+       }
+      }
+     },
+     {
+      "name": "FocusBorderOver",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "FocusDim",
+        "output": "Output"
+       },
+       "Blend": {
+        "keys": [
+         [
+          0,
+          0.909091
+         ],
+         [
+          15,
+          1.0
+         ]
+        ]
+       },
+       "Foreground": {
+        "tool": "FocusBorder",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "Zoom",
+      "id": "Transform",
+      "inputs": {
+       "FilterMethod": 8
+      },
+      "links": {
+       "Center": {
+        "path": {
+         "X": [
+          [
+           0,
+           0.510544
+          ],
+          [
+           1,
+           0.510544
+          ]
+         ],
+         "Y": [
+          [
+           0,
+           0.643861
+          ],
+          [
+           1,
+           0.643861
+          ]
+         ]
+        }
+       },
+       "Input": {
+        "tool": "FocusBorderOver",
+        "output": "Output"
+       },
+       "Size": {
+        "keys": [
+         [
+          0,
+          2.024367
+         ],
+         [
+          1,
+          2.024367
+         ]
+        ]
+       }
+      }
+     },
+     {
+      "name": "CalloutShadowMask",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.505208,
+        0.697037
+       ],
+       "Height": 0.105926,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "UseFrameFormatSettings": 1,
+       "Width": 0.270833
+      },
+      "links": {}
+     },
+     {
+      "name": "CalloutShadow",
+      "id": "Background",
+      "inputs": {
+       "Height": 2160,
+       "TopLeftAlpha": 0.54902,
+       "TopLeftBlue": 0.0,
+       "TopLeftGreen": 0.0,
+       "TopLeftRed": 0.0,
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "CalloutShadowMask",
+        "output": "Mask"
+       }
+      }
+     },
+     {
+      "name": "CalloutShadowBlur",
+      "id": "Blur",
+      "inputs": {
+       "XBlurSize": 12.0
+      },
+      "links": {
+       "Input": {
+        "tool": "CalloutShadow",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "CalloutShadowOver",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "Zoom",
+        "output": "Output"
+       },
+       "Blend": {
+        "keys": [
+         [
+          0,
+          0.0
+         ],
+         [
+          12,
+          1.0
+         ]
+        ]
+       },
+       "EffectMask": {
+        "tool": "CalloutShadowInner",
+        "output": "Mask"
+       },
+       "Foreground": {
+        "tool": "CalloutShadowBlur",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "CalloutShadowInner",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.5,
+        0.706296
+       ],
+       "Height": 0.105926,
+       "Invert": 1,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "UseFrameFormatSettings": 1,
+       "Width": 0.270833
+      },
+      "links": {}
+     },
+     {
+      "name": "CalloutFillMask",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.5,
+        0.706296
+       ],
+       "Height": 0.105926,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "UseFrameFormatSettings": 1,
+       "Width": 0.270833
+      },
+      "links": {}
+     },
+     {
+      "name": "CalloutFill",
+      "id": "Background",
+      "inputs": {
+       "Height": 2160,
+       "TopLeftAlpha": 1.0,
+       "TopLeftBlue": 0.0,
+       "TopLeftGreen": 0.0,
+       "TopLeftRed": 0.0,
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "CalloutFillMask",
+        "output": "Mask"
+       }
+      }
+     },
+     {
+      "name": "CalloutFillOver",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "CalloutShadowOver",
+        "output": "Output"
+       },
+       "Blend": {
+        "keys": [
+         [
+          0,
+          0.0
+         ],
+         [
+          12,
+          0.7
+         ]
+        ]
+       },
+       "Foreground": {
+        "tool": "CalloutFill",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "CalloutBorderOuter",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.5,
+        0.706296
+       ],
+       "Height": 0.111481,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "PaintMode": "Multiply",
+       "UseFrameFormatSettings": 1,
+       "Width": 0.273958
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "CalloutBorderInner",
+        "output": "Mask"
+       }
+      }
+     },
+     {
+      "name": "CalloutBorderInner",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.5,
+        0.706296
+       ],
+       "Height": 0.105926,
+       "Invert": 1,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "UseFrameFormatSettings": 1,
+       "Width": 0.270833
+      },
+      "links": {}
+     },
+     {
+      "name": "CalloutBorder",
+      "id": "Background",
+      "inputs": {
+       "Height": 2160,
+       "TopLeftAlpha": 1.0,
+       "TopLeftBlue": 1.0,
+       "TopLeftGreen": 1.0,
+       "TopLeftRed": 1.0,
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "CalloutBorderOuter",
+        "output": "Mask"
+       }
+      }
+     },
+     {
+      "name": "CalloutBorderOver",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "CalloutFillOver",
+        "output": "Output"
+       },
+       "Blend": {
+        "keys": [
+         [
+          0,
+          0.0
+         ],
+         [
+          12,
+          1.0
+         ]
+        ]
+       },
+       "Foreground": {
+        "tool": "CalloutBorder",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "CalloutCrop",
+      "id": "Crop",
+      "inputs": {
+       "XOffset": 1310.0,
+       "XSize": 500.0,
+       "YOffset": 1045.0,
+       "YSize": 110.0
+      },
+      "links": {
+       "Input": {
+        "tool": "MediaIn1",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "Callout",
+      "id": "Merge",
+      "inputs": {
+       "Center": [
+        0.5,
+        0.706296
+       ],
+       "Size": 2.08
+      },
+      "links": {
+       "Background": {
+        "tool": "CalloutBorderOver",
+        "output": "Output"
+       },
+       "Blend": {
+        "keys": [
+         [
+          0,
+          0.0
+         ],
+         [
+          12,
+          1.0
+         ]
+        ]
+       },
+       "Foreground": {
+        "tool": "CalloutCrop",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "CaptionBar",
+      "id": "Background",
+      "inputs": {
+       "Height": 2160,
+       "TopLeftAlpha": 0.862745,
+       "TopLeftBlue": 0.176471,
+       "TopLeftGreen": 0.078431,
+       "TopLeftRed": 0.039216,
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "CaptionBarMask",
+        "output": "Mask"
+       }
+      }
+     },
+     {
+      "name": "CaptionBarMask",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.5,
+        0.168519
+       ],
+       "Height": 0.237037,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "UseFrameFormatSettings": 1,
+       "Width": 1.0
+      },
+      "links": {}
+     },
+     {
+      "name": "CaptionBarOver",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "Callout",
+        "output": "Output"
+       },
+       "Foreground": {
+        "tool": "CaptionBar",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "CaptionText",
+      "id": "TextPlus",
+      "inputs": {
+       "Blue1": 1.0,
+       "Center": [
+        0.5,
+        0.168519
+       ],
+       "Font": "Meiryo",
+       "Green1": 1.0,
+       "Height": 2160,
+       "Red1": 1.0,
+       "Size": 0.08,
+       "Style": "Bold",
+       "StyledText": "左の色の帯を\n順に見ていく",
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {}
+     },
+     {
+      "name": "CaptionOver",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "CaptionBarOver",
+        "output": "Output"
+       },
+       "Foreground": {
+        "tool": "CaptionText",
+        "output": "Output"
+       }
+      }
+     }
+    ]
+   }
+  },
+  {
+   "start": 465,
+   "end": 555,
+   "media": 0,
+   "source_start": 1230,
+   "source_end": 3030,
+   "speed": 2000.0,
+   "markers": [
+    {
+     "frame": 0,
+     "color": "Blue",
+     "name": "時刻の表示が進む",
+     "note": "20倍速",
+     "duration": 1,
+     "custom": "row3"
+    }
+   ],
+   "fusion": {
+    "size": [
+     3840,
+     2160
+    ],
+    "tools": [
+     {
+      "name": "MediaIn1",
+      "id": "MediaIn",
+      "inputs": {},
+      "links": {}
+     },
+     {
+      "name": "MediaOut1",
+      "id": "MediaOut",
+      "inputs": {},
+      "links": {
+       "Input": {
+        "tool": "BadgeOver",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "CaptionBar",
+      "id": "Background",
+      "inputs": {
+       "Height": 2160,
+       "TopLeftAlpha": 0.862745,
+       "TopLeftBlue": 0.176471,
+       "TopLeftGreen": 0.078431,
+       "TopLeftRed": 0.039216,
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "CaptionBarMask",
+        "output": "Mask"
+       }
+      }
+     },
+     {
+      "name": "CaptionBarMask",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.5,
+        0.112037
+       ],
+       "Height": 0.124074,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "UseFrameFormatSettings": 1,
+       "Width": 1.0
+      },
+      "links": {}
+     },
+     {
+      "name": "CaptionBarOver",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "MediaIn1",
+        "output": "Output"
+       },
+       "Foreground": {
+        "tool": "CaptionBar",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "CaptionText",
+      "id": "TextPlus",
+      "inputs": {
+       "Blue1": 1.0,
+       "Center": [
+        0.5,
+        0.112037
+       ],
+       "Font": "Meiryo",
+       "Green1": 1.0,
+       "Height": 2160,
+       "Red1": 1.0,
+       "Size": 0.08,
+       "Style": "Bold",
+       "StyledText": "時刻の表示が進む",
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {}
+     },
+     {
+      "name": "CaptionOver",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "CaptionBarOver",
+        "output": "Output"
+       },
+       "Foreground": {
+        "tool": "CaptionText",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "BadgeBox",
+      "id": "Background",
+      "inputs": {
+       "Height": 2160,
+       "TopLeftAlpha": 0.921569,
+       "TopLeftBlue": 0.078431,
+       "TopLeftGreen": 0.470588,
+       "TopLeftRed": 0.901961,
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "BadgeMask",
+        "output": "Mask"
+       }
+      }
+     },
+     {
+      "name": "BadgeMask",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.873125,
+        0.936204
+       ],
+       "CornerRadius": 0.3,
+       "Height": 0.067593,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "UseFrameFormatSettings": 1,
+       "Width": 0.22
+      },
+      "links": {}
+     },
+     {
+      "name": "BadgeText",
+      "id": "TextPlus",
+      "inputs": {
+       "Blue1": 1.0,
+       "Center": [
+        0.873125,
+        0.936204
+       ],
+       "Font": "Meiryo",
+       "Green1": 1.0,
+       "Height": 2160,
+       "Red1": 1.0,
+       "Size": 0.055,
+       "Style": "Bold",
+       "StyledText": "▶▶ 20倍速",
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {}
+     },
+     {
+      "name": "BadgeLabel",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "BadgeBox",
+        "output": "Output"
+       },
+       "Foreground": {
+        "tool": "BadgeText",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "BadgeOver",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "CaptionOver",
+        "output": "Output"
+       },
+       "Blend": {
+        "keys": [
+         [
+          0,
+          1.0
+         ],
+         [
+          1199,
+          1.0
+         ],
+         [
+          1200,
+          0.0
+         ]
+        ]
+       },
+       "Foreground": {
+        "tool": "BadgeLabel",
+        "output": "Output"
+       }
+      }
+     }
+    ]
+   }
+  },
+  {
+   "start": 555,
+   "end": 795,
+   "media": 0,
+   "source_start": 3030,
+   "source_end": 3270,
+   "speed": 100.0,
+   "markers": [
+    {
+     "frame": 0,
+     "color": "Blue",
+     "name": "色の帯を 3 本ずつ見比べる",
+     "note": "",
+     "duration": 1,
+     "custom": "row4"
+    }
+   ],
+   "fusion": {
+    "size": [
+     3840,
+     2160
+    ],
+    "tools": [
+     {
+      "name": "MediaIn1",
+      "id": "MediaIn",
+      "inputs": {},
+      "links": {}
+     },
+     {
+      "name": "MediaOut1",
+      "id": "MediaOut",
+      "inputs": {},
+      "links": {
+       "Input": {
+        "tool": "CaptionOver",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "FocusArea",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.5,
+        0.763889
+       ],
+       "Height": 0.101852,
+       "Invert": 1,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "SoftEdge": 0.00625,
+       "UseFrameFormatSettings": 1,
+       "Width": 0.666667
+      },
+      "links": {}
+     },
+     {
+      "name": "FocusShade",
+      "id": "Background",
+      "inputs": {
+       "Height": 2160,
+       "TopLeftBlue": 0.0,
+       "TopLeftGreen": 0.0,
+       "TopLeftRed": 0.0,
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "FocusArea",
+        "output": "Mask"
+       },
+       "TopLeftAlpha": {
+        "keys": [
+         [
+          0,
+          0.0
+         ],
+         [
+          255,
+          0.75
+         ]
+        ]
+       }
+      }
+     },
+     {
+      "name": "FocusDim",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "MediaIn1",
+        "output": "Output"
+       },
+       "Foreground": {
+        "tool": "FocusShade",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "FocusBorderOuter",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.5,
+        0.763889
+       ],
+       "CornerRadius": 0.189655,
+       "Height": 0.107407,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "PaintMode": "Multiply",
+       "UseFrameFormatSettings": 1,
+       "Width": 0.669792
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "FocusBorderInner",
+        "output": "Mask"
+       }
+      }
+     },
+     {
+      "name": "FocusBorderInner",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.5,
+        0.763889
+       ],
+       "CornerRadius": 0.096154,
+       "Height": 0.096296,
+       "Invert": 1,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "UseFrameFormatSettings": 1,
+       "Width": 0.663542
+      },
+      "links": {}
+     },
+     {
+      "name": "FocusBorder",
+      "id": "Background",
+      "inputs": {
+       "Height": 2160,
+       "TopLeftAlpha": 1.0,
+       "TopLeftBlue": 0.0,
+       "TopLeftGreen": 0.784314,
+       "TopLeftRed": 1.0,
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "FocusBorderOuter",
+        "output": "Mask"
+       }
+      }
+     },
+     {
+      "name": "FocusBorderOver",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "FocusDim",
+        "output": "Output"
+       },
+       "Blend": {
+        "keys": [
+         [
+          0,
+          0.0
+         ],
+         [
+          255,
+          1.0
+         ]
+        ]
+       },
+       "Foreground": {
+        "tool": "FocusBorder",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "Zoom",
+      "id": "Transform",
+      "inputs": {
+       "FilterMethod": 8
+      },
+      "links": {
+       "Center": {
+        "path": {
+         "X": [
+          [
+           0,
+           0.5
+          ],
+          [
+           45,
+           0.5
+          ]
+         ],
+         "Y": [
+          [
+           0,
+           0.5
+          ],
+          [
+           45,
+           0.516527
+          ]
+         ]
+        }
+       },
+       "Input": {
+        "tool": "FocusBorderOver",
+        "output": "Output"
+       },
+       "Size": {
+        "keys": [
+         [
+          0,
+          1.0
+         ],
+         [
+          45,
+          1.065614
+         ]
+        ]
+       }
+      }
+     },
+     {
+      "name": "CalloutShadowMask",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.505208,
+        0.460417
+       ],
+       "Height": 0.319907,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "UseFrameFormatSettings": 1,
+       "Width": 0.625
+      },
+      "links": {}
+     },
+     {
+      "name": "CalloutShadow",
+      "id": "Background",
+      "inputs": {
+       "Height": 2160,
+       "TopLeftAlpha": 0.54902,
+       "TopLeftBlue": 0.0,
+       "TopLeftGreen": 0.0,
+       "TopLeftRed": 0.0,
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "CalloutShadowMask",
+        "output": "Mask"
+       }
+      }
+     },
+     {
+      "name": "CalloutShadowBlur",
+      "id": "Blur",
+      "inputs": {
+       "XBlurSize": 12.0
+      },
+      "links": {
+       "Input": {
+        "tool": "CalloutShadow",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "CalloutShadowOver",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "Zoom",
+        "output": "Output"
+       },
+       "Blend": {
+        "keys": [
+         [
+          0,
+          0.0
+         ],
+         [
+          240,
+          0.0
+         ],
+         [
+          252,
+          1.0
+         ]
+        ]
+       },
+       "EffectMask": {
+        "tool": "CalloutShadowInner",
+        "output": "Mask"
+       },
+       "Foreground": {
+        "tool": "CalloutShadowBlur",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "CalloutShadowInner",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.5,
+        0.469676
+       ],
+       "Height": 0.319907,
+       "Invert": 1,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "UseFrameFormatSettings": 1,
+       "Width": 0.625
+      },
+      "links": {}
+     },
+     {
+      "name": "CalloutFillMask",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.5,
+        0.469676
+       ],
+       "Height": 0.319907,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "UseFrameFormatSettings": 1,
+       "Width": 0.625
+      },
+      "links": {}
+     },
+     {
+      "name": "CalloutFill",
+      "id": "Background",
+      "inputs": {
+       "Height": 2160,
+       "TopLeftAlpha": 1.0,
+       "TopLeftBlue": 0.0,
+       "TopLeftGreen": 0.0,
+       "TopLeftRed": 0.0,
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "CalloutFillMask",
+        "output": "Mask"
+       }
+      }
+     },
+     {
+      "name": "CalloutFillOver",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "CalloutShadowOver",
+        "output": "Output"
+       },
+       "Blend": {
+        "keys": [
+         [
+          0,
+          0.0
+         ],
+         [
+          240,
+          0.0
+         ],
+         [
+          252,
+          0.7
+         ]
+        ]
+       },
+       "Foreground": {
+        "tool": "CalloutFill",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "CalloutBorderOuter",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.5,
+        0.469676
+       ],
+       "Height": 0.325463,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "PaintMode": "Multiply",
+       "UseFrameFormatSettings": 1,
+       "Width": 0.628125
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "CalloutBorderInner",
+        "output": "Mask"
+       }
+      }
+     },
+     {
+      "name": "CalloutBorderInner",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.5,
+        0.469676
+       ],
+       "Height": 0.319907,
+       "Invert": 1,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "UseFrameFormatSettings": 1,
+       "Width": 0.625
+      },
+      "links": {}
+     },
+     {
+      "name": "CalloutBorder",
+      "id": "Background",
+      "inputs": {
+       "Height": 2160,
+       "TopLeftAlpha": 1.0,
+       "TopLeftBlue": 1.0,
+       "TopLeftGreen": 1.0,
+       "TopLeftRed": 1.0,
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "CalloutBorderOuter",
+        "output": "Mask"
+       }
+      }
+     },
+     {
+      "name": "CalloutBorderOver",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "CalloutFillOver",
+        "output": "Output"
+       },
+       "Blend": {
+        "keys": [
+         [
+          0,
+          0.0
+         ],
+         [
+          240,
+          0.0
+         ],
+         [
+          252,
+          1.0
+         ]
+        ]
+       },
+       "Foreground": {
+        "tool": "CalloutBorder",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "CalloutCrop",
+      "id": "Crop",
+      "inputs": {
+       "XOffset": 650.0,
+       "XSize": 600.0,
+       "YOffset": 1690.0,
+       "YSize": 60.0
+      },
+      "links": {
+       "Input": {
+        "tool": "MediaIn1",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "Callout",
+      "id": "Merge",
+      "inputs": {
+       "Center": [
+        0.480469,
+        0.577546
+       ],
+       "Size": 3.75
+      },
+      "links": {
+       "Background": {
+        "tool": "CalloutBorderOver",
+        "output": "Output"
+       },
+       "Blend": {
+        "keys": [
+         [
+          0,
+          0.0
+         ],
+         [
+          240,
+          0.0
+         ],
+         [
+          252,
+          1.0
+         ]
+        ]
+       },
+       "Foreground": {
+        "tool": "CalloutCrop",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "CalloutCrop2",
+      "id": "Crop",
+      "inputs": {
+       "XOffset": 1300.0,
+       "XSize": 560.0,
+       "YOffset": 1690.0,
+       "YSize": 60.0
+      },
+      "links": {
+       "Input": {
+        "tool": "MediaIn1",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "Callout2",
+      "id": "Merge",
+      "inputs": {
+       "Center": [
+        0.460938,
+        0.469676
+       ],
+       "Size": 3.75
+      },
+      "links": {
+       "Background": {
+        "tool": "Callout",
+        "output": "Output"
+       },
+       "Blend": {
+        "keys": [
+         [
+          0,
+          0.0
+         ],
+         [
+          240,
+          0.0
+         ],
+         [
+          252,
+          1.0
+         ]
+        ]
+       },
+       "Foreground": {
+        "tool": "CalloutCrop2",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "CalloutCrop3",
+      "id": "Crop",
+      "inputs": {
+       "XOffset": 2500.0,
+       "XSize": 640.0,
+       "YOffset": 1560.0,
+       "YSize": 60.0
+      },
+      "links": {
+       "Input": {
+        "tool": "MediaIn1",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "Callout3",
+      "id": "Merge",
+      "inputs": {
+       "Center": [
+        0.5,
+        0.361806
+       ],
+       "Size": 3.75
+      },
+      "links": {
+       "Background": {
+        "tool": "Callout2",
+        "output": "Output"
+       },
+       "Blend": {
+        "keys": [
+         [
+          0,
+          0.0
+         ],
+         [
+          240,
+          0.0
+         ],
+         [
+          252,
+          1.0
+         ]
+        ]
+       },
+       "Foreground": {
+        "tool": "CalloutCrop3",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "CaptionBar",
+      "id": "Background",
+      "inputs": {
+       "Height": 2160,
+       "TopLeftAlpha": 0.862745,
+       "TopLeftBlue": 0.176471,
+       "TopLeftGreen": 0.078431,
+       "TopLeftRed": 0.039216,
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "CaptionBarMask",
+        "output": "Mask"
+       }
+      }
+     },
+     {
+      "name": "CaptionBarMask",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.5,
+        0.168519
+       ],
+       "Height": 0.237037,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "UseFrameFormatSettings": 1,
+       "Width": 1.0
+      },
+      "links": {}
+     },
+     {
+      "name": "CaptionBarOver",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "Callout3",
+        "output": "Output"
+       },
+       "Foreground": {
+        "tool": "CaptionBar",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "CaptionText",
+      "id": "TextPlus",
+      "inputs": {
+       "Blue1": 1.0,
+       "Center": [
+        0.5,
+        0.168519
+       ],
+       "Font": "Meiryo",
+       "Green1": 1.0,
+       "Height": 2160,
+       "Red1": 1.0,
+       "Size": 0.08,
+       "Style": "Bold",
+       "StyledText": "色の帯を\n3 本ずつ見比べる",
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {}
+     },
+     {
+      "name": "CaptionOver",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "CaptionBarOver",
+        "output": "Output"
+       },
+       "Foreground": {
+        "tool": "CaptionText",
+        "output": "Output"
+       }
+      }
+     }
+    ]
+   }
+  },
+  {
+   "start": 795,
+   "end": 915,
+   "media": 0,
+   "source_start": 3269,
+   "source_end": 3269,
+   "speed": 0.0,
+   "markers": [],
+   "fusion": {
+    "size": [
+     3840,
+     2160
+    ],
+    "tools": [
+     {
+      "name": "MediaIn1",
+      "id": "MediaIn",
+      "inputs": {},
+      "links": {}
+     },
+     {
+      "name": "MediaOut1",
+      "id": "MediaOut",
+      "inputs": {},
+      "links": {
+       "Input": {
+        "tool": "CaptionOver",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "FocusArea",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.5,
+        0.763889
+       ],
+       "Height": 0.101852,
+       "Invert": 1,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "SoftEdge": 0.00625,
+       "UseFrameFormatSettings": 1,
+       "Width": 0.666667
+      },
+      "links": {}
+     },
+     {
+      "name": "FocusShade",
+      "id": "Background",
+      "inputs": {
+       "Height": 2160,
+       "TopLeftBlue": 0.0,
+       "TopLeftGreen": 0.0,
+       "TopLeftRed": 0.0,
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "FocusArea",
+        "output": "Mask"
+       },
+       "TopLeftAlpha": {
+        "keys": [
+         [
+          0,
+          0.705882
+         ],
+         [
+          15,
+          0.75
+         ]
+        ]
+       }
+      }
+     },
+     {
+      "name": "FocusDim",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "MediaIn1",
+        "output": "Output"
+       },
+       "Foreground": {
+        "tool": "FocusShade",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "FocusBorderOuter",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.5,
+        0.763889
+       ],
+       "CornerRadius": 0.189655,
+       "Height": 0.107407,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "PaintMode": "Multiply",
+       "UseFrameFormatSettings": 1,
+       "Width": 0.669792
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "FocusBorderInner",
+        "output": "Mask"
+       }
+      }
+     },
+     {
+      "name": "FocusBorderInner",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.5,
+        0.763889
+       ],
+       "CornerRadius": 0.096154,
+       "Height": 0.096296,
+       "Invert": 1,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "UseFrameFormatSettings": 1,
+       "Width": 0.663542
+      },
+      "links": {}
+     },
+     {
+      "name": "FocusBorder",
+      "id": "Background",
+      "inputs": {
+       "Height": 2160,
+       "TopLeftAlpha": 1.0,
+       "TopLeftBlue": 0.0,
+       "TopLeftGreen": 0.784314,
+       "TopLeftRed": 1.0,
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "FocusBorderOuter",
+        "output": "Mask"
+       }
+      }
+     },
+     {
+      "name": "FocusBorderOver",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "FocusDim",
+        "output": "Output"
+       },
+       "Blend": {
+        "keys": [
+         [
+          0,
+          0.941176
+         ],
+         [
+          15,
+          1.0
+         ]
+        ]
+       },
+       "Foreground": {
+        "tool": "FocusBorder",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "Zoom",
+      "id": "Transform",
+      "inputs": {
+       "FilterMethod": 8
+      },
+      "links": {
+       "Center": {
+        "path": {
+         "X": [
+          [
+           0,
+           0.5
+          ],
+          [
+           1,
+           0.5
+          ]
+         ],
+         "Y": [
+          [
+           0,
+           0.516527
+          ],
+          [
+           1,
+           0.516527
+          ]
+         ]
+        }
+       },
+       "Input": {
+        "tool": "FocusBorderOver",
+        "output": "Output"
+       },
+       "Size": {
+        "keys": [
+         [
+          0,
+          1.065614
+         ],
+         [
+          1,
+          1.065614
+         ]
+        ]
+       }
+      }
+     },
+     {
+      "name": "CalloutShadowMask",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.505208,
+        0.460417
+       ],
+       "Height": 0.319907,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "UseFrameFormatSettings": 1,
+       "Width": 0.625
+      },
+      "links": {}
+     },
+     {
+      "name": "CalloutShadow",
+      "id": "Background",
+      "inputs": {
+       "Height": 2160,
+       "TopLeftAlpha": 0.54902,
+       "TopLeftBlue": 0.0,
+       "TopLeftGreen": 0.0,
+       "TopLeftRed": 0.0,
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "CalloutShadowMask",
+        "output": "Mask"
+       }
+      }
+     },
+     {
+      "name": "CalloutShadowBlur",
+      "id": "Blur",
+      "inputs": {
+       "XBlurSize": 12.0
+      },
+      "links": {
+       "Input": {
+        "tool": "CalloutShadow",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "CalloutShadowOver",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "Zoom",
+        "output": "Output"
+       },
+       "Blend": {
+        "keys": [
+         [
+          0,
+          0.0
+         ],
+         [
+          12,
+          1.0
+         ]
+        ]
+       },
+       "EffectMask": {
+        "tool": "CalloutShadowInner",
+        "output": "Mask"
+       },
+       "Foreground": {
+        "tool": "CalloutShadowBlur",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "CalloutShadowInner",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.5,
+        0.469676
+       ],
+       "Height": 0.319907,
+       "Invert": 1,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "UseFrameFormatSettings": 1,
+       "Width": 0.625
+      },
+      "links": {}
+     },
+     {
+      "name": "CalloutFillMask",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.5,
+        0.469676
+       ],
+       "Height": 0.319907,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "UseFrameFormatSettings": 1,
+       "Width": 0.625
+      },
+      "links": {}
+     },
+     {
+      "name": "CalloutFill",
+      "id": "Background",
+      "inputs": {
+       "Height": 2160,
+       "TopLeftAlpha": 1.0,
+       "TopLeftBlue": 0.0,
+       "TopLeftGreen": 0.0,
+       "TopLeftRed": 0.0,
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "CalloutFillMask",
+        "output": "Mask"
+       }
+      }
+     },
+     {
+      "name": "CalloutFillOver",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "CalloutShadowOver",
+        "output": "Output"
+       },
+       "Blend": {
+        "keys": [
+         [
+          0,
+          0.0
+         ],
+         [
+          12,
+          0.7
+         ]
+        ]
+       },
+       "Foreground": {
+        "tool": "CalloutFill",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "CalloutBorderOuter",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.5,
+        0.469676
+       ],
+       "Height": 0.325463,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "PaintMode": "Multiply",
+       "UseFrameFormatSettings": 1,
+       "Width": 0.628125
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "CalloutBorderInner",
+        "output": "Mask"
+       }
+      }
+     },
+     {
+      "name": "CalloutBorderInner",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.5,
+        0.469676
+       ],
+       "Height": 0.319907,
+       "Invert": 1,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "UseFrameFormatSettings": 1,
+       "Width": 0.625
+      },
+      "links": {}
+     },
+     {
+      "name": "CalloutBorder",
+      "id": "Background",
+      "inputs": {
+       "Height": 2160,
+       "TopLeftAlpha": 1.0,
+       "TopLeftBlue": 1.0,
+       "TopLeftGreen": 1.0,
+       "TopLeftRed": 1.0,
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "CalloutBorderOuter",
+        "output": "Mask"
+       }
+      }
+     },
+     {
+      "name": "CalloutBorderOver",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "CalloutFillOver",
+        "output": "Output"
+       },
+       "Blend": {
+        "keys": [
+         [
+          0,
+          0.0
+         ],
+         [
+          12,
+          1.0
+         ]
+        ]
+       },
+       "Foreground": {
+        "tool": "CalloutBorder",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "CalloutCrop",
+      "id": "Crop",
+      "inputs": {
+       "XOffset": 650.0,
+       "XSize": 600.0,
+       "YOffset": 1690.0,
+       "YSize": 60.0
+      },
+      "links": {
+       "Input": {
+        "tool": "MediaIn1",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "Callout",
+      "id": "Merge",
+      "inputs": {
+       "Center": [
+        0.480469,
+        0.577546
+       ],
+       "Size": 3.75
+      },
+      "links": {
+       "Background": {
+        "tool": "CalloutBorderOver",
+        "output": "Output"
+       },
+       "Blend": {
+        "keys": [
+         [
+          0,
+          0.0
+         ],
+         [
+          12,
+          1.0
+         ]
+        ]
+       },
+       "Foreground": {
+        "tool": "CalloutCrop",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "CalloutCrop2",
+      "id": "Crop",
+      "inputs": {
+       "XOffset": 1300.0,
+       "XSize": 560.0,
+       "YOffset": 1690.0,
+       "YSize": 60.0
+      },
+      "links": {
+       "Input": {
+        "tool": "MediaIn1",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "Callout2",
+      "id": "Merge",
+      "inputs": {
+       "Center": [
+        0.460938,
+        0.469676
+       ],
+       "Size": 3.75
+      },
+      "links": {
+       "Background": {
+        "tool": "Callout",
+        "output": "Output"
+       },
+       "Blend": {
+        "keys": [
+         [
+          0,
+          0.0
+         ],
+         [
+          12,
+          1.0
+         ]
+        ]
+       },
+       "Foreground": {
+        "tool": "CalloutCrop2",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "CalloutCrop3",
+      "id": "Crop",
+      "inputs": {
+       "XOffset": 2500.0,
+       "XSize": 640.0,
+       "YOffset": 1560.0,
+       "YSize": 60.0
+      },
+      "links": {
+       "Input": {
+        "tool": "MediaIn1",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "Callout3",
+      "id": "Merge",
+      "inputs": {
+       "Center": [
+        0.5,
+        0.361806
+       ],
+       "Size": 3.75
+      },
+      "links": {
+       "Background": {
+        "tool": "Callout2",
+        "output": "Output"
+       },
+       "Blend": {
+        "keys": [
+         [
+          0,
+          0.0
+         ],
+         [
+          12,
+          1.0
+         ]
+        ]
+       },
+       "Foreground": {
+        "tool": "CalloutCrop3",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "CaptionBar",
+      "id": "Background",
+      "inputs": {
+       "Height": 2160,
+       "TopLeftAlpha": 0.862745,
+       "TopLeftBlue": 0.176471,
+       "TopLeftGreen": 0.078431,
+       "TopLeftRed": 0.039216,
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "CaptionBarMask",
+        "output": "Mask"
+       }
+      }
+     },
+     {
+      "name": "CaptionBarMask",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.5,
+        0.168519
+       ],
+       "Height": 0.237037,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "UseFrameFormatSettings": 1,
+       "Width": 1.0
+      },
+      "links": {}
+     },
+     {
+      "name": "CaptionBarOver",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "Callout3",
+        "output": "Output"
+       },
+       "Foreground": {
+        "tool": "CaptionBar",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "CaptionText",
+      "id": "TextPlus",
+      "inputs": {
+       "Blue1": 1.0,
+       "Center": [
+        0.5,
+        0.168519
+       ],
+       "Font": "Meiryo",
+       "Green1": 1.0,
+       "Height": 2160,
+       "Red1": 1.0,
+       "Size": 0.08,
+       "Style": "Bold",
+       "StyledText": "色の帯を\n3 本ずつ見比べる",
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {}
+     },
+     {
+      "name": "CaptionOver",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "CaptionBarOver",
+        "output": "Output"
+       },
+       "Foreground": {
+        "tool": "CaptionText",
+        "output": "Output"
+       }
+      }
+     }
+    ]
+   }
+  },
+  {
+   "start": 915,
+   "end": 1095,
+   "media": 0,
+   "source_start": 3750,
+   "source_end": 3930,
+   "speed": 100.0,
+   "markers": [
+    {
+     "frame": 0,
+     "color": "Blue",
+     "name": "格子の四角に寄る",
+     "note": "20秒後",
+     "duration": 1,
+     "custom": "row5"
+    }
+   ],
+   "fusion": {
+    "size": [
+     3840,
+     2160
+    ],
+    "tools": [
+     {
+      "name": "MediaIn1",
+      "id": "MediaIn",
+      "inputs": {},
+      "links": {}
+     },
+     {
+      "name": "MediaOut1",
+      "id": "MediaOut",
+      "inputs": {},
+      "links": {
+       "Input": {
+        "tool": "BadgeOver",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "Zoom",
+      "id": "Transform",
+      "inputs": {
+       "FilterMethod": 8
+      },
+      "links": {
+       "Center": {
+        "path": {
+         "X": [
+          [
+           0,
+           0.359375
+          ]
+         ],
+         "Y": [
+          [
+           0,
+           0.71875
+          ]
+         ]
+        }
+       },
+       "Input": {
+        "tool": "MediaIn1",
+        "output": "Output"
+       },
+       "Size": {
+        "keys": [
+         [
+          0,
+          1.6875
+         ]
+        ]
+       }
+      }
+     },
+     {
+      "name": "CaptionBar",
+      "id": "Background",
+      "inputs": {
+       "Height": 2160,
+       "TopLeftAlpha": 0.862745,
+       "TopLeftBlue": 0.176471,
+       "TopLeftGreen": 0.078431,
+       "TopLeftRed": 0.039216,
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "CaptionBarMask",
+        "output": "Mask"
+       }
+      }
+     },
+     {
+      "name": "CaptionBarMask",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.5,
+        0.112037
+       ],
+       "Height": 0.124074,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "UseFrameFormatSettings": 1,
+       "Width": 1.0
+      },
+      "links": {}
+     },
+     {
+      "name": "CaptionBarOver",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "Zoom",
+        "output": "Output"
+       },
+       "Foreground": {
+        "tool": "CaptionBar",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "CaptionText",
+      "id": "TextPlus",
+      "inputs": {
+       "Blue1": 1.0,
+       "Center": [
+        0.5,
+        0.112037
+       ],
+       "Font": "Meiryo",
+       "Green1": 1.0,
+       "Height": 2160,
+       "Red1": 1.0,
+       "Size": 0.08,
+       "Style": "Bold",
+       "StyledText": "格子の四角に寄る",
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {}
+     },
+     {
+      "name": "CaptionOver",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "CaptionBarOver",
+        "output": "Output"
+       },
+       "Foreground": {
+        "tool": "CaptionText",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "BadgeBox",
+      "id": "Background",
+      "inputs": {
+       "Height": 2160,
+       "TopLeftAlpha": 0.921569,
+       "TopLeftBlue": 0.078431,
+       "TopLeftGreen": 0.470588,
+       "TopLeftRed": 0.901961,
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "BadgeMask",
+        "output": "Mask"
+       }
+      }
+     },
+     {
+      "name": "BadgeMask",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.873125,
+        0.936204
+       ],
+       "CornerRadius": 0.3,
+       "Height": 0.067593,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "UseFrameFormatSettings": 1,
+       "Width": 0.22
+      },
+      "links": {}
+     },
+     {
+      "name": "BadgeText",
+      "id": "TextPlus",
+      "inputs": {
+       "Blue1": 1.0,
+       "Center": [
+        0.873125,
+        0.936204
+       ],
+       "Font": "Meiryo",
+       "Green1": 1.0,
+       "Height": 2160,
+       "Red1": 1.0,
+       "Size": 0.055,
+       "Style": "Bold",
+       "StyledText": "▶▶ 20秒後",
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {}
+     },
+     {
+      "name": "BadgeLabel",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "BadgeBox",
+        "output": "Output"
+       },
+       "Foreground": {
+        "tool": "BadgeText",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "BadgeOver",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "CaptionOver",
+        "output": "Output"
+       },
+       "Blend": {
+        "keys": [
+         [
+          0,
+          1.0
+         ],
+         [
+          59,
+          1.0
+         ],
+         [
+          60,
+          0.0
+         ]
+        ]
+       },
+       "Foreground": {
+        "tool": "BadgeLabel",
+        "output": "Output"
+       }
+      }
+     }
+    ]
+   }
+  },
+  {
+   "start": 1095,
+   "end": 1185,
+   "media": 0,
+   "source_start": 3930,
+   "source_end": 4830,
+   "speed": 1000.0,
+   "markers": [
+    {
+     "frame": 0,
+     "color": "Blue",
+     "name": "時刻が進むのを待つ",
+     "note": "10倍速",
+     "duration": 1,
+     "custom": "row6"
+    }
+   ],
+   "fusion": {
+    "size": [
+     3840,
+     2160
+    ],
+    "tools": [
+     {
+      "name": "MediaIn1",
+      "id": "MediaIn",
+      "inputs": {},
+      "links": {}
+     },
+     {
+      "name": "MediaOut1",
+      "id": "MediaOut",
+      "inputs": {},
+      "links": {
+       "Input": {
+        "tool": "BadgeOver",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "CaptionBar",
+      "id": "Background",
+      "inputs": {
+       "Height": 2160,
+       "TopLeftAlpha": 0.862745,
+       "TopLeftBlue": 0.176471,
+       "TopLeftGreen": 0.078431,
+       "TopLeftRed": 0.039216,
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "CaptionBarMask",
+        "output": "Mask"
+       }
+      }
+     },
+     {
+      "name": "CaptionBarMask",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.5,
+        0.112037
+       ],
+       "Height": 0.124074,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "UseFrameFormatSettings": 1,
+       "Width": 1.0
+      },
+      "links": {}
+     },
+     {
+      "name": "CaptionBarOver",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "MediaIn1",
+        "output": "Output"
+       },
+       "Foreground": {
+        "tool": "CaptionBar",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "CaptionText",
+      "id": "TextPlus",
+      "inputs": {
+       "Blue1": 1.0,
+       "Center": [
+        0.5,
+        0.112037
+       ],
+       "Font": "Meiryo",
+       "Green1": 1.0,
+       "Height": 2160,
+       "Red1": 1.0,
+       "Size": 0.08,
+       "Style": "Bold",
+       "StyledText": "時刻が進むのを待つ",
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {}
+     },
+     {
+      "name": "CaptionOver",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "CaptionBarOver",
+        "output": "Output"
+       },
+       "Foreground": {
+        "tool": "CaptionText",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "BadgeBox",
+      "id": "Background",
+      "inputs": {
+       "Height": 2160,
+       "TopLeftAlpha": 0.921569,
+       "TopLeftBlue": 0.078431,
+       "TopLeftGreen": 0.470588,
+       "TopLeftRed": 0.901961,
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "BadgeMask",
+        "output": "Mask"
+       }
+      }
+     },
+     {
+      "name": "BadgeMask",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.873125,
+        0.936204
+       ],
+       "CornerRadius": 0.3,
+       "Height": 0.067593,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "UseFrameFormatSettings": 1,
+       "Width": 0.22
+      },
+      "links": {}
+     },
+     {
+      "name": "BadgeText",
+      "id": "TextPlus",
+      "inputs": {
+       "Blue1": 1.0,
+       "Center": [
+        0.873125,
+        0.936204
+       ],
+       "Font": "Meiryo",
+       "Green1": 1.0,
+       "Height": 2160,
+       "Red1": 1.0,
+       "Size": 0.055,
+       "Style": "Bold",
+       "StyledText": "▶▶ 10倍速",
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {}
+     },
+     {
+      "name": "BadgeLabel",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "BadgeBox",
+        "output": "Output"
+       },
+       "Foreground": {
+        "tool": "BadgeText",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "BadgeOver",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "CaptionOver",
+        "output": "Output"
+       },
+       "Blend": {
+        "keys": [
+         [
+          0,
+          1.0
+         ],
+         [
+          599,
+          1.0
+         ],
+         [
+          600,
+          0.0
+         ]
+        ]
+       },
+       "Foreground": {
+        "tool": "BadgeLabel",
+        "output": "Output"
+       }
+      }
+     }
+    ]
+   }
+  },
+  {
+   "start": 1185,
+   "end": 1395,
+   "media": 0,
+   "source_start": 4830,
+   "source_end": 5040,
+   "speed": 100.0,
+   "markers": [
+    {
+     "frame": 0,
+     "color": "Blue",
+     "name": "表示の数字を 読み取る",
+     "note": "",
+     "duration": 1,
+     "custom": "row7"
+    }
+   ],
+   "fusion": {
+    "size": [
+     3840,
+     2160
+    ],
+    "tools": [
+     {
+      "name": "MediaIn1",
+      "id": "MediaIn",
+      "inputs": {},
+      "links": {}
+     },
+     {
+      "name": "MediaOut1",
+      "id": "MediaOut",
+      "inputs": {},
+      "links": {
+       "Input": {
+        "tool": "CaptionOver",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "FocusArea",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.583333,
+        0.583333
+       ],
+       "Height": 0.092593,
+       "Invert": 1,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "SoftEdge": 0.00625,
+       "UseFrameFormatSettings": 1,
+       "Width": 0.166667
+      },
+      "links": {}
+     },
+     {
+      "name": "FocusShade",
+      "id": "Background",
+      "inputs": {
+       "Height": 2160,
+       "TopLeftBlue": 0.0,
+       "TopLeftGreen": 0.0,
+       "TopLeftRed": 0.0,
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "FocusArea",
+        "output": "Mask"
+       },
+       "TopLeftAlpha": {
+        "keys": [
+         [
+          0,
+          0.0
+         ],
+         [
+          225,
+          0.75
+         ]
+        ]
+       }
+      }
+     },
+     {
+      "name": "FocusDim",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "MediaIn1",
+        "output": "Output"
+       },
+       "Foreground": {
+        "tool": "FocusShade",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "FocusBorderOuter",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.583333,
+        0.583333
+       ],
+       "CornerRadius": 0.207547,
+       "Height": 0.098148,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "PaintMode": "Multiply",
+       "UseFrameFormatSettings": 1,
+       "Width": 0.169792
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "FocusBorderInner",
+        "output": "Mask"
+       }
+      }
+     },
+     {
+      "name": "FocusBorderInner",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.583333,
+        0.583333
+       ],
+       "CornerRadius": 0.106383,
+       "Height": 0.087037,
+       "Invert": 1,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "UseFrameFormatSettings": 1,
+       "Width": 0.163542
+      },
+      "links": {}
+     },
+     {
+      "name": "FocusBorder",
+      "id": "Background",
+      "inputs": {
+       "Height": 2160,
+       "TopLeftAlpha": 1.0,
+       "TopLeftBlue": 0.0,
+       "TopLeftGreen": 0.784314,
+       "TopLeftRed": 1.0,
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "FocusBorderOuter",
+        "output": "Mask"
+       }
+      }
+     },
+     {
+      "name": "FocusBorderOver",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "FocusDim",
+        "output": "Output"
+       },
+       "Blend": {
+        "keys": [
+         [
+          0,
+          0.0
+         ],
+         [
+          225,
+          1.0
+         ]
+        ]
+       },
+       "Foreground": {
+        "tool": "FocusBorder",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "Zoom",
+      "id": "Transform",
+      "inputs": {
+       "FilterMethod": 8
+      },
+      "links": {
+       "Center": {
+        "path": {
+         "X": [
+          [
+           0,
+           0.5
+          ],
+          [
+           30,
+           0.513181
+          ]
+         ],
+         "Y": [
+          [
+           0,
+           0.5
+          ],
+          [
+           30,
+           0.484476
+          ]
+         ]
+        }
+       },
+       "Input": {
+        "tool": "FocusBorderOver",
+        "output": "Output"
+       },
+       "Size": {
+        "keys": [
+         [
+          0,
+          1.0
+         ],
+         [
+          30,
+          1.265378
+         ]
+        ]
+       }
+      }
+     },
+     {
+      "name": "CaptionBar",
+      "id": "Background",
+      "inputs": {
+       "Height": 2160,
+       "TopLeftAlpha": 0.862745,
+       "TopLeftBlue": 0.176471,
+       "TopLeftGreen": 0.078431,
+       "TopLeftRed": 0.039216,
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "CaptionBarMask",
+        "output": "Mask"
+       }
+      }
+     },
+     {
+      "name": "CaptionBarMask",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.5,
+        0.168519
+       ],
+       "Height": 0.237037,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "UseFrameFormatSettings": 1,
+       "Width": 1.0
+      },
+      "links": {}
+     },
+     {
+      "name": "CaptionBarOver",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "Zoom",
+        "output": "Output"
+       },
+       "Foreground": {
+        "tool": "CaptionBar",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "CaptionText",
+      "id": "TextPlus",
+      "inputs": {
+       "Blue1": 1.0,
+       "Center": [
+        0.5,
+        0.168519
+       ],
+       "Font": "Meiryo",
+       "Green1": 1.0,
+       "Height": 2160,
+       "Red1": 1.0,
+       "Size": 0.08,
+       "Style": "Bold",
+       "StyledText": "表示の数字を\n読み取る",
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {}
+     },
+     {
+      "name": "CaptionOver",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "CaptionBarOver",
+        "output": "Output"
+       },
+       "Foreground": {
+        "tool": "CaptionText",
+        "output": "Output"
+       }
+      }
+     }
+    ]
+   }
+  },
+  {
+   "start": 1395,
+   "end": 1470,
+   "media": 0,
+   "source_start": 5039,
+   "source_end": 5039,
+   "speed": 0.0,
+   "markers": [],
+   "fusion": {
+    "size": [
+     3840,
+     2160
+    ],
+    "tools": [
+     {
+      "name": "MediaIn1",
+      "id": "MediaIn",
+      "inputs": {},
+      "links": {}
+     },
+     {
+      "name": "MediaOut1",
+      "id": "MediaOut",
+      "inputs": {},
+      "links": {
+       "Input": {
+        "tool": "CaptionOver",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "FocusArea",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.583333,
+        0.583333
+       ],
+       "Height": 0.092593,
+       "Invert": 1,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "SoftEdge": 0.00625,
+       "UseFrameFormatSettings": 1,
+       "Width": 0.166667
+      },
+      "links": {}
+     },
+     {
+      "name": "FocusShade",
+      "id": "Background",
+      "inputs": {
+       "Height": 2160,
+       "TopLeftBlue": 0.0,
+       "TopLeftGreen": 0.0,
+       "TopLeftRed": 0.0,
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "FocusArea",
+        "output": "Mask"
+       },
+       "TopLeftAlpha": {
+        "keys": [
+         [
+          0,
+          0.7
+         ],
+         [
+          15,
+          0.75
+         ]
+        ]
+       }
+      }
+     },
+     {
+      "name": "FocusDim",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "MediaIn1",
+        "output": "Output"
+       },
+       "Foreground": {
+        "tool": "FocusShade",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "FocusBorderOuter",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.583333,
+        0.583333
+       ],
+       "CornerRadius": 0.207547,
+       "Height": 0.098148,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "PaintMode": "Multiply",
+       "UseFrameFormatSettings": 1,
+       "Width": 0.169792
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "FocusBorderInner",
+        "output": "Mask"
+       }
+      }
+     },
+     {
+      "name": "FocusBorderInner",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.583333,
+        0.583333
+       ],
+       "CornerRadius": 0.106383,
+       "Height": 0.087037,
+       "Invert": 1,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "UseFrameFormatSettings": 1,
+       "Width": 0.163542
+      },
+      "links": {}
+     },
+     {
+      "name": "FocusBorder",
+      "id": "Background",
+      "inputs": {
+       "Height": 2160,
+       "TopLeftAlpha": 1.0,
+       "TopLeftBlue": 0.0,
+       "TopLeftGreen": 0.784314,
+       "TopLeftRed": 1.0,
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "FocusBorderOuter",
+        "output": "Mask"
+       }
+      }
+     },
+     {
+      "name": "FocusBorderOver",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "FocusDim",
+        "output": "Output"
+       },
+       "Blend": {
+        "keys": [
+         [
+          0,
+          0.933333
+         ],
+         [
+          15,
+          1.0
+         ]
+        ]
+       },
+       "Foreground": {
+        "tool": "FocusBorder",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "Zoom",
+      "id": "Transform",
+      "inputs": {
+       "FilterMethod": 8
+      },
+      "links": {
+       "Center": {
+        "path": {
+         "X": [
+          [
+           0,
+           0.513181
+          ],
+          [
+           1,
+           0.513181
+          ]
+         ],
+         "Y": [
+          [
+           0,
+           0.484476
+          ],
+          [
+           1,
+           0.484476
+          ]
+         ]
+        }
+       },
+       "Input": {
+        "tool": "FocusBorderOver",
+        "output": "Output"
+       },
+       "Size": {
+        "keys": [
+         [
+          0,
+          1.265378
+         ],
+         [
+          1,
+          1.265378
+         ]
+        ]
+       }
+      }
+     },
+     {
+      "name": "CaptionBar",
+      "id": "Background",
+      "inputs": {
+       "Height": 2160,
+       "TopLeftAlpha": 0.862745,
+       "TopLeftBlue": 0.176471,
+       "TopLeftGreen": 0.078431,
+       "TopLeftRed": 0.039216,
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "CaptionBarMask",
+        "output": "Mask"
+       }
+      }
+     },
+     {
+      "name": "CaptionBarMask",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.5,
+        0.168519
+       ],
+       "Height": 0.237037,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "UseFrameFormatSettings": 1,
+       "Width": 1.0
+      },
+      "links": {}
+     },
+     {
+      "name": "CaptionBarOver",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "Zoom",
+        "output": "Output"
+       },
+       "Foreground": {
+        "tool": "CaptionBar",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "CaptionText",
+      "id": "TextPlus",
+      "inputs": {
+       "Blue1": 1.0,
+       "Center": [
+        0.5,
+        0.168519
+       ],
+       "Font": "Meiryo",
+       "Green1": 1.0,
+       "Height": 2160,
+       "Red1": 1.0,
+       "Size": 0.08,
+       "Style": "Bold",
+       "StyledText": "表示の数字を\n読み取る",
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {}
+     },
+     {
+      "name": "CaptionOver",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "CaptionBarOver",
+        "output": "Output"
+       },
+       "Foreground": {
+        "tool": "CaptionText",
+        "output": "Output"
+       }
+      }
+     }
+    ]
+   }
+  },
+  {
+   "start": 1470,
+   "end": 1620,
+   "media": 0,
+   "source_start": 5040,
+   "source_end": 5340,
+   "speed": 200.0,
+   "markers": [
+    {
+     "frame": 0,
+     "color": "Blue",
+     "name": "画面の下を見る",
+     "note": "2倍速",
+     "duration": 1,
+     "custom": "row8"
+    }
+   ],
+   "fusion": {
+    "size": [
+     3840,
+     2160
+    ],
+    "tools": [
+     {
+      "name": "MediaIn1",
+      "id": "MediaIn",
+      "inputs": {},
+      "links": {}
+     },
+     {
+      "name": "MediaOut1",
+      "id": "MediaOut",
+      "inputs": {},
+      "links": {
+       "Input": {
+        "tool": "BadgeOver",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "Zoom",
+      "id": "Transform",
+      "inputs": {
+       "FilterMethod": 8
+      },
+      "links": {
+       "Center": {
+        "path": {
+         "X": [
+          [
+           0,
+           0.359375
+          ]
+         ],
+         "Y": [
+          [
+           0,
+           0.71875
+          ]
+         ]
+        }
+       },
+       "Input": {
+        "tool": "MediaIn1",
+        "output": "Output"
+       },
+       "Size": {
+        "keys": [
+         [
+          0,
+          1.6875
+         ]
+        ]
+       }
+      }
+     },
+     {
+      "name": "CaptionBar",
+      "id": "Background",
+      "inputs": {
+       "Height": 2160,
+       "TopLeftAlpha": 0.862745,
+       "TopLeftBlue": 0.176471,
+       "TopLeftGreen": 0.078431,
+       "TopLeftRed": 0.039216,
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "CaptionBarMask",
+        "output": "Mask"
+       }
+      }
+     },
+     {
+      "name": "CaptionBarMask",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.5,
+        0.112037
+       ],
+       "Height": 0.124074,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "UseFrameFormatSettings": 1,
+       "Width": 1.0
+      },
+      "links": {}
+     },
+     {
+      "name": "CaptionBarOver",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "Zoom",
+        "output": "Output"
+       },
+       "Foreground": {
+        "tool": "CaptionBar",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "CaptionText",
+      "id": "TextPlus",
+      "inputs": {
+       "Blue1": 1.0,
+       "Center": [
+        0.5,
+        0.112037
+       ],
+       "Font": "Meiryo",
+       "Green1": 1.0,
+       "Height": 2160,
+       "Red1": 1.0,
+       "Size": 0.08,
+       "Style": "Bold",
+       "StyledText": "画面の下を見る",
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {}
+     },
+     {
+      "name": "CaptionOver",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "CaptionBarOver",
+        "output": "Output"
+       },
+       "Foreground": {
+        "tool": "CaptionText",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "BadgeBox",
+      "id": "Background",
+      "inputs": {
+       "Height": 2160,
+       "TopLeftAlpha": 0.921569,
+       "TopLeftBlue": 0.078431,
+       "TopLeftGreen": 0.470588,
+       "TopLeftRed": 0.901961,
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "BadgeMask",
+        "output": "Mask"
+       }
+      }
+     },
+     {
+      "name": "BadgeMask",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.873125,
+        0.936204
+       ],
+       "CornerRadius": 0.3,
+       "Height": 0.067593,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "UseFrameFormatSettings": 1,
+       "Width": 0.22
+      },
+      "links": {}
+     },
+     {
+      "name": "BadgeText",
+      "id": "TextPlus",
+      "inputs": {
+       "Blue1": 1.0,
+       "Center": [
+        0.873125,
+        0.936204
+       ],
+       "Font": "Meiryo",
+       "Green1": 1.0,
+       "Height": 2160,
+       "Red1": 1.0,
+       "Size": 0.055,
+       "Style": "Bold",
+       "StyledText": "▶▶ 2倍速",
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {}
+     },
+     {
+      "name": "BadgeLabel",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "BadgeBox",
+        "output": "Output"
+       },
+       "Foreground": {
+        "tool": "BadgeText",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "BadgeOver",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "CaptionOver",
+        "output": "Output"
+       },
+       "Blend": {
+        "keys": [
+         [
+          0,
+          1.0
+         ],
+         [
+          119,
+          1.0
+         ],
+         [
+          120,
+          0.0
+         ]
+        ]
+       },
+       "Foreground": {
+        "tool": "BadgeLabel",
+        "output": "Output"
+       }
+      }
+     }
+    ]
+   }
+  },
+  {
+   "start": 1620,
+   "end": 1740,
+   "media": 0,
+   "source_start": 5340,
+   "source_end": 5460,
+   "speed": 100.0,
+   "markers": [
+    {
+     "frame": 0,
+     "color": "Blue",
+     "name": "格子の模様が動く",
+     "note": "",
+     "duration": 1,
+     "custom": "row9"
+    }
+   ],
+   "fusion": {
+    "size": [
+     3840,
+     2160
+    ],
+    "tools": [
+     {
+      "name": "MediaIn1",
+      "id": "MediaIn",
+      "inputs": {},
+      "links": {}
+     },
+     {
+      "name": "MediaOut1",
+      "id": "MediaOut",
+      "inputs": {},
+      "links": {
+       "Input": {
+        "tool": "CaptionOver",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "Zoom",
+      "id": "Transform",
+      "inputs": {
+       "FilterMethod": 8
+      },
+      "links": {
+       "Center": {
+        "path": {
+         "X": [
+          [
+           0,
+           0.5
+          ],
+          [
+           30,
+           0.50844
+          ]
+         ],
+         "Y": [
+          [
+           0,
+           0.5
+          ],
+          [
+           30,
+           0.564891
+          ]
+         ]
+        }
+       },
+       "Input": {
+        "tool": "MediaIn1",
+        "output": "Output"
+       },
+       "Size": {
+        "keys": [
+         [
+          0,
+          1.0
+         ],
+         [
+          30,
+          1.620405
+         ]
+        ]
+       }
+      }
+     },
+     {
+      "name": "CaptionBar",
+      "id": "Background",
+      "inputs": {
+       "Height": 2160,
+       "TopLeftAlpha": 0.862745,
+       "TopLeftBlue": 0.176471,
+       "TopLeftGreen": 0.078431,
+       "TopLeftRed": 0.039216,
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "CaptionBarMask",
+        "output": "Mask"
+       }
+      }
+     },
+     {
+      "name": "CaptionBarMask",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.5,
+        0.112037
+       ],
+       "Height": 0.124074,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "UseFrameFormatSettings": 1,
+       "Width": 1.0
+      },
+      "links": {}
+     },
+     {
+      "name": "CaptionBarOver",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "Zoom",
+        "output": "Output"
+       },
+       "Foreground": {
+        "tool": "CaptionBar",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "CaptionText",
+      "id": "TextPlus",
+      "inputs": {
+       "Blue1": 1.0,
+       "Center": [
+        0.5,
+        0.112037
+       ],
+       "Font": "Meiryo",
+       "Green1": 1.0,
+       "Height": 2160,
+       "Red1": 1.0,
+       "Size": 0.08,
+       "Style": "Bold",
+       "StyledText": "格子の模様が動く",
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {}
+     },
+     {
+      "name": "CaptionOver",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "CaptionBarOver",
+        "output": "Output"
+       },
+       "Foreground": {
+        "tool": "CaptionText",
+        "output": "Output"
+       }
+      }
+     }
+    ]
+   }
+  },
+  {
+   "start": 1740,
+   "end": 1800,
+   "media": 0,
+   "source_start": 5700,
+   "source_end": 5760,
+   "speed": 100.0,
+   "markers": [
+    {
+     "frame": 0,
+     "color": "Blue",
+     "name": "色の帯が並ぶ",
+     "note": "10秒後",
+     "duration": 1,
+     "custom": "row10"
+    }
+   ],
+   "fusion": {
+    "size": [
+     3840,
+     2160
+    ],
+    "tools": [
+     {
+      "name": "MediaIn1",
+      "id": "MediaIn",
+      "inputs": {},
+      "links": {}
+     },
+     {
+      "name": "MediaOut1",
+      "id": "MediaOut",
+      "inputs": {},
+      "links": {
+       "Input": {
+        "tool": "BadgeOver",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "CaptionBar",
+      "id": "Background",
+      "inputs": {
+       "Height": 2160,
+       "TopLeftAlpha": 0.862745,
+       "TopLeftBlue": 0.176471,
+       "TopLeftGreen": 0.078431,
+       "TopLeftRed": 0.039216,
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "CaptionBarMask",
+        "output": "Mask"
+       }
+      }
+     },
+     {
+      "name": "CaptionBarMask",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.5,
+        0.112037
+       ],
+       "Height": 0.124074,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "UseFrameFormatSettings": 1,
+       "Width": 1.0
+      },
+      "links": {}
+     },
+     {
+      "name": "CaptionBarOver",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "MediaIn1",
+        "output": "Output"
+       },
+       "Foreground": {
+        "tool": "CaptionBar",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "CaptionText",
+      "id": "TextPlus",
+      "inputs": {
+       "Blue1": 1.0,
+       "Center": [
+        0.5,
+        0.112037
+       ],
+       "Font": "Meiryo",
+       "Green1": 1.0,
+       "Height": 2160,
+       "Red1": 1.0,
+       "Size": 0.08,
+       "Style": "Bold",
+       "StyledText": "色の帯が並ぶ",
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {}
+     },
+     {
+      "name": "CaptionOver",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "CaptionBarOver",
+        "output": "Output"
+       },
+       "Foreground": {
+        "tool": "CaptionText",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "BadgeBox",
+      "id": "Background",
+      "inputs": {
+       "Height": 2160,
+       "TopLeftAlpha": 0.921569,
+       "TopLeftBlue": 0.078431,
+       "TopLeftGreen": 0.470588,
+       "TopLeftRed": 0.901961,
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "BadgeMask",
+        "output": "Mask"
+       }
+      }
+     },
+     {
+      "name": "BadgeMask",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.873125,
+        0.936204
+       ],
+       "CornerRadius": 0.3,
+       "Height": 0.067593,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "UseFrameFormatSettings": 1,
+       "Width": 0.22
+      },
+      "links": {}
+     },
+     {
+      "name": "BadgeText",
+      "id": "TextPlus",
+      "inputs": {
+       "Blue1": 1.0,
+       "Center": [
+        0.873125,
+        0.936204
+       ],
+       "Font": "Meiryo",
+       "Green1": 1.0,
+       "Height": 2160,
+       "Red1": 1.0,
+       "Size": 0.055,
+       "Style": "Bold",
+       "StyledText": "▶▶ 10秒後",
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {}
+     },
+     {
+      "name": "BadgeLabel",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "BadgeBox",
+        "output": "Output"
+       },
+       "Foreground": {
+        "tool": "BadgeText",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "BadgeOver",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "CaptionOver",
+        "output": "Output"
+       },
+       "Blend": {
+        "keys": [
+         [
+          0,
+          1.0
+         ],
+         [
+          59,
+          1.0
+         ],
+         [
+          60,
+          0.0
+         ]
+        ]
+       },
+       "Foreground": {
+        "tool": "BadgeLabel",
+        "output": "Output"
+       }
+      }
+     }
+    ]
+   }
+  },
+  {
+   "start": 1800,
+   "end": 1875,
+   "media": 0,
+   "source_start": 5760,
+   "source_end": 5835,
+   "speed": 100.0,
+   "markers": [
+    {
+     "frame": 0,
+     "color": "Blue",
+     "name": "色の帯が並ぶ",
+     "note": "",
+     "duration": 1,
+     "custom": "row11"
+    }
+   ],
+   "fusion": {
+    "size": [
+     3840,
+     2160
+    ],
+    "tools": [
+     {
+      "name": "MediaIn1",
+      "id": "MediaIn",
+      "inputs": {},
+      "links": {}
+     },
+     {
+      "name": "MediaOut1",
+      "id": "MediaOut",
+      "inputs": {},
+      "links": {
+       "Input": {
+        "tool": "CaptionOver",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "Zoom",
+      "id": "Transform",
+      "inputs": {
+       "FilterMethod": 8
+      },
+      "links": {
+       "Center": {
+        "path": {
+         "X": [
+          [
+           0,
+           0.5
+          ],
+          [
+           45,
+           0.577344
+          ]
+         ],
+         "Y": [
+          [
+           0,
+           0.5
+          ],
+          [
+           45,
+           0.5125
+          ]
+         ]
+        }
+       },
+       "Input": {
+        "tool": "MediaIn1",
+        "output": "Output"
+       },
+       "Size": {
+        "keys": [
+         [
+          0,
+          1.0
+         ],
+         [
+          45,
+          1.35
+         ]
+        ]
+       }
+      }
+     },
+     {
+      "name": "CaptionBar",
+      "id": "Background",
+      "inputs": {
+       "Height": 2160,
+       "TopLeftAlpha": 0.862745,
+       "TopLeftBlue": 0.176471,
+       "TopLeftGreen": 0.078431,
+       "TopLeftRed": 0.039216,
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "CaptionBarMask",
+        "output": "Mask"
+       }
+      }
+     },
+     {
+      "name": "CaptionBarMask",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.5,
+        0.112037
+       ],
+       "Height": 0.124074,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "UseFrameFormatSettings": 1,
+       "Width": 1.0
+      },
+      "links": {}
+     },
+     {
+      "name": "CaptionBarOver",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "Zoom",
+        "output": "Output"
+       },
+       "Foreground": {
+        "tool": "CaptionBar",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "CaptionText",
+      "id": "TextPlus",
+      "inputs": {
+       "Blue1": 1.0,
+       "Center": [
+        0.5,
+        0.112037
+       ],
+       "Font": "Meiryo",
+       "Green1": 1.0,
+       "Height": 2160,
+       "Red1": 1.0,
+       "Size": 0.08,
+       "Style": "Bold",
+       "StyledText": "色の帯が並ぶ",
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {}
+     },
+     {
+      "name": "CaptionOver",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "CaptionBarOver",
+        "output": "Output"
+       },
+       "Foreground": {
+        "tool": "CaptionText",
+        "output": "Output"
+       }
+      }
+     }
+    ]
+   }
+  },
+  {
+   "start": 1875,
+   "end": 2055,
+   "media": 0,
+   "source_start": 6150,
+   "source_end": 6330,
+   "speed": 100.0,
+   "markers": [
+    {
+     "frame": 0,
+     "color": "Blue",
+     "name": "格子の四角の 模様が変わる",
+     "note": "10秒後",
+     "duration": 1,
+     "custom": "row12"
+    }
+   ],
+   "fusion": {
+    "size": [
+     3840,
+     2160
+    ],
+    "tools": [
+     {
+      "name": "MediaIn1",
+      "id": "MediaIn",
+      "inputs": {},
+      "links": {}
+     },
+     {
+      "name": "MediaOut1",
+      "id": "MediaOut",
+      "inputs": {},
+      "links": {
+       "Input": {
+        "tool": "BadgeOver",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "Mask1",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.015625,
+        0.989815
+       ],
+       "Height": 0.02037,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "UseFrameFormatSettings": 1,
+       "Width": 0.03125
+      },
+      "links": {}
+     },
+     {
+      "name": "Mask1Mosaic",
+      "id": "ofx.com.blackmagicdesign.resolvefx.MosaicBlur",
+      "inputs": {
+       "PixelFrequency": 20.0
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "Mask1",
+        "output": "Mask"
+       },
+       "Source": {
+        "tool": "MediaIn1",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "FocusArea",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.75,
+        0.252778
+       ],
+       "Height": 0.244444,
+       "Invert": 1,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "SoftEdge": 0.00625,
+       "UseFrameFormatSettings": 1,
+       "Width": 0.25
+      },
+      "links": {}
+     },
+     {
+      "name": "FocusShade",
+      "id": "Background",
+      "inputs": {
+       "Height": 2160,
+       "TopLeftBlue": 0.0,
+       "TopLeftGreen": 0.0,
+       "TopLeftRed": 0.0,
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "FocusArea",
+        "output": "Mask"
+       },
+       "TopLeftAlpha": {
+        "keys": [
+         [
+          0,
+          0.0
+         ],
+         [
+          15,
+          0.5
+         ]
+        ]
+       }
+      }
+     },
+     {
+      "name": "FocusDim",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "Mask1Mosaic",
+        "output": "Output"
+       },
+       "Foreground": {
+        "tool": "FocusShade",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "FocusBorderOuter",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.75,
+        0.252778
+       ],
+       "CornerRadius": 0.081481,
+       "Height": 0.25,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "PaintMode": "Multiply",
+       "UseFrameFormatSettings": 1,
+       "Width": 0.253125
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "FocusBorderInner",
+        "output": "Mask"
+       }
+      }
+     },
+     {
+      "name": "FocusBorderInner",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.75,
+        0.252778
+       ],
+       "CornerRadius": 0.03876,
+       "Height": 0.238889,
+       "Invert": 1,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "UseFrameFormatSettings": 1,
+       "Width": 0.246875
+      },
+      "links": {}
+     },
+     {
+      "name": "FocusBorder",
+      "id": "Background",
+      "inputs": {
+       "Height": 2160,
+       "TopLeftAlpha": 1.0,
+       "TopLeftBlue": 0.188235,
+       "TopLeftGreen": 0.231373,
+       "TopLeftRed": 1.0,
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "FocusBorderOuter",
+        "output": "Mask"
+       }
+      }
+     },
+     {
+      "name": "FocusBorderOver",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "FocusDim",
+        "output": "Output"
+       },
+       "Blend": {
+        "keys": [
+         [
+          0,
+          0.0
+         ],
+         [
+          15,
+          1.0
+         ]
+        ]
+       },
+       "Foreground": {
+        "tool": "FocusBorder",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "Zoom",
+      "id": "Transform",
+      "inputs": {
+       "FilterMethod": 8
+      },
+      "links": {
+       "Center": {
+        "path": {
+         "X": [
+          [
+           0,
+           0.5
+          ],
+          [
+           60,
+           -0.115034
+          ]
+         ],
+         "Y": [
+          [
+           0,
+           0.5
+          ],
+          [
+           60,
+           1.079727
+          ]
+         ]
+        }
+       },
+       "Input": {
+        "tool": "FocusBorderOver",
+        "output": "Output"
+       },
+       "Size": {
+        "keys": [
+         [
+          0,
+          1.0
+         ],
+         [
+          60,
+          2.460137
+         ]
+        ]
+       }
+      }
+     },
+     {
+      "name": "CaptionBar",
+      "id": "Background",
+      "inputs": {
+       "Height": 2160,
+       "TopLeftAlpha": 0.862745,
+       "TopLeftBlue": 0.176471,
+       "TopLeftGreen": 0.078431,
+       "TopLeftRed": 0.039216,
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "CaptionBarMask",
+        "output": "Mask"
+       }
+      }
+     },
+     {
+      "name": "CaptionBarMask",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.5,
+        0.168519
+       ],
+       "Height": 0.237037,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "UseFrameFormatSettings": 1,
+       "Width": 1.0
+      },
+      "links": {}
+     },
+     {
+      "name": "CaptionBarOver",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "Zoom",
+        "output": "Output"
+       },
+       "Foreground": {
+        "tool": "CaptionBar",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "CaptionText",
+      "id": "TextPlus",
+      "inputs": {
+       "Blue1": 1.0,
+       "Center": [
+        0.5,
+        0.168519
+       ],
+       "Font": "Meiryo",
+       "Green1": 1.0,
+       "Height": 2160,
+       "Red1": 1.0,
+       "Size": 0.08,
+       "Style": "Bold",
+       "StyledText": "格子の四角の\n模様が変わる",
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {}
+     },
+     {
+      "name": "CaptionOver",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "CaptionBarOver",
+        "output": "Output"
+       },
+       "Foreground": {
+        "tool": "CaptionText",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "BadgeBox",
+      "id": "Background",
+      "inputs": {
+       "Height": 2160,
+       "TopLeftAlpha": 0.921569,
+       "TopLeftBlue": 0.078431,
+       "TopLeftGreen": 0.470588,
+       "TopLeftRed": 0.901961,
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "BadgeMask",
+        "output": "Mask"
+       }
+      }
+     },
+     {
+      "name": "BadgeMask",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.873125,
+        0.936204
+       ],
+       "CornerRadius": 0.3,
+       "Height": 0.067593,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "UseFrameFormatSettings": 1,
+       "Width": 0.22
+      },
+      "links": {}
+     },
+     {
+      "name": "BadgeText",
+      "id": "TextPlus",
+      "inputs": {
+       "Blue1": 1.0,
+       "Center": [
+        0.873125,
+        0.936204
+       ],
+       "Font": "Meiryo",
+       "Green1": 1.0,
+       "Height": 2160,
+       "Red1": 1.0,
+       "Size": 0.055,
+       "Style": "Bold",
+       "StyledText": "▶▶ 10秒後",
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {}
+     },
+     {
+      "name": "BadgeLabel",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "BadgeBox",
+        "output": "Output"
+       },
+       "Foreground": {
+        "tool": "BadgeText",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "BadgeOver",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "CaptionOver",
+        "output": "Output"
+       },
+       "Blend": {
+        "keys": [
+         [
+          0,
+          1.0
+         ],
+         [
+          59,
+          1.0
+         ],
+         [
+          60,
+          0.0
+         ]
+        ]
+       },
+       "Foreground": {
+        "tool": "BadgeLabel",
+        "output": "Output"
+       }
+      }
+     }
+    ]
+   }
+  },
+  {
+   "start": 2055,
+   "end": 2205,
+   "media": 0,
+   "source_start": 6330,
+   "source_end": 6480,
+   "speed": 100.0,
+   "markers": [
+    {
+     "frame": 0,
+     "color": "Blue",
+     "name": "変わった所を 拡大する",
+     "note": "",
+     "duration": 1,
+     "custom": "row13"
+    }
+   ],
+   "fusion": {
+    "size": [
+     3840,
+     2160
+    ],
+    "tools": [
+     {
+      "name": "MediaIn1",
+      "id": "MediaIn",
+      "inputs": {},
+      "links": {}
+     },
+     {
+      "name": "MediaOut1",
+      "id": "MediaOut",
+      "inputs": {},
+      "links": {
+       "Input": {
+        "tool": "CaptionOver",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "Mask1",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.015625,
+        0.989815
+       ],
+       "Height": 0.02037,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "UseFrameFormatSettings": 1,
+       "Width": 0.03125
+      },
+      "links": {}
+     },
+     {
+      "name": "Mask1Mosaic",
+      "id": "ofx.com.blackmagicdesign.resolvefx.MosaicBlur",
+      "inputs": {
+       "PixelFrequency": 20.0
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "Mask1",
+        "output": "Mask"
+       },
+       "Source": {
+        "tool": "MediaIn1",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "FocusArea",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.75,
+        0.252778
+       ],
+       "Height": 0.244444,
+       "Invert": 1,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "SoftEdge": 0.00625,
+       "UseFrameFormatSettings": 1,
+       "Width": 0.25
+      },
+      "links": {}
+     },
+     {
+      "name": "FocusShade",
+      "id": "Background",
+      "inputs": {
+       "Height": 2160,
+       "TopLeftBlue": 0.0,
+       "TopLeftGreen": 0.0,
+       "TopLeftRed": 0.0,
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "FocusArea",
+        "output": "Mask"
+       },
+       "TopLeftAlpha": {
+        "keys": [
+         [
+          0,
+          0.0
+         ],
+         [
+          165,
+          0.5
+         ]
+        ]
+       }
+      }
+     },
+     {
+      "name": "FocusDim",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "Mask1Mosaic",
+        "output": "Output"
+       },
+       "Foreground": {
+        "tool": "FocusShade",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "FocusBorderOuter",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.75,
+        0.252778
+       ],
+       "CornerRadius": 0.081481,
+       "Height": 0.25,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "PaintMode": "Multiply",
+       "UseFrameFormatSettings": 1,
+       "Width": 0.253125
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "FocusBorderInner",
+        "output": "Mask"
+       }
+      }
+     },
+     {
+      "name": "FocusBorderInner",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.75,
+        0.252778
+       ],
+       "CornerRadius": 0.03876,
+       "Height": 0.238889,
+       "Invert": 1,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "UseFrameFormatSettings": 1,
+       "Width": 0.246875
+      },
+      "links": {}
+     },
+     {
+      "name": "FocusBorder",
+      "id": "Background",
+      "inputs": {
+       "Height": 2160,
+       "TopLeftAlpha": 1.0,
+       "TopLeftBlue": 0.188235,
+       "TopLeftGreen": 0.231373,
+       "TopLeftRed": 1.0,
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "FocusBorderOuter",
+        "output": "Mask"
+       }
+      }
+     },
+     {
+      "name": "FocusBorderOver",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "FocusDim",
+        "output": "Output"
+       },
+       "Blend": {
+        "keys": [
+         [
+          0,
+          0.0
+         ],
+         [
+          165,
+          1.0
+         ]
+        ]
+       },
+       "Foreground": {
+        "tool": "FocusBorder",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "Zoom",
+      "id": "Transform",
+      "inputs": {
+       "FilterMethod": 8
+      },
+      "links": {
+       "Center": {
+        "path": {
+         "X": [
+          [
+           0,
+           -0.115034
+          ]
+         ],
+         "Y": [
+          [
+           0,
+           1.079727
+          ]
+         ]
+        }
+       },
+       "Input": {
+        "tool": "FocusBorderOver",
+        "output": "Output"
+       },
+       "Size": {
+        "keys": [
+         [
+          0,
+          2.460137
+         ]
+        ]
+       }
+      }
+     },
+     {
+      "name": "CaptionBar",
+      "id": "Background",
+      "inputs": {
+       "Height": 2160,
+       "TopLeftAlpha": 0.862745,
+       "TopLeftBlue": 0.176471,
+       "TopLeftGreen": 0.078431,
+       "TopLeftRed": 0.039216,
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "CaptionBarMask",
+        "output": "Mask"
+       }
+      }
+     },
+     {
+      "name": "CaptionBarMask",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.5,
+        0.168519
+       ],
+       "Height": 0.237037,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "UseFrameFormatSettings": 1,
+       "Width": 1.0
+      },
+      "links": {}
+     },
+     {
+      "name": "CaptionBarOver",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "Zoom",
+        "output": "Output"
+       },
+       "Foreground": {
+        "tool": "CaptionBar",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "CaptionText",
+      "id": "TextPlus",
+      "inputs": {
+       "Blue1": 1.0,
+       "Center": [
+        0.5,
+        0.168519
+       ],
+       "Font": "Meiryo",
+       "Green1": 1.0,
+       "Height": 2160,
+       "Red1": 1.0,
+       "Size": 0.08,
+       "Style": "Bold",
+       "StyledText": "変わった所を\n拡大する",
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {}
+     },
+     {
+      "name": "CaptionOver",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "CaptionBarOver",
+        "output": "Output"
+       },
+       "Foreground": {
+        "tool": "CaptionText",
+        "output": "Output"
+       }
+      }
+     }
+    ]
+   }
+  },
+  {
+   "start": 2205,
+   "end": 2280,
+   "media": 0,
+   "source_start": 6479,
+   "source_end": 6479,
+   "speed": 0.0,
+   "markers": [],
+   "fusion": {
+    "size": [
+     3840,
+     2160
+    ],
+    "tools": [
+     {
+      "name": "MediaIn1",
+      "id": "MediaIn",
+      "inputs": {},
+      "links": {}
+     },
+     {
+      "name": "MediaOut1",
+      "id": "MediaOut",
+      "inputs": {},
+      "links": {
+       "Input": {
+        "tool": "CaptionOver",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "Mask1",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.015625,
+        0.989815
+       ],
+       "Height": 0.02037,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "UseFrameFormatSettings": 1,
+       "Width": 0.03125
+      },
+      "links": {}
+     },
+     {
+      "name": "Mask1Mosaic",
+      "id": "ofx.com.blackmagicdesign.resolvefx.MosaicBlur",
+      "inputs": {
+       "PixelFrequency": 20.0
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "Mask1",
+        "output": "Mask"
+       },
+       "Source": {
+        "tool": "MediaIn1",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "FocusArea",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.75,
+        0.252778
+       ],
+       "Height": 0.244444,
+       "Invert": 1,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "SoftEdge": 0.00625,
+       "UseFrameFormatSettings": 1,
+       "Width": 0.25
+      },
+      "links": {}
+     },
+     {
+      "name": "FocusShade",
+      "id": "Background",
+      "inputs": {
+       "Height": 2160,
+       "TopLeftBlue": 0.0,
+       "TopLeftGreen": 0.0,
+       "TopLeftRed": 0.0,
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "FocusArea",
+        "output": "Mask"
+       },
+       "TopLeftAlpha": {
+        "keys": [
+         [
+          0,
+          0.454545
+         ],
+         [
+          15,
+          0.5
+         ]
+        ]
+       }
+      }
+     },
+     {
+      "name": "FocusDim",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "Mask1Mosaic",
+        "output": "Output"
+       },
+       "Foreground": {
+        "tool": "FocusShade",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "FocusBorderOuter",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.75,
+        0.252778
+       ],
+       "CornerRadius": 0.081481,
+       "Height": 0.25,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "PaintMode": "Multiply",
+       "UseFrameFormatSettings": 1,
+       "Width": 0.253125
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "FocusBorderInner",
+        "output": "Mask"
+       }
+      }
+     },
+     {
+      "name": "FocusBorderInner",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.75,
+        0.252778
+       ],
+       "CornerRadius": 0.03876,
+       "Height": 0.238889,
+       "Invert": 1,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "UseFrameFormatSettings": 1,
+       "Width": 0.246875
+      },
+      "links": {}
+     },
+     {
+      "name": "FocusBorder",
+      "id": "Background",
+      "inputs": {
+       "Height": 2160,
+       "TopLeftAlpha": 1.0,
+       "TopLeftBlue": 0.188235,
+       "TopLeftGreen": 0.231373,
+       "TopLeftRed": 1.0,
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "FocusBorderOuter",
+        "output": "Mask"
+       }
+      }
+     },
+     {
+      "name": "FocusBorderOver",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "FocusDim",
+        "output": "Output"
+       },
+       "Blend": {
+        "keys": [
+         [
+          0,
+          0.909091
+         ],
+         [
+          15,
+          1.0
+         ]
+        ]
+       },
+       "Foreground": {
+        "tool": "FocusBorder",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "Zoom",
+      "id": "Transform",
+      "inputs": {
+       "FilterMethod": 8
+      },
+      "links": {
+       "Center": {
+        "path": {
+         "X": [
+          [
+           0,
+           -0.115034
+          ],
+          [
+           1,
+           -0.115034
+          ]
+         ],
+         "Y": [
+          [
+           0,
+           1.079727
+          ],
+          [
+           1,
+           1.079727
+          ]
+         ]
+        }
+       },
+       "Input": {
+        "tool": "FocusBorderOver",
+        "output": "Output"
+       },
+       "Size": {
+        "keys": [
+         [
+          0,
+          2.460137
+         ],
+         [
+          1,
+          2.460137
+         ]
+        ]
+       }
+      }
+     },
+     {
+      "name": "CaptionBar",
+      "id": "Background",
+      "inputs": {
+       "Height": 2160,
+       "TopLeftAlpha": 0.862745,
+       "TopLeftBlue": 0.176471,
+       "TopLeftGreen": 0.078431,
+       "TopLeftRed": 0.039216,
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "CaptionBarMask",
+        "output": "Mask"
+       }
+      }
+     },
+     {
+      "name": "CaptionBarMask",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.5,
+        0.168519
+       ],
+       "Height": 0.237037,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "UseFrameFormatSettings": 1,
+       "Width": 1.0
+      },
+      "links": {}
+     },
+     {
+      "name": "CaptionBarOver",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "Zoom",
+        "output": "Output"
+       },
+       "Foreground": {
+        "tool": "CaptionBar",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "CaptionText",
+      "id": "TextPlus",
+      "inputs": {
+       "Blue1": 1.0,
+       "Center": [
+        0.5,
+        0.168519
+       ],
+       "Font": "Meiryo",
+       "Green1": 1.0,
+       "Height": 2160,
+       "Red1": 1.0,
+       "Size": 0.08,
+       "Style": "Bold",
+       "StyledText": "変わった所を\n拡大する",
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {}
+     },
+     {
+      "name": "CaptionOver",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "CaptionBarOver",
+        "output": "Output"
+       },
+       "Foreground": {
+        "tool": "CaptionText",
+        "output": "Output"
+       }
+      }
+     }
+    ]
+   }
+  },
+  {
+   "start": 2280,
+   "end": 2430,
+   "media": 0,
+   "source_start": 6780,
+   "source_end": 6930,
+   "speed": 100.0,
+   "markers": [
+    {
+     "frame": 0,
+     "color": "Blue",
+     "name": "時刻の表示を 拡大する",
+     "note": "10秒後",
+     "duration": 1,
+     "custom": "row14"
+    }
+   ],
+   "fusion": {
+    "size": [
+     3840,
+     2160
+    ],
+    "tools": [
+     {
+      "name": "MediaIn1",
+      "id": "MediaIn",
+      "inputs": {},
+      "links": {}
+     },
+     {
+      "name": "MediaOut1",
+      "id": "MediaOut",
+      "inputs": {},
+      "links": {
+       "Input": {
+        "tool": "BadgeOver",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "Mask1",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.481771,
+        0.956019
+       ],
+       "Height": 0.032407,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "UseFrameFormatSettings": 1,
+       "Width": 0.078125
+      },
+      "links": {}
+     },
+     {
+      "name": "Mask1Mosaic",
+      "id": "ofx.com.blackmagicdesign.resolvefx.MosaicBlur",
+      "inputs": {
+       "PixelFrequency": 20.0
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "Mask1",
+        "output": "Mask"
+       },
+       "Source": {
+        "tool": "MediaIn1",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "CaptionBar",
+      "id": "Background",
+      "inputs": {
+       "Height": 2160,
+       "TopLeftAlpha": 0.862745,
+       "TopLeftBlue": 0.176471,
+       "TopLeftGreen": 0.078431,
+       "TopLeftRed": 0.039216,
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "CaptionBarMask",
+        "output": "Mask"
+       }
+      }
+     },
+     {
+      "name": "CaptionBarMask",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.5,
+        0.168519
+       ],
+       "Height": 0.237037,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "UseFrameFormatSettings": 1,
+       "Width": 1.0
+      },
+      "links": {}
+     },
+     {
+      "name": "CaptionBarOver",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "Mask1Mosaic",
+        "output": "Output"
+       },
+       "Foreground": {
+        "tool": "CaptionBar",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "CaptionText",
+      "id": "TextPlus",
+      "inputs": {
+       "Blue1": 1.0,
+       "Center": [
+        0.5,
+        0.168519
+       ],
+       "Font": "Meiryo",
+       "Green1": 1.0,
+       "Height": 2160,
+       "Red1": 1.0,
+       "Size": 0.08,
+       "Style": "Bold",
+       "StyledText": "時刻の表示を\n拡大する",
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {}
+     },
+     {
+      "name": "CaptionOver",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "CaptionBarOver",
+        "output": "Output"
+       },
+       "Foreground": {
+        "tool": "CaptionText",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "BadgeBox",
+      "id": "Background",
+      "inputs": {
+       "Height": 2160,
+       "TopLeftAlpha": 0.921569,
+       "TopLeftBlue": 0.078431,
+       "TopLeftGreen": 0.470588,
+       "TopLeftRed": 0.901961,
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "BadgeMask",
+        "output": "Mask"
+       }
+      }
+     },
+     {
+      "name": "BadgeMask",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.873125,
+        0.936204
+       ],
+       "CornerRadius": 0.3,
+       "Height": 0.067593,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "UseFrameFormatSettings": 1,
+       "Width": 0.22
+      },
+      "links": {}
+     },
+     {
+      "name": "BadgeText",
+      "id": "TextPlus",
+      "inputs": {
+       "Blue1": 1.0,
+       "Center": [
+        0.873125,
+        0.936204
+       ],
+       "Font": "Meiryo",
+       "Green1": 1.0,
+       "Height": 2160,
+       "Red1": 1.0,
+       "Size": 0.055,
+       "Style": "Bold",
+       "StyledText": "▶▶ 10秒後",
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {}
+     },
+     {
+      "name": "BadgeLabel",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "BadgeBox",
+        "output": "Output"
+       },
+       "Foreground": {
+        "tool": "BadgeText",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "BadgeOver",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "CaptionOver",
+        "output": "Output"
+       },
+       "Blend": {
+        "keys": [
+         [
+          0,
+          1.0
+         ],
+         [
+          59,
+          1.0
+         ],
+         [
+          60,
+          0.0
+         ]
+        ]
+       },
+       "Foreground": {
+        "tool": "BadgeLabel",
+        "output": "Output"
+       }
+      }
+     }
+    ]
+   }
+  },
+  {
+   "start": 2430,
+   "end": 2505,
+   "media": 0,
+   "source_start": 6930,
+   "source_end": 7140,
+   "speed": 280.0,
+   "markers": [
+    {
+     "frame": 0,
+     "color": "Blue",
+     "name": "表示の桁を見る",
+     "note": "3倍速",
+     "duration": 1,
+     "custom": "row15"
+    }
+   ],
+   "fusion": {
+    "size": [
+     3840,
+     2160
+    ],
+    "tools": [
+     {
+      "name": "MediaIn1",
+      "id": "MediaIn",
+      "inputs": {},
+      "links": {}
+     },
+     {
+      "name": "MediaOut1",
+      "id": "MediaOut",
+      "inputs": {},
+      "links": {
+       "Input": {
+        "tool": "BadgeOver",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "Mask1",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.481771,
+        0.956019
+       ],
+       "Height": 0.032407,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "UseFrameFormatSettings": 1,
+       "Width": 0.078125
+      },
+      "links": {}
+     },
+     {
+      "name": "Mask1Mosaic",
+      "id": "ofx.com.blackmagicdesign.resolvefx.MosaicBlur",
+      "inputs": {
+       "PixelFrequency": 20.0
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "Mask1",
+        "output": "Mask"
+       },
+       "Source": {
+        "tool": "MediaIn1",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "CaptionBar",
+      "id": "Background",
+      "inputs": {
+       "Height": 2160,
+       "TopLeftAlpha": 0.862745,
+       "TopLeftBlue": 0.176471,
+       "TopLeftGreen": 0.078431,
+       "TopLeftRed": 0.039216,
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "CaptionBarMask",
+        "output": "Mask"
+       }
+      }
+     },
+     {
+      "name": "CaptionBarMask",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.5,
+        0.112037
+       ],
+       "Height": 0.124074,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "UseFrameFormatSettings": 1,
+       "Width": 1.0
+      },
+      "links": {}
+     },
+     {
+      "name": "CaptionBarOver",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "Mask1Mosaic",
+        "output": "Output"
+       },
+       "Foreground": {
+        "tool": "CaptionBar",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "CaptionText",
+      "id": "TextPlus",
+      "inputs": {
+       "Blue1": 1.0,
+       "Center": [
+        0.5,
+        0.112037
+       ],
+       "Font": "Meiryo",
+       "Green1": 1.0,
+       "Height": 2160,
+       "Red1": 1.0,
+       "Size": 0.08,
+       "Style": "Bold",
+       "StyledText": "表示の桁を見る",
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {}
+     },
+     {
+      "name": "CaptionOver",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "CaptionBarOver",
+        "output": "Output"
+       },
+       "Foreground": {
+        "tool": "CaptionText",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "BadgeBox",
+      "id": "Background",
+      "inputs": {
+       "Height": 2160,
+       "TopLeftAlpha": 0.921569,
+       "TopLeftBlue": 0.078431,
+       "TopLeftGreen": 0.470588,
+       "TopLeftRed": 0.901961,
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "BadgeMask",
+        "output": "Mask"
+       }
+      }
+     },
+     {
+      "name": "BadgeMask",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.873125,
+        0.936204
+       ],
+       "CornerRadius": 0.3,
+       "Height": 0.067593,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "UseFrameFormatSettings": 1,
+       "Width": 0.22
+      },
+      "links": {}
+     },
+     {
+      "name": "BadgeText",
+      "id": "TextPlus",
+      "inputs": {
+       "Blue1": 1.0,
+       "Center": [
+        0.873125,
+        0.936204
+       ],
+       "Font": "Meiryo",
+       "Green1": 1.0,
+       "Height": 2160,
+       "Red1": 1.0,
+       "Size": 0.055,
+       "Style": "Bold",
+       "StyledText": "▶▶ 3倍速",
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {}
+     },
+     {
+      "name": "BadgeLabel",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "BadgeBox",
+        "output": "Output"
+       },
+       "Foreground": {
+        "tool": "BadgeText",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "BadgeOver",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "CaptionOver",
+        "output": "Output"
+       },
+       "Blend": {
+        "keys": [
+         [
+          0,
+          1.0
+         ],
+         [
+          167,
+          1.0
+         ],
+         [
+          168,
+          0.0
+         ]
+        ]
+       },
+       "Foreground": {
+        "tool": "BadgeLabel",
+        "output": "Output"
+       }
+      }
+     }
+    ]
+   }
+  },
+  {
+   "start": 2505,
+   "end": 2595,
+   "media": 0,
+   "source_start": 7140,
+   "source_end": 7230,
+   "speed": 100.0,
+   "markers": [
+    {
+     "frame": 0,
+     "color": "Blue",
+     "name": "時刻の値を読む",
+     "note": "",
+     "duration": 1,
+     "custom": "row16"
+    }
+   ],
+   "fusion": {
+    "size": [
+     3840,
+     2160
+    ],
+    "tools": [
+     {
+      "name": "MediaIn1",
+      "id": "MediaIn",
+      "inputs": {},
+      "links": {}
+     },
+     {
+      "name": "MediaOut1",
+      "id": "MediaOut",
+      "inputs": {},
+      "links": {
+       "Input": {
+        "tool": "CaptionOver",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "Mask1",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.481771,
+        0.956019
+       ],
+       "Height": 0.032407,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "UseFrameFormatSettings": 1,
+       "Width": 0.078125
+      },
+      "links": {}
+     },
+     {
+      "name": "Mask1Mosaic",
+      "id": "ofx.com.blackmagicdesign.resolvefx.MosaicBlur",
+      "inputs": {
+       "PixelFrequency": 20.0
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "Mask1",
+        "output": "Mask"
+       },
+       "Source": {
+        "tool": "MediaIn1",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "Zoom",
+      "id": "Transform",
+      "inputs": {
+       "FilterMethod": 8
+      },
+      "links": {
+       "Center": {
+        "path": {
+         "X": [
+          [
+           0,
+           0.5
+          ],
+          [
+           45,
+           0.509375
+          ]
+         ],
+         "Y": [
+          [
+           0,
+           0.5
+          ],
+          [
+           45,
+           0.6
+          ]
+         ]
+        }
+       },
+       "Input": {
+        "tool": "Mask1Mosaic",
+        "output": "Output"
+       },
+       "Size": {
+        "keys": [
+         [
+          0,
+          1.0
+         ],
+         [
+          45,
+          1.8
+         ]
+        ]
+       }
+      }
+     },
+     {
+      "name": "CaptionBar",
+      "id": "Background",
+      "inputs": {
+       "Height": 2160,
+       "TopLeftAlpha": 0.862745,
+       "TopLeftBlue": 0.176471,
+       "TopLeftGreen": 0.078431,
+       "TopLeftRed": 0.039216,
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "CaptionBarMask",
+        "output": "Mask"
+       }
+      }
+     },
+     {
+      "name": "CaptionBarMask",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.5,
+        0.112037
+       ],
+       "Height": 0.124074,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "UseFrameFormatSettings": 1,
+       "Width": 1.0
+      },
+      "links": {}
+     },
+     {
+      "name": "CaptionBarOver",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "Zoom",
+        "output": "Output"
+       },
+       "Foreground": {
+        "tool": "CaptionBar",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "CaptionText",
+      "id": "TextPlus",
+      "inputs": {
+       "Blue1": 1.0,
+       "Center": [
+        0.5,
+        0.112037
+       ],
+       "Font": "Meiryo",
+       "Green1": 1.0,
+       "Height": 2160,
+       "Red1": 1.0,
+       "Size": 0.08,
+       "Style": "Bold",
+       "StyledText": "時刻の値を読む",
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {}
+     },
+     {
+      "name": "CaptionOver",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "CaptionBarOver",
+        "output": "Output"
+       },
+       "Foreground": {
+        "tool": "CaptionText",
+        "output": "Output"
+       }
+      }
+     }
+    ]
+   }
+  },
+  {
+   "start": 2595,
+   "end": 2700,
+   "media": 0,
+   "source_start": 7230,
+   "source_end": 7335,
+   "speed": 100.0,
+   "markers": [
+    {
+     "frame": 0,
+     "color": "Blue",
+     "name": "動く画面も、 構成表だけで見せ方を決められる",
+     "note": "",
+     "duration": 1,
+     "custom": "row17"
+    }
+   ],
+   "fusion": {
+    "size": [
+     3840,
+     2160
+    ],
+    "tools": [
+     {
+      "name": "MediaIn1",
+      "id": "MediaIn",
+      "inputs": {},
+      "links": {}
+     },
+     {
+      "name": "MediaOut1",
+      "id": "MediaOut",
+      "inputs": {},
+      "links": {
+       "Input": {
+        "tool": "ClosingOver",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "Mask1",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.481771,
+        0.956019
+       ],
+       "Height": 0.032407,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "UseFrameFormatSettings": 1,
+       "Width": 0.078125
+      },
+      "links": {}
+     },
+     {
+      "name": "Mask1Mosaic",
+      "id": "ofx.com.blackmagicdesign.resolvefx.MosaicBlur",
+      "inputs": {
+       "PixelFrequency": 20.0
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "Mask1",
+        "output": "Mask"
+       },
+       "Source": {
+        "tool": "MediaIn1",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "Zoom",
+      "id": "Transform",
+      "inputs": {
+       "FilterMethod": 8
+      },
+      "links": {
+       "Center": {
+        "path": {
+         "X": [
+          [
+           0,
+           0.509375
+          ]
+         ],
+         "Y": [
+          [
+           0,
+           0.6
+          ]
+         ]
+        }
+       },
+       "Input": {
+        "tool": "Mask1Mosaic",
+        "output": "Output"
+       },
+       "Size": {
+        "keys": [
+         [
+          0,
+          1.8
+         ]
+        ]
+       }
+      }
+     },
+     {
+      "name": "ClosingBar",
+      "id": "Background",
+      "inputs": {
+       "Height": 2160,
+       "TopLeftAlpha": 0.862745,
+       "TopLeftBlue": 0.176471,
+       "TopLeftGreen": 0.078431,
+       "TopLeftRed": 0.039216,
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {
+       "EffectMask": {
+        "tool": "ClosingBarMask",
+        "output": "Mask"
+       }
+      }
+     },
+     {
+      "name": "ClosingBarMask",
+      "id": "RectangleMask",
+      "inputs": {
+       "Center": [
+        0.5,
+        0.5
+       ],
+       "Height": 0.251852,
+       "MaskHeight": 2160,
+       "MaskWidth": 3840,
+       "UseFrameFormatSettings": 1,
+       "Width": 1.0
+      },
+      "links": {}
+     },
+     {
+      "name": "ClosingBarOver",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "Zoom",
+        "output": "Output"
+       },
+       "Foreground": {
+        "tool": "ClosingBar",
+        "output": "Output"
+       }
+      }
+     },
+     {
+      "name": "ClosingText",
+      "id": "TextPlus",
+      "inputs": {
+       "Blue1": 1.0,
+       "Center": [
+        0.5,
+        0.5
+       ],
+       "Font": "Meiryo",
+       "Green1": 1.0,
+       "Height": 2160,
+       "Red1": 1.0,
+       "Size": 0.1,
+       "Style": "Bold",
+       "StyledText": "動く画面も、\n構成表だけで見せ方を決められる",
+       "UseFrameFormatSettings": 1,
+       "Width": 3840
+      },
+      "links": {}
+     },
+     {
+      "name": "ClosingOver",
+      "id": "Merge",
+      "inputs": {},
+      "links": {
+       "Background": {
+        "tool": "ClosingBarOver",
+        "output": "Output"
+       },
+       "Foreground": {
+        "tool": "ClosingText",
+        "output": "Output"
+       }
+      }
+     }
+    ]
+   }
+  }
+ ],
+ "build": {
+  "ok": true,
+  "summary": "sb2resolve: 行 17、2700 フレーム、プロジェクト sample1-digest、タイムライン sample1-digest",
+  "lines": [],
+  "warnings": [],
+  "auto": [],
+  "fusion": {
+   "row1": {
+    "comp": true,
+    "masks": [
+     {
+      "type": "mosaic",
+      "shape": "rect",
+      "keys": 0
+     }
+    ],
+    "focus": true,
+    "zoom_warning": null,
+    "caption_warnings": []
+   },
+   "row2": {
+    "comp": true,
+    "masks": [],
+    "focus": true,
+    "zoom_warning": null,
+    "caption_warnings": []
+   },
+   "row3": {
+    "comp": true,
+    "masks": [],
+    "caption_warnings": []
+   },
+   "row4": {
+    "comp": true,
+    "masks": [],
+    "focus": true,
+    "zoom_warning": null,
+    "caption_warnings": []
+   },
+   "row5": {
+    "comp": true,
+    "masks": [],
+    "zoom_warning": null,
+    "caption_warnings": []
+   },
+   "row6": {
+    "comp": true,
+    "masks": [],
+    "caption_warnings": []
+   },
+   "row7": {
+    "comp": true,
+    "masks": [],
+    "focus": true,
+    "zoom_warning": null,
+    "caption_warnings": []
+   },
+   "row8": {
+    "comp": true,
+    "masks": [],
+    "zoom_warning": null,
+    "caption_warnings": []
+   },
+   "row9": {
+    "comp": true,
+    "masks": [],
+    "zoom_warning": null,
+    "caption_warnings": []
+   },
+   "row10": {
+    "comp": true,
+    "masks": [],
+    "caption_warnings": []
+   },
+   "row11": {
+    "comp": true,
+    "masks": [],
+    "zoom_warning": null,
+    "caption_warnings": []
+   },
+   "row12": {
+    "comp": true,
+    "masks": [
+     {
+      "type": "mosaic",
+      "shape": "rect",
+      "keys": 0
+     }
+    ],
+    "focus": true,
+    "zoom_warning": null,
+    "caption_warnings": []
+   },
+   "row13": {
+    "comp": true,
+    "masks": [
+     {
+      "type": "mosaic",
+      "shape": "rect",
+      "keys": 0
+     }
+    ],
+    "focus": true,
+    "zoom_warning": null,
+    "caption_warnings": []
+   },
+   "row14": {
+    "comp": true,
+    "masks": [
+     {
+      "type": "mosaic",
+      "shape": "rect",
+      "keys": 0
+     }
+    ],
+    "caption_warnings": []
+   },
+   "row15": {
+    "comp": true,
+    "masks": [
+     {
+      "type": "mosaic",
+      "shape": "rect",
+      "keys": 0
+     }
+    ],
+    "caption_warnings": []
+   },
+   "row16": {
+    "comp": true,
+    "masks": [
+     {
+      "type": "mosaic",
+      "shape": "rect",
+      "keys": 0
+     }
+    ],
+    "zoom_warning": null,
+    "caption_warnings": []
+   },
+   "row17": {
+    "comp": true,
+    "masks": [
+     {
+      "type": "mosaic",
+      "shape": "rect",
+      "keys": 0
+     }
+    ],
+    "zoom_warning": null,
+    "caption_warnings": []
+   },
+   "row1_hold": {
+    "comp": true,
+    "masks": [
+     {
+      "type": "mosaic",
+      "shape": "rect",
+      "keys": 0
+     }
+    ],
+    "focus": true,
+    "zoom_warning": null,
+    "caption_warnings": []
+   },
+   "row2_hold": {
+    "comp": true,
+    "masks": [],
+    "focus": true,
+    "zoom_warning": null,
+    "caption_warnings": []
+   },
+   "row4_hold": {
+    "comp": true,
+    "masks": [],
+    "focus": true,
+    "zoom_warning": null,
+    "caption_warnings": []
+   },
+   "row7_hold": {
+    "comp": true,
+    "masks": [],
+    "focus": true,
+    "zoom_warning": null,
+    "caption_warnings": []
+   },
+   "row13_hold": {
+    "comp": true,
+    "masks": [
+     {
+      "type": "mosaic",
+      "shape": "rect",
+      "keys": 0
+     }
+    ],
+    "focus": true,
+    "zoom_warning": null,
+    "caption_warnings": []
+   }
+  }
+ }
+}

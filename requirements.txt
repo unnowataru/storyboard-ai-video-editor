@@ -1,0 +1,7 @@
+# このリポジトリのスクリプトとテストで使う Python のパッケージ
+# 入れ方: python -m pip install -r requirements.txt
+pillow>=10          # テロップの幅を測る (common.fit_caption)、check_env.py、track.py、Resolve のテストのフレームの色の確認
+numpy               # track.py
+opencv-python       # track.py (画面の変化の判定、部品の照合)
+pytest              # tests/offline
+# DaVinciResolveScript は Resolve Studio に付属 (pip では入れない)。
