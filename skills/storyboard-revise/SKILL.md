@@ -1,9 +1,9 @@
 ---
-name: resolve-direct
+name: storyboard-revise
 description: 人が DaVinci Resolve のタイムラインに打ったマーカーを読み (scripts/read_markers.py)、マーカーの名前とメモに書かれた修正の指示を構成表 (JSON) に反映し、sb2resolve.py で新しいタイムラインに組んで、人がプレビューする流れ。「Resolve にマーカーを打った」「マーカーのとおりに直して」「タイムラインを組み直して」と言われたときに使う。構成表の書式は docs/storyboard.md、Resolve の API の動きは docs/scripting-api.md。
 ---
 
-# resolve-direct
+# storyboard-revise
 
 人が Resolve の画面でタイムラインにマーカーを打って修正の指示を伝え、AI が構成表を修正して新しいタイムラインに組む。人の作ったタイムラインは書き換えない。
 

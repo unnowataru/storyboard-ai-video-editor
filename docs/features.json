@@ -388,7 +388,7 @@
    "commands": ["read_markers.py --storyboard --log"],
    "scripts": ["read_markers.py"],
    "check_final": [],
-   "docs": ["skills/resolve-direct/SKILL.md#流れ", "docs/scripting-api.md#マーカー"]
+   "docs": ["skills/storyboard-revise/SKILL.md#流れ", "docs/scripting-api.md#マーカー"]
   },
   {
    "id": "dry-run",

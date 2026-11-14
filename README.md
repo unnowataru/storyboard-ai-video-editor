@@ -139,7 +139,7 @@ Resolve を操作する・調べる
 | [docs/track.md](docs/track.md) | `track.py` と `track2masks.py` の JSON の形と使い方 |
 | [docs/scripting-api.md](docs/scripting-api.md) | Resolve のスクリプトの API の使い方と実機での制約 |
 | [tests/README.md](tests/README.md) | テストの一覧と流し方 |
-| [skills/resolve-direct/SKILL.md](skills/resolve-direct/SKILL.md) | Resolve のマーカーを読んで構成表を修正する流れのスキル (Claude Code 用) |
+| [skills/storyboard-revise/SKILL.md](skills/storyboard-revise/SKILL.md) | Resolve のマーカーを読んで構成表を修正する流れのスキル (Claude Code 用) |
 | [CLAUDE.md](CLAUDE.md) | AI のエージェントがこのリポジトリで作業するときのルール |
 | [CHANGELOG.md](CHANGELOG.md) | 変更の記録 |
 
