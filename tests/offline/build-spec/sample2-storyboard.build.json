@@ -10599,7 +10599,7 @@
     {
      "frame": 0,
      "color": "Blue",
-     "name": "場面を分けて、 順に見せられる",
+     "name": "場面を分けて 順に見せられる",
      "note": "",
      "duration": 1,
      "custom": "row19"
@@ -10763,7 +10763,7 @@
        "Red1": 1.0,
        "Size": 0.1,
        "Style": "Bold",
-       "StyledText": "場面を分けて、\n順に見せられる",
+       "StyledText": "場面を分けて\n順に見せられる",
        "UseFrameFormatSettings": 1,
        "Width": 3840
       },

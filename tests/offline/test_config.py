@@ -330,7 +330,8 @@ def test_caption_fit_wraps_at_word_breaks(clean_env):
     pytest.importorskip("PIL")
     text = "画面に収まらない長いテロップは縮めてから書き出し、仕上がりの画面で幅を確かめる"
     fit = C.fit_caption(lk, text, font)
-    assert len(fit["lines"]) == 2 and not fit["warnings"], fit
+    # 読点で折り返す文なので、行の中の読点の警告だけが出る (幅と行数の警告は出ない)
+    assert len(fit["lines"]) == 2 and [w for w in fit["warnings"] if "読点" not in w] == [], fit
     _check_wrap(text, fit["lines"], 10 ** 6, ["テロップ", "縮めて", "書き出し", "仕上がり"])
     assert C.fit_caption(lk, "一行目の|テロップ", font)["lines"] == ["一行目の", "テロップ"]
     assert C.fit_caption(lk, "一行目の\nテロップ", font)["lines"] == ["一行目の", "テロップ"]

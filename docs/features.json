@@ -6,7 +6,7 @@
    "id": "caption",
    "group": "見た目",
    "name": "テロップ",
-   "what": "行の `caption` の文を、画面の下に背景の板と一緒に出す。`|` か改行で行を区切る。セーフエリアの幅に収まらなければ `caption.min_size` まで縮め、それでも収まらなければ句読点や字の種類の変わり目で折り返す。行数が `caption.max_lines` を超えると警告",
+   "what": "行の `caption` の文を、画面の下に背景の板と一緒に出す。`|` か改行で行を区切る。セーフエリアの幅に収まらなければ `caption.min_size` まで縮め、それでも収まらなければ句読点や字の種類の変わり目で折り返す。行数が `caption.max_lines` を超えると警告。区切った行の中に読点があっても警告 (結びのテロップも同じ)",
    "storyboard": ["rows.caption", "caption.{size,min_size,max_lines,lift,bar_rgba,font_name,font_style,fusion_size}"],
    "scripts": ["sb2resolve.py", "sb2nle.py", "check_final.py", "common.py"],
    "check_final": ["caption", "caption_bar", "caption_time"],
@@ -682,6 +682,15 @@
    "scripts": ["common.py"],
    "check_final": [],
    "docs": ["docs/storyboard.md#値の決まり方", "docs/setup.md#設定ファイルと環境変数"]
+  },
+  {
+   "id": "list-captions",
+   "group": "ツール",
+   "name": "テロップの一覧",
+   "what": "構成表のテロップを、行の番号・書き出しの時刻・肩テロップ・1 行目・2 行目の Markdown の表で出す。続く行の同じテロップは 1 つにまとめる。構成表の内容を知らない読み手に、誰が何をするかが分かるかを確認してもらうのに使う",
+   "scripts": ["list_captions.py"],
+   "check_final": [],
+   "docs": ["docs/storyboard.md#テロップの文の書き方"]
   },
   {
    "id": "fonts",

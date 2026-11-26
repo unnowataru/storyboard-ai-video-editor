@@ -1,7 +1,7 @@
 """配置の計算 (scripts/common.py から読み込み直す部品)。
 
 素材の画素からタイムラインの画素への換算 (source_to_timeline・fusion_canvas)、セーフエリア (safe_area)、テロップの折り返しと
-収め方 (wrap_caption_line・fit_caption・caption_window)、肩テロップの板 (badge_box)、callout の置き場所と値 (callout_auto_dst・
+収め方 (wrap_caption_line・fit_caption・caption_window)、テロップの行の読点 (caption_comma)、肩テロップの板 (badge_box)、callout の置き場所と値 (callout_auto_dst・
 callout_values)、layout の画面の置き方 (apply_layout・layout_values)、指すマーク (point_values)、解説の欄 (side_values)。
 文の幅は書体のファイルを Pillow で測る (text_width)。
 """
@@ -127,6 +127,15 @@ _CAPTION_BREAK_AFTER = set("、。，．,！!？?")
 _CAPTION_CLOSE = set("）)」』】〕〉》］]｝}”’")
 # 途中で切らない英数字の語 (Python、x86-64、3.13、192.0.2.10、10:30 など。記号は英数字に挟まれたときだけ語の中とみなす)
 _CAPTION_WORD = re.compile(r"[0-9A-Za-z０-９Ａ-Ｚａ-ｚ]+(?:[-._:/+@#&'’][0-9A-Za-z０-９Ａ-Ｚａ-ｚ]+)*")
+
+
+# テロップの 1 行の中の読点 (「、」「，」と、数字に挟まれていない「,」。1,000 のような桁の区切りは読点にしない)
+_CAPTION_COMMA = re.compile(r"[、，]|(?<![0-9０-９]),|,(?![0-9０-９])")
+
+
+def caption_comma(line):
+    """テロップの 1 行 (`|` か改行で区切った行) に読点があるか。fit_caption が警告に使う。"""
+    return bool(_CAPTION_COMMA.search(line))
 
 
 def _char_kind(ch):
@@ -527,6 +536,7 @@ def fit_caption(look, text, font_file=None, style=None):
             return base_avail
         return min(base_avail, inner - 2 * (caption_mark_room(c, s)[1] + c["margin_x"] / 2))
     lines = [x for x in str(text).replace("|", "\n").split("\n")]
+    given = lines   # `|` と改行で区切った行 (折り返す前)。読点の警告はこの行ごとに見る
     warnings = []
     size = c["size"]
     if text_width(font_file, size, "あ") is None:
@@ -546,6 +556,7 @@ def fit_caption(look, text, font_file=None, style=None):
                 warnings.append("テロップがセーフエリアの幅を超える")
     if len(lines) > c["max_lines"]:
         warnings.append(f"テロップが {len(lines)} 行になり、上限の {c['max_lines']} 行を超える。文を短くする")
+    warnings += [f"テロップの行「{x}」に読点がある。区切りは | の改行で示す" for x in given if caption_comma(x)]
     n = len(lines)
     bar_px = n * size + (n - 1) * c["line_gap"] + 2 * c["pad_y"]
     bar_h = bar_px / H

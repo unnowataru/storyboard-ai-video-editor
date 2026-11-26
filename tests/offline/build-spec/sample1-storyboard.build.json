@@ -7684,7 +7684,7 @@
     {
      "frame": 0,
      "color": "Blue",
-     "name": "動く画面も、 構成表だけで見せ方を決められる",
+     "name": "動く画面の見せ方も 構成表だけで決められる",
      "note": "",
      "duration": 1,
      "custom": "row17"
@@ -7848,7 +7848,7 @@
        "Red1": 1.0,
        "Size": 0.1,
        "Style": "Bold",
-       "StyledText": "動く画面も、\n構成表だけで見せ方を決められる",
+       "StyledText": "動く画面の見せ方も\n構成表だけで決められる",
        "UseFrameFormatSettings": 1,
        "Width": 3840
       },

@@ -90,6 +90,7 @@ python scripts/resolve_lock.py run --owner me -- python scripts/check_final.py e
 | `check_final.py` | 構成表・タイムライン・書き出しを照らし合わせる | 要る (`--no-resolve` は要らない) |
 | `area_sheet.py` | 見る範囲が変わったフレームだけを並べた画像を作る (マスクの漏れの確認) | 要らない |
 | `contact_sheet.py` | 動画のフレームを時刻付きで 1 枚の画像に並べる | 要らない |
+| `list_captions.py` | 構成表のテロップを Markdown の表に書き出す (誰が何をするかが読み手に分かるかの確認) | 要らない |
 
 録画を下調べする
 

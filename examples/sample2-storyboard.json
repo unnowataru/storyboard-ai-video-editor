@@ -608,7 +608,7 @@
       "start": "4:02.967",
       "end": "4:03",
       "seconds": 4,
-      "caption": "場面を分けて、|順に見せられる",
+      "caption": "場面を分けて|順に見せられる",
       "masks": [
         {
           "type": "mosaic",

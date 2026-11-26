@@ -49,6 +49,7 @@ python -m pytest tests/offline -q
 | `test_features_catalog.py` | 機能の一覧 (`docs/features.json`・`features.py`・`docs/features.md`)。構成表と設定の項目・スクリプト・引数・照らし合わせの項目が全部一覧に載っているか |
 | `test_frame_read.py` | 番号を指定したフレームの取り出し (`FrameReader`) |
 | `test_layout.py` | 構成表の `layout` (画面を縮めて寄せ、余白をぼかした画面で埋める配置) |
+| `test_list_captions.py` | `list_captions.py` (テロップの一覧) と、テロップの行の中の読点の警告 |
 | `test_no_user_paths.py` | `.py`・`.ps1`・`.json`・`.comp` に利用者や PC に固有のパスが書かれていないこと |
 | `test_point.py` | 行の `point` (指すマーク) |
 | `test_probe.py` | `probe.py` (Resolve に接続できるかの確認) |
